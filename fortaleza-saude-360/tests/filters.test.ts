@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   DEFAULT_FILTER_STATE,
+  parseFilters,
   resetFilters,
   serializeFilters,
   type FilterState,
@@ -27,5 +28,19 @@ describe("estado dos filtros", () => {
     expect(firstReset).toEqual(DEFAULT_FILTER_STATE);
     expect(firstReset).not.toBe(DEFAULT_FILTER_STATE);
     expect(firstReset).not.toBe(secondReset);
+  });
+
+  it("reconstrói o estado a partir da URL e ignora valores inválidos", () => {
+    const state: FilterState = {
+      facilityType: "uaps",
+      neighborhoodId: "77",
+      mapLayer: null,
+      selectedFacilityId: "uaps-134",
+    };
+
+    expect(parseFilters(`?${serializeFilters(state)}`)).toEqual(state);
+    expect(parseFilters("facility=clinica&layer=calor&neighborhood=<script>")).toEqual(
+      DEFAULT_FILTER_STATE,
+    );
   });
 });

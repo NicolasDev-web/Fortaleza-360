@@ -1,4 +1,4 @@
-type ProvenanceTone = "neutral" | "warning";
+type ProvenanceTone = "neutral" | "warning" | "source";
 
 type ProvenanceBadgeProps = {
   label: string;
@@ -20,10 +20,11 @@ export function DemoNotice() {
   return (
     <strong
       className="demo-notice"
-      aria-label="Modo demonstrativo, sem dados reais"
+      aria-label="Protótipo em validação: dados de cadastro, não de capacidade"
       role="note"
     >
-      Modo demo · sem dados reais
+      <span className="demo-notice-dot" aria-hidden="true" />
+      Protótipo<span className="demo-notice-extra"> · dados de cadastro</span>
     </strong>
   );
 }

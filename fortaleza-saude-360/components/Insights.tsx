@@ -8,7 +8,8 @@ export function Insights() {
         <strong>Leitura responsável</strong>
         <p>
           Distância em linha reta nunca será apresentada como tempo real de
-          deslocamento.
+          deslocamento. Contagem de unidades no cadastro não mede cobertura,
+          capacidade ou demanda.
         </p>
       </div>
     </div>
@@ -20,16 +21,16 @@ export function InsightsFooter() {
     <div className="investigation-footer">
       <div className="next-instrument">
         <span className="footer-icon" aria-hidden="true">
-          <Navigation size={19} />
+          <Navigation size={17} />
         </span>
         <div>
           <small>Próximo instrumento</small>
-          <strong>Mapa navegável com proveniência por camada</strong>
+          <strong>Proxy de distância, explicitamente rotulado</strong>
         </div>
       </div>
       <p>
-        O ambiente permanece em modo demonstrativo até a conclusão do pipeline
-        de dados.
+        Os modos Comparar e Simular permanecem em modo demonstrativo até a
+        conclusão do pipeline de dados.
       </p>
     </div>
   );

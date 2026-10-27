@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { RollingNumber } from "@/components/motion/RollingNumber";
 
 type KpiValue = number | string | null;
 
@@ -7,9 +8,10 @@ type KpiCardProps = {
   label: string;
   note: string;
   value: KpiValue;
+  fractionDigits?: number;
 };
 
-export function KpiCard({ icon: Icon, label, note, value }: KpiCardProps) {
+export function KpiCard({ icon: Icon, label, note, value, fractionDigits = 0 }: KpiCardProps) {
   const hasData = value !== null;
 
   return (
@@ -21,7 +23,13 @@ export function KpiCard({ icon: Icon, label, note, value }: KpiCardProps) {
         <span>{label}</span>
       </div>
       <strong aria-label={hasData ? undefined : "Sem dados"}>
-        {hasData ? value : "—"}
+        {typeof value === "number" ? (
+          <RollingNumber maximumFractionDigits={fractionDigits} value={value} />
+        ) : hasData ? (
+          value
+        ) : (
+          "—"
+        )}
       </strong>
       <small>{note}</small>
     </article>

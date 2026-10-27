@@ -32,3 +32,26 @@ export function serializeFilters(state: Readonly<FilterState>): string {
 
   return params.toString();
 }
+
+const FACILITY_TYPES: readonly FacilityType[] = ["uaps", "upa", "hospital"];
+const MAP_LAYERS: readonly MapLayer[] = ["neighborhoods", "access"];
+
+function pick<T extends string>(value: string | null, allowed: readonly T[]): T | null {
+  return allowed.find((option) => option === value) ?? null;
+}
+
+function cleanId(value: string | null): string | null {
+  const trimmed = value?.trim() ?? "";
+  return /^[\w-]{1,64}$/.test(trimmed) ? trimmed : null;
+}
+
+export function parseFilters(search: string): FilterState {
+  const params = new URLSearchParams(search);
+
+  return {
+    facilityType: pick(params.get("facility"), FACILITY_TYPES),
+    neighborhoodId: cleanId(params.get("neighborhood")),
+    mapLayer: pick(params.get("layer"), MAP_LAYERS),
+    selectedFacilityId: cleanId(params.get("selected")),
+  };
+}

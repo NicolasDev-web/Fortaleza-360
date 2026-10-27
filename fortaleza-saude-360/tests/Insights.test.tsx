@@ -13,7 +13,7 @@ describe("Insights", () => {
 
     expect(screen.getByText("Leitura responsável")).toBeInTheDocument();
     expect(
-      screen.getByText(/permanece em modo demonstrativo/i),
+      screen.getByText(/permanecem? em modo demonstrativo/i),
     ).toBeInTheDocument();
     expect(container).not.toHaveTextContent(/bairro vulnerável/i);
     expect(container).not.toHaveTextContent(/cobertura (adequada|insuficiente)/i);

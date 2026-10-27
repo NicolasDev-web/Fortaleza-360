@@ -7,7 +7,7 @@ Plataforma open-source de inteligência territorial para mapear unidades de saú
 ## Comece no VS Code
 1. Abra esta pasta no VS Code.
 2. Instale Node.js 20+ e rode `npm install` e `npm run dev`.
-3. Acesse `http://localhost:3000` para o protótipo (UI demonstrativa; sem mapa territorial real).
+3. Acesse `http://localhost:3000` para o protótipo: mapa SVG com bairros e UAPS oficiais (Fortaleza em Mapas); modos Comparar e Simular ainda conceituais.
 4. Leia `AGENTS.md`, `docs/PRD.md`, `docs/ARCHITECTURE.md` e `sdd/README.md`.
 5. Peça ao agente executar `sdd/tasks/001.md`, uma tarefa por vez, com testes e atualização de `sdd/STATUS.md`.
 6. Para sair do modo demonstrativo, siga as tarefas ETL e integração de GeoJSON; não considere dados reais antes da validação.
