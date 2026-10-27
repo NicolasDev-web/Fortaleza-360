@@ -1,3 +1,99 @@
-import { Activity, MapPinned, Layers3, SlidersHorizontal, CircleHelp, ArrowUpRight, Hospital, Navigation, ChartNoAxesCombined } from "lucide-react";
-const demo=[{name:"Unidades cadastradas",value:"—",note:"Aguardando integração real",icon:Hospital},{name:"Cobertura populacional",value:"—",note:"Metodologia pendente",icon:Navigation},{name:"Setores analisados",value:"—",note:"Base geográfica pendente",icon:MapPinned}];
-export default function Home(){return <main className="shell"><header className="top"><div className="brand"><span className="mark"><Activity size={24}/></span><div><strong>Fortaleza <span>Saúde 360°</span></strong><small>INTELIGÊNCIA TERRITORIAL EM SAÚDE</small></div></div><div className="topright"><span className="demo">PROTÓTIPO · SEM DADOS REAIS</span><span className="avatar">F</span></div></header><div className="layout"><aside className="sidebar"><div className="eyebrow">EXPLORAÇÃO TERRITORIAL</div><h1>Onde a saúde encontra o território.</h1><p>Visualize equipamentos de saúde e planeje análises de acessibilidade em Fortaleza.</p><div className="divider"/><label>Área de análise</label><div className="field">Fortaleza, Ceará <span>⌄</span></div><label>Tipo de equipamento</label><div className="choice active"><span className="dot mint"/>UAPS / Atenção primária</div><div className="choice"><span className="dot blue"/>Unidades de pronto atendimento</div><div className="choice"><span className="dot yellow"/>Hospitais</div><div className="divider"/><label>Camadas do mapa</label><div className="choice"><Layers3 size={16}/> Limites de bairros <span>○</span></div><div className="choice"><SlidersHorizontal size={16}/> Indicadores de acesso <span>○</span></div><div className="sidebarfoot"><CircleHelp size={18}/> Visualização demonstrativa. O mapa e os indicadores serão conectados após a validação das fontes públicas.</div></aside><section className="content"><div className="sectiontitle"><div><span className="eyebrow">VISÃO GERAL</span><h2>Painel territorial</h2></div><span className="updated">Fontes e datas: ainda não carregadas</span></div><div className="metrics">{demo.map(({name,value,note,icon:Icon})=><div className="metric" key={name}><div className="metrichead"><span>{name}</span><Icon size={18}/></div><strong>{value}</strong><small>{note}</small></div>)}</div><div className="mapcard"><div className="maptop"><span><MapPinned size={17}/> Mapa de equipamentos</span><span className="status"><span className="dot yellow"/> Integração pendente</span></div><div className="mapplaceholder"><div className="contours c1"/><div className="contours c2"/><div className="contours c3"/><div className="gridmap"/><div className="mapcenter"><span className="geoicon"><MapPinned size={34}/></span><h3>Mapa real em desenvolvimento</h3><p>Próximo passo: importar GeoJSON público de Fortaleza e renderizar com MapLibre.</p><span className="pill">Sem pontos ou indicadores fictícios</span></div><div className="mapwatermark">VISUALIZAÇÃO CONCEITUAL · NÃO É CARTOGRAFIA</div></div></div><div className="bottom"><div className="insight"><ChartNoAxesCombined size={20}/><div><strong>Próximas análises</strong><p>Cobertura territorial, distâncias e simulação de implantação de unidades.</p></div><ArrowUpRight size={18}/></div><div className="insight"><Layers3 size={20}/><div><strong>Metodologia transparente</strong><p>Todo indicador exibirá fonte, período, fórmula e limitações.</p></div><ArrowUpRight size={18}/></div></div></section></div><footer>Fortaleza Saúde 360° · Projeto independente de estudo · Não é serviço de emergência</footer></main>}
+import {
+  ChartNoAxesCombined,
+  Clock3,
+  Hospital,
+  MapPinned,
+  Navigation,
+} from "lucide-react";
+import { Filters } from "@/components/Filters";
+import { Header } from "@/components/Header";
+import { Insights, InsightsFooter } from "@/components/Insights";
+import { KpiCard } from "@/components/KpiCard";
+import { MapPanel } from "@/components/MapPanel";
+
+const readouts = [
+  {
+    label: "Unidades cadastradas",
+    note: "Aguardando integração real",
+    icon: Hospital,
+  },
+  {
+    label: "Cobertura populacional",
+    note: "Metodologia pendente",
+    icon: Navigation,
+  },
+  {
+    label: "Setores analisados",
+    note: "Base geográfica pendente",
+    icon: MapPinned,
+  },
+];
+
+export default function Home() {
+  return (
+    <main className="shell">
+      <a className="skip-link" href="#main-content">
+        Pular para a investigação
+      </a>
+      <Header />
+
+      <div className="workspace">
+        <Filters />
+
+        <section
+          className="investigation"
+          id="main-content"
+          aria-labelledby="workspace-title"
+          tabIndex={-1}
+        >
+          <header className="investigation-header">
+            <div>
+              <span className="section-label">Área de investigação</span>
+              <h2 id="workspace-title">Mapa e sinais territoriais</h2>
+            </div>
+            <div className="freshness">
+              <Clock3 size={15} aria-hidden="true" />
+              <span>Atualização indisponível</span>
+            </div>
+          </header>
+
+          <div className="analysis-grid">
+            <MapPanel state="empty" />
+
+            <aside className="evidence-panel" aria-label="Leituras da investigação">
+              <header className="evidence-header">
+                <div>
+                  <span className="section-label">Leituras</span>
+                  <h3>Sinais disponíveis</h3>
+                </div>
+                <ChartNoAxesCombined size={20} aria-hidden="true" />
+              </header>
+
+              <div className="readout-list">
+                {readouts.map(({ label, note, icon: Icon }) => (
+                  <KpiCard
+                    icon={Icon}
+                    key={label}
+                    label={label}
+                    note={note}
+                    value={null}
+                  />
+                ))}
+              </div>
+
+              <Insights />
+            </aside>
+          </div>
+
+          <InsightsFooter />
+        </section>
+      </div>
+
+      <footer className="global-footer">
+        <span>Fortaleza Saúde 360°</span>
+        <span>Projeto independente de estudo</span>
+        <span>Não é serviço de emergência</span>
+      </footer>
+    </main>
+  );
+}

@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+fortaleza_saude_360_data.egg-info/PKG-INFO
+fortaleza_saude_360_data.egg-info/SOURCES.txt
+fortaleza_saude_360_data.egg-info/dependency_links.txt
+fortaleza_saude_360_data.egg-info/requires.txt
+fortaleza_saude_360_data.egg-info/top_level.txt
+tests/test_fetch_data.py

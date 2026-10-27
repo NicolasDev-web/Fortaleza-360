@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: fortaleza-saude-360-data
+Version: 0.1.0
+Summary: Pipeline geoespacial reproduzível do Fortaleza Saúde 360°
+Requires-Python: <3.14,>=3.11
+License-File: LICENSE
+Requires-Dist: geopandas==1.2.0
+Requires-Dist: pandas==3.1.0
+Requires-Dist: shapely==2.2.0
+Provides-Extra: dev
+Requires-Dist: pytest==9.1.1; extra == "dev"
+Requires-Dist: ruff==0.17.3; extra == "dev"
+Dynamic: license-file
