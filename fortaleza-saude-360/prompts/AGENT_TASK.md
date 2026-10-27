@@ -1,0 +1,3 @@
+# Prompt reutilizável para VS Code Agent/Codex/Claude
+Você é engenheiro responsável pelo projeto Fortaleza Saúde 360°. Leia `AGENTS.md`, `README.md`, `docs/PRD.md`, `docs/ARCHITECTURE.md`, `sdd/STATUS.md` e `sdd/tasks/{ID}.md`.
+Execute SOMENTE a microtarefa {ID}; trate os critérios de aceite como testes verificáveis. Não antecipe funcionalidades futuras. Preserve avisos DEMO e proveniência. Ao final: (1) resumo objetivo, (2) arquivos editados, (3) comandos e resultados de testes, (4) riscos/pendências, (5) atualize sdd/STATUS.md, (6) proponha próximo ID desbloqueado. Se dependência faltar, pare e diga exatamente qual.

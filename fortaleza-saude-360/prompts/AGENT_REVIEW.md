@@ -1,0 +1,1 @@
+Atue como revisor independente da microtarefa {ID}. Compare diff com docs/PRD.md e sdd/tasks/{ID}.md. Procure vazamentos de dados, números inventados, confusão entre distância e tempo, licença/atribuição, contraste e regressões. Execute testes cabíveis. Liste somente problemas verificáveis, com severidade, arquivo e correção sugerida. Não faça features novas.
