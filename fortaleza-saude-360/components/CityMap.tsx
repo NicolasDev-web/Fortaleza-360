@@ -484,7 +484,9 @@ export function CityMap({
   );
 
   return (
-    <div className={`city-map${story ? ` story-${story.phase}` : ""}`}>
+    <div
+      className={`city-map${story ? ` story-${story.phase}` : ""}${layers.boundary ? "" : " no-land"}`}
+    >
       <div
         aria-describedby="map-keyboard-hint"
         aria-label="Mapa interativo de Fortaleza"

@@ -22,7 +22,6 @@ export type StoryFacts = {
 export type StoryChapter = {
   id: string;
   phase: StoryPhase;
-  folheto: number | null;
   kicker: string;
   title: string;
   body: string[];
@@ -75,7 +74,6 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
     {
       id: "terra-da-luz",
       phase: "intro",
-      folheto: null,
       kicker: "Terra da Luz",
       title: `Fortaleza, ${bairros} e ${uaps} no cadastro.`,
       body: [
@@ -86,7 +84,6 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
     {
       id: "a-cidade",
       phase: "city",
-      folheto: 1,
       kicker: "A cidade",
       title:
         facts.areaKm2 === null
@@ -100,7 +97,6 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
     {
       id: "portas-de-entrada",
       phase: "facilities",
-      folheto: 2,
       kicker: "As portas de entrada",
       title: `${plural(facts.facilities, "unidade", "unidades")} de atenção primária no cadastro da SMS (2026).`,
       body: [
@@ -111,7 +107,6 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
     {
       id: "contornos",
       phase: "contours",
-      folheto: 3,
       kicker: "Onde o contorno não tem ponto",
       title: `${plural(facts.withFacility, "bairro tem", "bairros têm")} ao menos uma UAPS dentro do contorno; ${integer.format(facts.withoutFacility)}, nenhuma.`,
       body: ["Em destaque, os bairros com ao menos uma unidade dentro dos próprios limites."],
@@ -121,7 +116,6 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
     {
       id: "o-que-nao-dizem",
       phase: "limits",
-      folheto: 4,
       kicker: "O que os dados não dizem",
       title: "O cadastro mostra onde — não quanto, nem para quem.",
       body: [
@@ -134,7 +128,6 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
     {
       id: "sua-vez",
       phase: "explore",
-      folheto: null,
       kicker: "Sua vez",
       title: "Agora, explore o território.",
       body: [

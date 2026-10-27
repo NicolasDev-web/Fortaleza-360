@@ -1,6 +1,6 @@
 # Direção visual — "Terra da Luz" (UX-002)
 
-O observatório conta uma história antes de virar instrumento. A filosofia vem de **Storytelling com Dados** (Cole Nussbaumer Knaflic), e a identidade vem de Fortaleza: o sol da Terra da Luz, o mar e as jangadas, a renda de bilro e os folhetos de cordel. É escuro, profissional e local, sem caricatura.
+O observatório conta uma história antes de virar instrumento. A filosofia vem de **Storytelling com Dados** (Cole Nussbaumer Knaflic), e a identidade vem de Fortaleza: o sol da Terra da Luz, o mar, o farol e as jangadas. É escuro, profissional e local, sem caricatura.
 
 ## Storytelling com Dados aplicado
 
@@ -8,7 +8,7 @@ O observatório conta uma história antes de virar instrumento. A filosofia vem 
 |---|---|
 | Entender o contexto (*Big Idea*) | Frase-tese no painel de leitura: "134 UAPS em 121 bairros: onde estão, não quanto atendem." Os números são calculados do modelo. |
 | Escolher a visualização certa | Número grande + frase para valores isolados; mapa só para "onde"; nada de pizza ou 3D. |
-| Eliminar a poluição | Bordas discretas, renda de bilro em 13% de opacidade, grade e alinhamento; o Índice fica em uma aba separada do Panorama. |
+| Eliminar a poluição | Painéis lisos (sem textura), bordas discretas, filetes retos de 1 px, grade e alinhamento; o Índice fica em uma aba separada do Panorama. |
 | Focar a atenção | Cinza como base e **uma** cor (Wisteria) para o foco de cada capítulo. O âmbar é raro e significa atenção: sol, foco de teclado, avisos e dados divergentes. |
 | Pensar como designer | Títulos-conclusão em vez de rótulos genéricos; ações explícitas ("Enquadrar no mapa", "Rever a história"). |
 | Contar uma história | Modo História em seis capítulos: Terra da Luz → A cidade → As portas de entrada → Onde o contorno não tem ponto → O que os dados não dizem → Sua vez. Lidos em sequência, os títulos resumem a narrativa. |
@@ -35,19 +35,21 @@ Contraste conferido em código (WCAG AA): todo texto sobre Mocha ou canvas profu
 | Bricolage Grotesque 700–800 | Títulos, frase-tese, nomes nas fichas |
 | Space Grotesk 500–700 | Interface |
 | JetBrains Mono 500–800 | Dados, telemetria, rótulos |
-| Alfa Slab One | Só a numeração de folheto ("Nº 3") |
 
 - `AnimatedHeading`: palavras surgem com desfoque e subida, e o título de abertura tem brilho de sol.
 - `RollingNumber` (NumberFlow): dígitos rolam até o valor.
-- Tudo respeita `prefers-reduced-motion`.
+- `ModeWave`: ao trocar de modo, uma onda translúcida atravessa o mapa de baixo para cima (~1 s) e some.
+- Interruptores de camada com trilho afundado, botão em relevo e mola ao ligar.
+- Tudo respeita `prefers-reduced-motion` (a onda nem é montada).
 
 ## Toques de Fortaleza
 
 - **Sol e Terra da Luz:** sol nascendo do mar na abertura; gradiente de entardecer no fundo.
 - **Farol:** um facho varre só o mar. É decorativo e não marca nenhum ponto geográfico.
-- **Jangada e mar:** a marca é a vela de jangada com "F/360"; ondas animadas atrás da terra (o preenchimento opaco do município as cobre).
-- **Renda de bilro:** textura de rosetas e fios pontilhados nos painéis e a `LaceDivider` com picôs.
-- **Cordel:** selo "Nº" em Alfa Slab com sombra dura, filete duplo irregular e sombra de impressão nos títulos dos capítulos.
+- **Jangada e mar:** a marca é a vela de jangada com "F/360"; ondas animadas só no mar. O SVG do mapa fica acima delas e a terra opaca as cobre; com o limite municipal desligado, ondas e farol somem.
+- **Capítulos:** rotulados como "Capítulo n · tema", com a mesma numeração da barra de progresso.
+
+A textura de renda de bilro e os elementos de cordel (selo "Nº", filete irregular, sombra de impressão, fonte Alfa Slab) foram retirados no UX-003.
 
 ## Componentes de catálogo (adaptados, licença MIT)
 

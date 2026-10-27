@@ -14,7 +14,6 @@ import {
   Ruler,
   TriangleAlert,
 } from "lucide-react";
-import { LaceDivider } from "@/components/fortaleza/LaceDivider";
 import { Insights, InsightsFooter } from "@/components/Insights";
 import { KpiCard } from "@/components/KpiCard";
 import { AnimatedHeading } from "@/components/motion/AnimatedHeading";
@@ -124,7 +123,7 @@ export function ReadingPanel({
       )}
 
       <div className="reading-foot">
-        <LaceDivider />
+        <hr className="panel-rule" />
         <Insights />
         <InsightsFooter />
       </div>

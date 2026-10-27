@@ -45,14 +45,11 @@
   --font-display: var(--ff-display), "Segoe UI Variable Display", system-ui, sans-serif;
   --font-sans: var(--ff-ui), "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
   --font-mono: var(--ff-mono), ui-monospace, "Cascadia Mono", Consolas, monospace;
-  --font-cordel: var(--ff-cordel), Georgia, serif;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --bar-height: 68px;
   --footer-height: 34px;
 
-  /* Renda de bilro: roseta e fios pontilhados (textura sutil). */
-  --lace: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72' opacity='0.13'><g fill='none' stroke='%239ca3db' stroke-width='0.8'><circle cx='36' cy='36' r='9'/><circle cx='36' cy='36' r='14' stroke-dasharray='1 3'/><path d='M36 22v-6M36 50v6M22 36h-6M50 36h6M26 26l-4-4M46 46l4 4M46 26l4-4M26 46l-4 4'/><path d='M0 0L22 22M72 0L50 22M0 72L22 50M72 72L50 50' stroke-dasharray='1 4'/></g><g fill='%239ca3db'><circle cx='36' cy='36' r='2'/><circle cx='36' cy='27' r='1.2'/><circle cx='36' cy='45' r='1.2'/><circle cx='27' cy='36' r='1.2'/><circle cx='45' cy='36' r='1.2'/></g></svg>");
 }
 
 /* Ponte para os tokens dos componentes de catálogo (shadcn: uselayouts, Watermelon). */
@@ -77,7 +74,6 @@
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  --font-cordel: var(--font-cordel);
 }
 
 /* --------------------------------------------------------------- base --- */
@@ -499,7 +495,9 @@ kbd {
 }
 
 .rail-section {
-  margin-top: 26px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
 }
 
 .rail-section > .section-label {
@@ -598,11 +596,14 @@ kbd {
 
 .layer-switch {
   position: relative;
-  width: 30px;
-  height: 18px;
+  flex: none;
+  width: 38px;
+  height: 22px;
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-pill);
-  background: rgba(243, 238, 233, 0.12);
-  transition: background 200ms;
+  background: rgba(20, 16, 14, 0.7);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.55);
+  transition: background 220ms, border-color 220ms;
 }
 
 .layer-switch::after {
@@ -610,19 +611,32 @@ kbd {
   position: absolute;
   top: 3px;
   left: 3px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--text-soft);
-  transition: transform 220ms var(--ease-out), background 200ms;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(180deg, #e9e3dd, #b3aba4);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition:
+    transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    width 160ms var(--ease-out);
+}
+
+.layer-toggle:active:not(:disabled) .layer-switch::after {
+  width: 18px;
 }
 
 .layer-toggle[aria-pressed="true"] .layer-switch {
+  border-color: var(--accent);
   background: var(--accent-deep);
 }
 
 .layer-toggle[aria-pressed="true"] .layer-switch::after {
-  background: var(--accent);
+  background: radial-gradient(circle, var(--accent-deep) 0 2px, transparent 2.5px),
+    linear-gradient(180deg, #ffffff, #d2cbc4);
+  transform: translateX(16px);
+}
+
+.layer-toggle[aria-pressed="true"]:active:not(:disabled) .layer-switch::after {
   transform: translateX(12px);
 }
 
@@ -912,9 +926,17 @@ kbd {
 }
 
 .map-svg {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
+}
+
+/* Sem o preenchimento da terra, mar e farol cobririam o território. */
+.city-map.no-land .sea-waves,
+.city-map.no-land .lighthouse-beam {
+  display: none;
 }
 
 .graticule line {
@@ -2332,68 +2354,20 @@ kbd {
   outline-offset: 2px;
 }
 
-/* ---------------------------------------------------- renda de bilro --- */
-
-.layer-rail,
-.reading-panel {
-  background-color: var(--panel);
-  background-image: var(--lace);
-  background-size: 96px 96px;
-}
-
-.lace-divider {
-  display: block;
-  color: var(--accent);
-  opacity: 0.55;
-}
-
-.lace-divider path {
-  stroke: currentColor;
-  stroke-width: 0.9;
-}
-
-.lace-divider circle {
-  fill: currentColor;
-}
-
-/* ----------------------------------------------------------- cordel --- */
-
-.cordel-rule {
-  display: block;
-  width: 100%;
-  height: 8px;
-  margin: 4px 0 6px;
-}
-
-.cordel-rule path {
-  fill: none;
-  stroke: var(--text-muted);
-  stroke-width: 1.3;
-  vector-effect: non-scaling-stroke;
-}
-
-.cordel-badge {
-  display: inline-grid;
-  place-items: center;
-  min-width: 44px;
-  height: 30px;
-  padding: 0 8px;
-  border: 2px solid var(--text);
-  border-radius: 4px;
-  color: var(--text);
-  background: var(--canvas-deep);
-  box-shadow: 3px 3px 0 var(--accent-deep);
-  font-family: var(--font-cordel);
-  font-size: 14px;
-  letter-spacing: 0.02em;
-  transform: rotate(-2deg);
-}
-
 .story-kicker {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
+}
+
+.story-rule,
+.panel-rule {
+  height: 1px;
+  margin: 12px 0 10px;
+  border: 0;
+  background: var(--line);
+}
+
+.panel-rule {
+  margin: 4px 0 16px;
 }
 
 /* ------------------------------------------------ mar, ondas e farol --- */
@@ -2495,10 +2469,6 @@ kbd {
   line-height: 1.06;
   letter-spacing: -0.03em;
   text-wrap: balance;
-}
-
-.story-title:not(.has-shimmer) .animated-word {
-  text-shadow: 3px 3px 0 rgba(69, 75, 102, 0.95);
 }
 
 .story-body {
@@ -2749,6 +2719,31 @@ kbd {
   box-shadow: inset 3px 0 0 var(--accent);
 }
 
+/* ------------------------------------------- onda entre os modos --- */
+
+.mode-wave {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mode-wave svg {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 150%;
+}
+
+.mode-wave path {
+  fill: var(--accent);
+}
+
+.mode-wave path + path {
+  fill: var(--accent-deep);
+}
+
 /* -------------------------------------------- ajustes responsivos --- */
 
 @media (max-width: 720px) {
@@ -2792,5 +2787,17 @@ kbd {
   .jangada-wave,
   .sea-waves path {
     animation: none;
+  }
+
+  .layer-switch::after {
+    transition: none;
+  }
+
+  .layer-toggle:active:not(:disabled) .layer-switch::after {
+    width: 14px;
+  }
+
+  .layer-toggle[aria-pressed="true"]:active:not(:disabled) .layer-switch::after {
+    transform: translateX(16px);
   }
 }

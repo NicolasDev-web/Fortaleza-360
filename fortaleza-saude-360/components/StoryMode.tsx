@@ -1,7 +1,6 @@
 "use client";
 
 import { ArrowLeft, ArrowRight, Compass, TriangleAlert } from "lucide-react";
-import { CordelRule } from "@/components/fortaleza/CordelRule";
 import { SunRise } from "@/components/fortaleza/SunRise";
 import { AnimatedHeading } from "@/components/motion/AnimatedHeading";
 import { FeatureTour } from "@/components/vendor/feature-tour";
@@ -67,17 +66,12 @@ export function StoryMode({ chapters, index, onIndexChange, onClose }: StoryMode
     >
       {chapter.phase === "intro" ? <SunRise /> : null}
 
-      <div className="story-kicker">
-        {chapter.folheto !== null ? (
-          <span className="cordel-badge" aria-label={`Folheto número ${chapter.folheto}`}>
-            Nº {chapter.folheto}
-          </span>
-        ) : null}
-        <span className="section-label">{chapter.kicker}</span>
-      </div>
+      <p className="story-kicker section-label">
+        Capítulo {index + 1} · {chapter.kicker}
+      </p>
 
       <AnimatedHeading className="story-title" id="story-title" shimmer={chapter.phase === "intro"} text={chapter.title} />
-      <CordelRule />
+      <hr className="story-rule" />
 
       <div className="story-body">
         {chapter.body.map((paragraph) => (

@@ -1,11 +1,9 @@
 import { ArrowLeft, Lock } from "lucide-react";
-import { CordelRule } from "@/components/fortaleza/CordelRule";
 import { AnimatedHeading } from "@/components/motion/AnimatedHeading";
 import { ProvenanceBadge } from "@/components/ProvenanceBadge";
 import type { Mode } from "@/components/CommandBar";
 
 type ConceptContent = {
-  folheto: number;
   title: string;
   question: string;
   method: string[];
@@ -17,7 +15,6 @@ export type ConceptModeId = Exclude<Mode, "explore" | "story">;
 
 const concepts: Record<ConceptModeId, ConceptContent> = {
   compare: {
-    folheto: 5,
     title: "Comparar territórios",
     question: "Como dois bairros diferem em distância até a UAPS mais próxima?",
     method: [
@@ -29,7 +26,6 @@ const concepts: Record<ConceptModeId, ConceptContent> = {
     guardrail: "Nenhum bairro será classificado como vulnerável a partir de contagens de cadastro.",
   },
   simulate: {
-    folheto: 6,
     title: "Simulador de cenários",
     question: "Quanto mudaria a cobertura modelada com uma unidade candidata?",
     method: [
@@ -61,15 +57,12 @@ export function ConceptMode({ mode, onBack }: ConceptModeProps) {
 
       <div className="concept-card">
         <div className="story-kicker">
-          <span className="cordel-badge" aria-label={`Folheto número ${content.folheto}`}>
-            Nº {content.folheto}
-          </span>
           <span className="concept-status">
             <Lock size={13} aria-hidden="true" /> Modo em preparação
           </span>
         </div>
         <AnimatedHeading className="concept-title" text={content.title} />
-        <CordelRule />
+        <hr className="story-rule" />
         <p className="concept-question">{content.question}</p>
 
         <h3>Como vai funcionar</h3>

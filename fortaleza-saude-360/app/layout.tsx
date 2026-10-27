@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import {
-  Alfa_Slab_One,
   Bricolage_Grotesque,
   JetBrains_Mono,
   Space_Grotesk,
@@ -28,14 +27,6 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-// Numeração de folheto de cordel ("Nº 1"); usada só em detalhes.
-const cordel = Alfa_Slab_One({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--ff-cordel",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Fortaleza Saúde 360° | Observatório territorial",
   description:
@@ -51,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="pt-BR"
-      className={`${display.variable} ${ui.variable} ${mono.variable} ${cordel.variable}`}
+      className={`${display.variable} ${ui.variable} ${mono.variable}`}
     >
       <body>{children}</body>
     </html>

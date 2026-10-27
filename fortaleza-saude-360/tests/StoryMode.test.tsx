@@ -35,6 +35,7 @@ describe("Modo História", () => {
     await user.keyboard("{ArrowRight}{ArrowRight}{ArrowRight}");
 
     expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuetext", "Capítulo 4 de 6");
+    expect(await screen.findByText("Capítulo 4 · Onde o contorno não tem ponto")).toBeInTheDocument();
     expect(await screen.findByText(/não mede acesso/i)).toBeInTheDocument();
 
     await user.keyboard("{ArrowLeft}");

@@ -11,6 +11,7 @@ import {
 import { CommandBar, type Mode } from "@/components/CommandBar";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ConceptMode } from "@/components/ConceptMode";
+import { ModeWave } from "@/components/fortaleza/ModeWave";
 import { LayerRail } from "@/components/LayerRail";
 import { MapPanel } from "@/components/MapPanel";
 import { ReadingPanel } from "@/components/ReadingPanel";
@@ -63,6 +64,8 @@ function rememberStory() {
 export function Observatory({ model }: ObservatoryProps) {
   const [mode, setMode] = useState<Mode>("explore");
   const [chapter, setChapter] = useState(0);
+  // Cada troca de modo feita pela pessoa remonta a onda de transição.
+  const [wave, setWave] = useState(0);
   const [layers, setLayers] = useState<LayerVisibility>(DEFAULT_LAYERS);
   const [filters, setFilters] = useState<FilterState>(resetFilters);
   const [frame, setFrame] = useState<FrameRequest | null>(null);
@@ -110,25 +113,30 @@ export function Observatory({ model }: ObservatoryProps) {
 
   const clearSelection = useCallback(() => setFilters(resetFilters()), []);
 
+  const switchMode = useCallback((next: Mode) => {
+    setMode(next);
+    setWave((count) => count + 1);
+  }, []);
+
   const openStory = useCallback(() => {
     if (!model) return;
     setChapter(0);
     setFilters(resetFilters());
     requestFrame([0, 0, model.projection.width, model.projection.height]);
-    setMode("story");
-  }, [model, requestFrame]);
+    switchMode("story");
+  }, [model, requestFrame, switchMode]);
 
   const closeStory = useCallback(() => {
     rememberStory();
-    setMode("explore");
+    switchMode("explore");
     requestAnimationFrame(() => document.getElementById("mode-tab-explore")?.focus());
-  }, []);
+  }, [switchMode]);
 
   const changeMode = (next: Mode) => {
     if (next === "story") openStory();
     else {
       if (mode === "story") rememberStory();
-      setMode(next);
+      switchMode(next);
     }
   };
 
@@ -215,20 +223,23 @@ export function Observatory({ model }: ObservatoryProps) {
           id="stage-panel"
           labelledBy={`mode-tab-${mode}`}
           overlay={
-            <AnimatePresence>
-              {isConcept ? (
-                <ConceptMode key={mode} mode={mode} onBack={() => setMode("explore")} />
-              ) : null}
-              {isStory ? (
-                <StoryMode
-                  chapters={chapters}
-                  index={chapter}
-                  key="story"
-                  onClose={closeStory}
-                  onIndexChange={setChapter}
-                />
-              ) : null}
-            </AnimatePresence>
+            <>
+              {wave > 0 ? <ModeWave key={wave} /> : null}
+              <AnimatePresence>
+                {isConcept ? (
+                  <ConceptMode key={mode} mode={mode} onBack={() => switchMode("explore")} />
+                ) : null}
+                {isStory ? (
+                  <StoryMode
+                    chapters={chapters}
+                    index={chapter}
+                    key="story"
+                    onClose={closeStory}
+                    onIndexChange={setChapter}
+                  />
+                ) : null}
+              </AnimatePresence>
+            </>
           }
           state={model ? "ready" : "error"}
         >
