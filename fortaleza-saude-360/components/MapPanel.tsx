@@ -73,7 +73,7 @@ export function MapPanel({ children, id, labelledBy, overlay, state }: MapPanelP
             <strong id="map-title">Território em análise</strong>
             <small>
               {hasReadyContent
-                ? "Sem mapa de base · contornos oficiais"
+                ? "Contornos oficiais e UAPS do cadastro"
                 : "Superfície cartográfica aguardando dados"}
             </small>
           </div>

@@ -1,5 +1,37 @@
 {
-  "generated_at": "2026-10-28T00:23:57Z",
+  "basemap": {
+    "bbox": [
+      -38.6679,
+      -3.9246,
+      -38.3713,
+      -3.6617
+    ],
+    "bytes": 6366970,
+    "file": "/basemap/fortaleza.pmtiles",
+    "fonts": {
+      "family": "Noto Sans Regular (glyphs Protomaps basemaps-assets)",
+      "license": "SIL Open Font License 1.1",
+      "license_file": "/basemap/fonts/OFL.txt"
+    },
+    "limitations": [
+      "Referência visual de ruas; não entra em cálculos nem em tempos de trajeto",
+      "Recorte de Fortaleza com margem de ~3 km; fora dele o mapa fica vazio",
+      "Dados colaborativos do OSM podem estar incompletos ou desatualizados"
+    ],
+    "max_zoom": 14,
+    "sha256": "82aa47f6f706fa10fbe3129d291451dd26b74120fae29a0ad7b428f35ff04e0e",
+    "source": {
+      "attribution": "© colaboradores do OpenStreetMap; tiles Protomaps",
+      "collected_at": "2026-10-28T01:16:30Z",
+      "download_url": "https://build.protomaps.com/20261025.pmtiles",
+      "license": "ODbL 1.0 (dados OpenStreetMap)",
+      "organization": "OpenStreetMap (dados) e Protomaps (build diário)",
+      "terms_url": "https://www.openstreetmap.org/copyright",
+      "tiles_version": "4.15.2"
+    },
+    "tiles": 265
+  },
+  "generated_at": "2026-10-28T01:23:36Z",
   "layers": [
     {
       "bbox": [
@@ -181,5 +213,5 @@
   ],
   "mode": "official",
   "notice": "Camadas oficiais de localização e limites administrativos. Não há indicadores de capacidade, oferta ou cobertura populacional.",
-  "schema_version": "1.1"
+  "schema_version": "1.2"
 }

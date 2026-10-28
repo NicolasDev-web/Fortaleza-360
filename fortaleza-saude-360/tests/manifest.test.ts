@@ -19,6 +19,7 @@ type ManifestLayer = {
 const manifest = JSON.parse(readFileSync(join(DATA_DIR, "manifest.json"), "utf8")) as {
   mode: string;
   layers?: ManifestLayer[];
+  basemap?: { file: string; sha256: string; source: { license: string; terms_url: string } };
 };
 
 const MANIFEST_LAYER: Record<LayerSourceId, string> = {
@@ -45,5 +46,13 @@ describe("manifesto público", () => {
 
     const bytes = readFileSync(join(process.cwd(), "public", layer!.file));
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(layer!.sha256);
+  });
+
+  it("registra a fonte, a licença e o checksum do basemap", () => {
+    expect(manifest.basemap).toBeDefined();
+    expect(manifest.basemap!.source.license).toMatch(/ODbL/);
+    expect(manifest.basemap!.source.terms_url).toBe("https://www.openstreetmap.org/copyright");
+    const bytes = readFileSync(join(process.cwd(), "public", manifest.basemap!.file));
+    expect(createHash("sha256").update(bytes).digest("hex")).toBe(manifest.basemap!.sha256);
   });
 });

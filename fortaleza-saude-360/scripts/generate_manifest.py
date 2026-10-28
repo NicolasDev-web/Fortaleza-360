@@ -145,6 +145,46 @@ def _inspect_geojson(path: Path) -> dict[str, Any]:
     }
 
 
+def _basemap_entry(public_dir: Path) -> dict[str, Any] | None:
+    """Proveniência do recorte OSM gerado por scripts/build_basemap.py, se existir."""
+    tiles = public_dir.parent / "basemap" / "fortaleza.pmtiles"
+    report_path = tiles.with_name(f"{tiles.name}.json")
+    if not tiles.exists() or not report_path.exists():
+        return None
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    content = tiles.read_bytes()
+    if hashlib.sha256(content).hexdigest() != report["sha256"]:
+        raise ValueError("fortaleza.pmtiles não corresponde ao relatório da extração")
+    return {
+        "file": "/basemap/fortaleza.pmtiles",
+        "bytes": len(content),
+        "sha256": report["sha256"],
+        "bbox": report["bbox"],
+        "max_zoom": report["max_zoom"],
+        "tiles": report["tiles"],
+        "source": {
+            "organization": "OpenStreetMap (dados) e Protomaps (build diário)",
+            "download_url": report["source"],
+            "tiles_version": report["tiles_version"],
+            "collected_at": report["collected_at"],
+            "license": report["license"],
+            "attribution": "© colaboradores do OpenStreetMap; tiles Protomaps",
+            "terms_url": "https://www.openstreetmap.org/copyright",
+        },
+        "fonts": {
+            "family": "Noto Sans Regular (glyphs Protomaps basemaps-assets)",
+            "license": "SIL Open Font License 1.1",
+            "license_file": "/basemap/fonts/OFL.txt",
+        },
+        "limitations": [
+            "Referência visual de ruas; não entra em cálculos nem em tempos "
+            "de trajeto",
+            "Recorte de Fortaleza com margem de ~3 km; fora dele o mapa fica vazio",
+            "Dados colaborativos do OSM podem estar incompletos ou desatualizados",
+        ],
+    }
+
+
 def generate_manifest(
     raw_dir: Path,
     public_dir: Path,
@@ -196,13 +236,17 @@ def generate_manifest(
             }
         )
 
-    return {
-        "schema_version": "1.1",
+    manifest: dict[str, Any] = {
+        "schema_version": "1.2",
         "mode": "official",
         "notice": NOTICE,
         "generated_at": generated_at or _utc_now(),
         "layers": layers,
     }
+    basemap = _basemap_entry(public_dir)
+    if basemap:
+        manifest["basemap"] = basemap
+    return manifest
 
 
 def write_manifest(manifest: dict[str, Any], path: Path) -> None:

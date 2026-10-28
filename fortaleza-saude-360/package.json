@@ -14,10 +14,13 @@
   },
   "dependencies": {
     "@number-flow/react": "^0.6.2",
+    "@protomaps/basemaps": "5.7.2",
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
+    "maplibre-gl": "6.14.0",
     "motion": "^14.7.1",
     "next": "^16.4.3",
+    "pmtiles": "4.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.7.0"

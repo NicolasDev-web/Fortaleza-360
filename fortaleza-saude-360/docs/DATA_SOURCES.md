@@ -61,6 +61,15 @@ Verificação de 2026-10-27: a [API de Dados Abertos do Ministério da Saúde](h
 
 Método, resultados e limitações do crosswalk setor → bairro estão em `docs/POPULATION.md`.
 
+## Basemap OSM (SDD-027)
+
+| Papel | Download | Referência | Licença e atribuição |
+|---|---|---|---|
+| Ruas e uso do solo (mapa de fundo) | Recorte do build diário [`build.protomaps.com/20261025.pmtiles`](https://build.protomaps.com/20261025.pmtiles) (schema 4.15.2), z0–14, caixa do limite municipal + ~3 km | OpenStreetMap via Protomaps; coleta em 2026-10-28 | ODbL 1.0 — "© colaboradores do OpenStreetMap", com link para [openstreetmap.org/copyright](https://www.openstreetmap.org/copyright), exibido sobre o mapa |
+| Fonte dos rótulos | Glyphs `Noto Sans Regular` (faixas 0-255, 256-511, 8192-8447) de [protomaps/basemaps-assets](https://github.com/protomaps/basemaps-assets) | — | SIL Open Font License 1.1 (`public/basemap/fonts/OFL.txt`) |
+
+O recorte (`public/basemap/fortaleza.pmtiles`, ~6,4 MB) e as fontes são servidos pelo próprio app: o navegador do visitante não faz requisição a terceiros, então nenhum provedor de tiles recebe IP ou área consultada. `tests/basemap.test.ts` falha se o estilo apontar para outra origem. O basemap é só referência visual: não entra em contagens, distâncias ou tempos de trajeto. A extração é reproduzível (`scripts/build_basemap.py`; mesmo build gera o mesmo SHA-256) e fica registrada no bloco `basemap` de `public/data/manifest.json`.
+
 ## Fontes complementares futuras
 
 | Tema | Fonte oficial | Uso previsto | Restrição principal |

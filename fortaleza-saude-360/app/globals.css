@@ -933,6 +933,50 @@ kbd {
   height: 100%;
 }
 
+/* Basemap OSM (SDD-027): sob o SVG, sem eventos; aparece só depois de carregar. */
+.basemap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 600ms var(--ease-out);
+}
+
+.basemap.is-ready {
+  opacity: 1;
+}
+
+/* Com ruas, a terra do SVG vira véu leve para não esconder o traçado. */
+.city-map.has-basemap .boundary-land {
+  fill: rgba(43, 36, 33, 0.18);
+}
+
+.basemap-credit {
+  position: absolute;
+  z-index: 5;
+  right: 76px;
+  bottom: 22px;
+  max-width: calc(100% - 96px);
+  margin: 0;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  color: var(--text-soft);
+  background: var(--panel);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+}
+
+.basemap-credit a {
+  color: var(--text-muted);
+}
+
+.basemap-credit a:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
 /* Sem o preenchimento da terra, mar e farol cobririam o território. */
 .city-map.no-land .sea-waves,
 .city-map.no-land .lighthouse-beam {
@@ -2028,6 +2072,13 @@ kbd {
 }
 
 @media (max-width: 1280px) {
+  /* Mapa mais estreito: o crédito sobe para não cobrir a telemetria. */
+  .basemap-credit {
+    left: 20px;
+    right: auto;
+    bottom: 62px;
+  }
+
   .workspace {
     grid-template-columns: 270px minmax(0, 1fr) 320px;
   }
@@ -2193,6 +2244,14 @@ kbd {
 
   .readout-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .basemap-credit {
+    left: 12px;
+    right: 74px;
+    bottom: 54px;
+    max-width: none;
+    font-size: 0.625rem;
   }
 
   .map-telemetry {

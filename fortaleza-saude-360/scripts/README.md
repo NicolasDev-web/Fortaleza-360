@@ -57,3 +57,12 @@ python -m scripts.transform_population
 ```
 
 Gera em `data/processed/` os setores com população (`demand_units.geojson`), o crosswalk setor → bairro e uma auditoria do join. Método em `docs/POPULATION.md`.
+
+## Basemap (OpenStreetMap)
+
+```powershell
+python -m scripts.build_basemap --build 20261025
+python scripts/generate_manifest.py
+```
+
+Recorta, por requisições de intervalo, o build diário do Protomaps na caixa do limite municipal (+~3 km) até o zoom 14 e grava `public/basemap/fortaleza.pmtiles` com um relatório `.json` (fonte, SHA-256, licença, coleta). Escolha um build listado em `https://build-metadata.protomaps.dev/builds.json`; depois regenere o manifesto.

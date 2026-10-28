@@ -13,6 +13,8 @@ import {
   type PointerEvent,
 } from "react";
 import { Crosshair, Minus, Plus } from "lucide-react";
+import { Basemap, BasemapCredit, type BasemapStatus } from "@/components/Basemap";
+import { cameraFromView } from "@/lib/basemap";
 import { formatCoordinate, unproject, type Box } from "@/lib/geo";
 import { SeaWaves } from "@/components/fortaleza/SeaWaves";
 import type { FacilityPoint, MapModel, NeighborhoodShape } from "@/lib/map-model";
@@ -274,6 +276,7 @@ export function CityMap({
   const [cursor, setCursor] = useState<[number, number] | null>(null);
   const [hover, setHover] = useState<Hover | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [basemapStatus, setBasemapStatus] = useState<BasemapStatus | null>(null);
 
   const neighborhoodByCode = useMemo(
     () => new Map(model.neighborhoods.map((item) => [item.code, item])),
@@ -300,6 +303,7 @@ export function CityMap({
   const unitsPerPx = Math.max(view.w / size.w, view.h / size.h);
   const unit = Math.round(unitsPerPx * 1000) / 1000;
   const zoom = width / view.w;
+  const camera = useMemo(() => cameraFromView(projection, view, size), [projection, view, size]);
 
   const toUnits = useCallback(
     (clientX: number, clientY: number): [number, number] | null => {
@@ -485,7 +489,7 @@ export function CityMap({
 
   return (
     <div
-      className={`city-map${story ? ` story-${story.phase}` : ""}${layers.boundary ? "" : " no-land"}`}
+      className={`city-map${story ? ` story-${story.phase}` : ""}${layers.boundary ? "" : " no-land"}${basemapStatus === "ready" ? " has-basemap" : ""}`}
     >
       <div
         aria-describedby="map-keyboard-hint"
@@ -505,6 +509,7 @@ export function CityMap({
         role="region"
         tabIndex={0}
       >
+        <Basemap camera={camera} onStatusChange={setBasemapStatus} />
         <SeaWaves />
         <div className="lighthouse-beam" aria-hidden="true" />
 
@@ -609,6 +614,8 @@ export function CityMap({
           </div>
         ) : null}
       </div>
+
+      <BasemapCredit status={basemapStatus} />
 
       <p className="visually-hidden" id="map-keyboard-hint">
         Setas movem o mapa, mais e menos ajustam o zoom e zero reenquadra a cidade.

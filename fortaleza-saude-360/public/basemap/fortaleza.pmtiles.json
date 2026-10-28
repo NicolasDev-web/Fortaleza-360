@@ -1,0 +1,17 @@
+{
+  "attribution": "<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap</a>",
+  "bbox": [
+    -38.6679,
+    -3.9246,
+    -38.3713,
+    -3.6617
+  ],
+  "bytes": 6366970,
+  "collected_at": "2026-10-28T01:16:30Z",
+  "license": "ODbL 1.0 (dados OpenStreetMap)",
+  "max_zoom": 14,
+  "sha256": "82aa47f6f706fa10fbe3129d291451dd26b74120fae29a0ad7b428f35ff04e0e",
+  "source": "https://build.protomaps.com/20261025.pmtiles",
+  "tiles": 265,
+  "tiles_version": "4.15.2"
+}
