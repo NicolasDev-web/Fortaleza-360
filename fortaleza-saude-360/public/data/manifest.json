@@ -1,6 +1,185 @@
 {
-  "mode": "not_loaded",
-  "sources": [],
-  "generated_at": null,
-  "notice": "Sem dados reais: aguarde pipeline validado."
+  "generated_at": "2026-10-28T00:23:57Z",
+  "layers": [
+    {
+      "bbox": [
+        -38.62717984,
+        -3.88871088,
+        -38.44053707,
+        -3.69476567
+      ],
+      "bytes": 37573,
+      "crs": "EPSG:4326",
+      "dictionary": {
+        "cnes": "Código CNES como publicado; não é chave de deduplicação",
+        "id": "Identificador estável do projeto: uaps-{source_id}",
+        "management": "Código de gestão como publicado (campo `gestão`)",
+        "name": "Nome da unidade (campo de origem `nome`)",
+        "neighborhood": "Bairro declarado na fonte; não é o vínculo espacial",
+        "reference_date": "Ano de referência declarado (campo `ano`)",
+        "source_id": "Identificador da feição na API Fortaleza em Mapas",
+        "sus": "Atende SUS conforme `atende_sus`; null se ausente",
+        "type": "Tipo de equipamento; nesta fonte, sempre UAPS"
+      },
+      "extent": "Fortaleza, Ceará",
+      "feature_count": 134,
+      "file": "/data/facilities.geojson",
+      "geometry_types": [
+        "Point"
+      ],
+      "id": "facilities",
+      "limitations": [
+        "Cadastro não representa horário, capacidade ou disponibilidade",
+        "CNES repetido não implica que duas feições sejam a mesma unidade"
+      ],
+      "methodology": [
+        "Mapeamento de campos oficiais para o contrato facility",
+        "Validação de CRS, coordenadas e bounding box municipal",
+        "Deduplicação conservadora por source_id"
+      ],
+      "properties": [
+        "cnes",
+        "id",
+        "management",
+        "name",
+        "neighborhood",
+        "reference_date",
+        "source_id",
+        "sus",
+        "type"
+      ],
+      "sha256": "c5142138b8e60872b399150110d31e70ef34bbd68c8b94095e865d68eab8e162",
+      "source": {
+        "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+        "catalog_updated_at": "2026-06-08",
+        "collected_at": "2026-10-27T18:39:23Z",
+        "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=824&download=true",
+        "id": 824,
+        "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+        "organization": "SMS",
+        "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/824/unidades-de-atencao-primaria-a-saude-uaps",
+        "raw_sha256": "8642d140c7d527c2285c67ca3ef7438af880a4246d5c90fda1287c55ae5b90f0",
+        "reference_year": 2026,
+        "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+      },
+      "title": "Unidades de Atenção Primária à Saúde"
+    },
+    {
+      "bbox": [
+        -38.63790294,
+        -3.89460306,
+        -38.40132769,
+        -3.69172159
+      ],
+      "bytes": 782161,
+      "crs": "EPSG:4326",
+      "dictionary": {
+        "code": "Código municipal do bairro (campo `Código do  Bairro`)",
+        "name": "Nome do bairro (campo `Nome`)",
+        "reference_date": "Ano de referência administrativa (`ano_ref`)",
+        "source_id": "Código municipal usado como referência da fonte"
+      },
+      "extent": "Fortaleza, Ceará",
+      "feature_count": 121,
+      "file": "/data/neighborhoods.geojson",
+      "geometry_types": [
+        "MultiPolygon"
+      ],
+      "id": "neighborhoods",
+      "limitations": [
+        "Referência administrativa de 2019 em catálogo atualizado em 2023",
+        "Código rotulado como IBGE não foi adotado como chave oficial"
+      ],
+      "methodology": [
+        "Normalização de nomes de campos sem alterar geometrias",
+        "Validação de topologia e unicidade do código municipal"
+      ],
+      "properties": [
+        "code",
+        "name",
+        "reference_date",
+        "source_id"
+      ],
+      "sha256": "2a552fc2043bd852837a55b0d4807d632613359bf2bf2460fc826d56e2ab6b2f",
+      "source": {
+        "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+        "catalog_updated_at": "2023-09-22",
+        "collected_at": "2026-10-27T18:39:22Z",
+        "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=21&download=true",
+        "id": 21,
+        "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+        "organization": "IPLANFOR",
+        "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/21/bairros-de-fortaleza",
+        "raw_sha256": "7bd94f1edba8350802512dcb051c8144feea9046b6f3d4280c34ec9d5c080326",
+        "reference_year": 2019,
+        "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+      },
+      "title": "Bairros de Fortaleza"
+    },
+    {
+      "bbox": [
+        -38.63790294,
+        -3.89460306,
+        -38.40132769,
+        -3.69172159
+      ],
+      "bytes": 67170,
+      "crs": "EPSG:4326",
+      "dictionary": {
+        "ano_criacao": "Ano de criação do município declarado na fonte",
+        "ano_ref": "Ano de referência do limite",
+        "area_ha": "Área declarada pela fonte, em hectares",
+        "area_km2": "Área declarada pela fonte, em km²",
+        "cod_ibge": "Código IBGE do município",
+        "epsg_codif": "CRS e codificação do arquivo original, como publicados",
+        "fonte": "Órgão produtor declarado na fonte",
+        "id": "Identificador da feição na fonte",
+        "nome": "Nome do município",
+        "regiao": "Região de planejamento declarada na fonte"
+      },
+      "extent": "Fortaleza, Ceará",
+      "feature_count": 1,
+      "file": "/data/municipal-boundary.geojson",
+      "geometry_types": [
+        "MultiPolygon"
+      ],
+      "id": "municipal-boundary",
+      "limitations": [
+        "Limite de referência 2019; diferenças não são corrigidas automaticamente"
+      ],
+      "methodology": [
+        "Exportação compacta sem simplificação da geometria oficial"
+      ],
+      "properties": [
+        "ano_criacao",
+        "ano_ref",
+        "area_ha",
+        "area_km2",
+        "cod_ibge",
+        "epsg_codif",
+        "fonte",
+        "id",
+        "nome",
+        "regiao"
+      ],
+      "sha256": "f389f60d2305a8e89aaf1629a0afc2dab45626ae2b8fd548d27c977bdc702e16",
+      "source": {
+        "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+        "catalog_updated_at": "2023-07-25",
+        "collected_at": "2026-10-27T18:39:22Z",
+        "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=12&download=true",
+        "id": 12,
+        "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+        "organization": "IPECE",
+        "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/12/limite-administrativo-da-cidade-de-fortaleza",
+        "raw_sha256": "916707d1e004680d035ba0e9ed18affc885551fed2337365720ddeaae0dce4f5",
+        "reference_year": 2019,
+        "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+      },
+      "title": "Limite administrativo de Fortaleza"
+    }
+  ],
+  "mode": "official",
+  "notice": "Camadas oficiais de localização e limites administrativos. Não há indicadores de capacidade, oferta ou cobertura populacional.",
+  "schema_version": "1.1"
 }

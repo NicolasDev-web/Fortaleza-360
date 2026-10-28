@@ -1,6 +1,7 @@
 /**
  * Proveniência das camadas exibidas, transcrita de docs/DATA_SOURCES.md
- * (verificação de 2026-10-27). O manifesto público continua sob a SDD-023.
+ * (verificação de 2026-10-27). `tests/manifest.test.ts` garante que cada camada
+ * coincide com sua entrada em `public/data/manifest.json` (SDD-023).
  */
 export type LayerSourceId = "facilities" | "neighborhoods" | "boundary";
 

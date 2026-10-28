@@ -12,9 +12,28 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-LAYER_CONFIG = {
+TERMS_URL = "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+NOTICE = (
+    "Camadas oficiais de localização e limites administrativos. Não há "
+    "indicadores de capacidade, oferta ou cobertura populacional."
+)
+
+LAYER_CONFIG: dict[str, dict[str, Any]] = {
     "facilities": {
+        "title": "Unidades de Atenção Primária à Saúde",
         "source_file": "uaps.geojson",
+        "catalog_updated_at": "2026-06-08",
+        "dictionary": {
+            "id": "Identificador estável do projeto: uaps-{source_id}",
+            "name": "Nome da unidade (campo de origem `nome`)",
+            "type": "Tipo de equipamento; nesta fonte, sempre UAPS",
+            "management": "Código de gestão como publicado (campo `gestão`)",
+            "sus": "Atende SUS conforme `atende_sus`; null se ausente",
+            "neighborhood": "Bairro declarado na fonte; não é o vínculo espacial",
+            "source_id": "Identificador da feição na API Fortaleza em Mapas",
+            "reference_date": "Ano de referência declarado (campo `ano`)",
+            "cnes": "Código CNES como publicado; não é chave de deduplicação",
+        },
         "methodology": [
             "Mapeamento de campos oficiais para o contrato facility",
             "Validação de CRS, coordenadas e bounding box municipal",
@@ -26,7 +45,15 @@ LAYER_CONFIG = {
         ],
     },
     "neighborhoods": {
+        "title": "Bairros de Fortaleza",
         "source_file": "neighborhoods.geojson",
+        "catalog_updated_at": "2023-09-22",
+        "dictionary": {
+            "code": "Código municipal do bairro (campo `Código do  Bairro`)",
+            "name": "Nome do bairro (campo `Nome`)",
+            "source_id": "Código municipal usado como referência da fonte",
+            "reference_date": "Ano de referência administrativa (`ano_ref`)",
+        },
         "methodology": [
             "Normalização de nomes de campos sem alterar geometrias",
             "Validação de topologia e unicidade do código municipal",
@@ -37,7 +64,21 @@ LAYER_CONFIG = {
         ],
     },
     "municipal-boundary": {
+        "title": "Limite administrativo de Fortaleza",
         "source_file": "municipal-boundary.geojson",
+        "catalog_updated_at": "2023-07-25",
+        "dictionary": {
+            "id": "Identificador da feição na fonte",
+            "nome": "Nome do município",
+            "ano_criacao": "Ano de criação do município declarado na fonte",
+            "regiao": "Região de planejamento declarada na fonte",
+            "area_ha": "Área declarada pela fonte, em hectares",
+            "area_km2": "Área declarada pela fonte, em km²",
+            "cod_ibge": "Código IBGE do município",
+            "fonte": "Órgão produtor declarado na fonte",
+            "ano_ref": "Ano de referência do limite",
+            "epsg_codif": "CRS e codificação do arquivo original, como publicados",
+        },
         "methodology": [
             "Exportação compacta sem simplificação da geometria oficial",
         ],
@@ -117,10 +158,19 @@ def generate_manifest(
         public_path = public_dir / f"{layer_id}.geojson"
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         inspection = _inspect_geojson(public_path)
+        dictionary = dict(config["dictionary"])
+        undocumented = [
+            name for name in inspection["properties"] if name not in dictionary
+        ]
+        if undocumented:
+            raise ValueError(
+                f"{layer_id}: propriedades sem dicionário: {', '.join(undocumented)}"
+            )
 
         layers.append(
             {
                 "id": layer_id,
+                "title": config["title"],
                 "file": f"/data/{layer_id}.geojson",
                 "crs": "EPSG:4326",
                 "extent": "Fortaleza, Ceará",
@@ -131,10 +181,15 @@ def generate_manifest(
                     "reference_year": metadata["reference_year"],
                     "page_url": metadata["page_url"],
                     "download_url": metadata["download_url"],
+                    "catalog_updated_at": config["catalog_updated_at"],
                     "collected_at": metadata["collected_at"],
                     "raw_sha256": metadata["sha256"],
                     "license": metadata["license"],
+                    "terms_url": TERMS_URL,
                     "attribution": metadata["attribution"],
+                },
+                "dictionary": {
+                    name: dictionary[name] for name in inspection["properties"]
                 },
                 "methodology": list(config["methodology"]),
                 "limitations": list(config["limitations"]),
@@ -142,7 +197,9 @@ def generate_manifest(
         )
 
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
+        "mode": "official",
+        "notice": NOTICE,
         "generated_at": generated_at or _utc_now(),
         "layers": layers,
     }
