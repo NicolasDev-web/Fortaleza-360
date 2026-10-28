@@ -98,7 +98,9 @@ def load_facilities(path: Path) -> tuple[gpd.GeoDataFrame, ImportReport]:
         if not source_id or not name:
             raise ValueError("Toda UAPS deve possuir id e nome na fonte")
 
-        geometry = shape(feature.get("geometry"))
+        # Sem geometria segue como None para validate_points rejeitar com relatório.
+        raw_geometry = feature.get("geometry")
+        geometry = shape(raw_geometry) if raw_geometry else None
         rows.append(
             {
                 "id": f"uaps-{source_id}",
@@ -123,7 +125,9 @@ def load_facilities(path: Path) -> tuple[gpd.GeoDataFrame, ImportReport]:
             str(column): str(dtype)
             for column, dtype in facilities.dtypes.items()
         },
-        geometry_types=tuple(sorted(facilities.geometry.geom_type.unique())),
+        geometry_types=tuple(
+            sorted(facilities.geometry.geom_type.dropna().unique())
+        ),
     )
     return facilities, report
 

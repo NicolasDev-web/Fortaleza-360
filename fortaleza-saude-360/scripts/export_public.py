@@ -13,16 +13,20 @@ from pathlib import Path
 import geopandas as gpd
 
 try:
+    from scripts.fetch_data import SOURCES
     from scripts.transform_boundaries import load_neighborhoods
     from scripts.transform_facilities import (
         deduplicate_facilities,
         load_facilities,
     )
     from scripts.validate_geodata import load_bounds, validate_points
+    from scripts.validate_period import validate_period
 except ModuleNotFoundError:  # Execução direta em scripts/
+    from fetch_data import SOURCES
     from transform_boundaries import load_neighborhoods
     from transform_facilities import deduplicate_facilities, load_facilities
     from validate_geodata import load_bounds, validate_points
+    from validate_period import validate_period
 
 
 @dataclass(frozen=True)
@@ -106,10 +110,28 @@ def export_public_data(raw_dir: Path, output_dir: Path) -> list[ExportResult]:
     facilities, _ = deduplicate_facilities(facilities)
     bounds = load_bounds(raw_dir / "municipal-boundary.geojson")
     validate_points(facilities, bounds=bounds)
+    validate_period(
+        facilities,
+        "reference_date",
+        SOURCES["uaps"].reference_year,
+        layer="UAPS",
+    )
 
     neighborhoods, _ = load_neighborhoods(raw_dir / "neighborhoods.geojson")
+    validate_period(
+        neighborhoods,
+        "reference_date",
+        SOURCES["neighborhoods"].reference_year,
+        layer="bairros",
+    )
     municipal_boundary = _load_municipal_boundary(
         raw_dir / "municipal-boundary.geojson"
+    )
+    validate_period(
+        municipal_boundary,
+        "ano_ref",
+        SOURCES["municipal-boundary"].reference_year,
+        layer="limite municipal",
     )
 
     return [

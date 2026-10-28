@@ -23,6 +23,14 @@ python scripts/fetch_data.py --source uaps --timeout 30
 
 `fetch_data.py` aceita somente as fontes aprovadas em `docs/DATA_SOURCES.md` e grava, em `data/raw/`, o GeoJSON original, um arquivo `.sha256` e metadados de coleta. Não faz scraping nem altera o conteúdo baixado.
 
+## Exportação pública
+
+```powershell
+python scripts/export_public.py
+```
+
+Interrompe sem gravar nada se houver id, nome, código ou ano nulo; id de UAPS duplicado com conteúdo diferente ou código de bairro repetido; geometria vazia, inválida ou fora do município; ou ano de referência ausente, misturado ou diferente do registrado em `fetch_data.SOURCES`. Os casos ficam em `tests/test_etl.py`.
+
 ## Proveniência
 
 ```powershell
