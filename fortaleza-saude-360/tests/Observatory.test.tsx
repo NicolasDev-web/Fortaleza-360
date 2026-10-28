@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
 import { Observatory } from "@/components/Observatory";
@@ -21,6 +21,8 @@ describe("Observatory", () => {
     expect(input).toHaveFocus();
 
     await user.type(input, "leste");
+    // A lista refiltra após a pausa de digitação (debounce, SDD-031).
+    await waitFor(() => expect(screen.getAllByRole("option")).toHaveLength(2));
     const options = screen.getAllByRole("option");
     expect(options.map((option) => option.textContent)).toEqual([
       expect.stringContaining("DEMO Bairro Leste"),

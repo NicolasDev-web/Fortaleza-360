@@ -8,16 +8,8 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Hospital, Map as MapIcon, Search } from "lucide-react";
-import { normalizeName } from "@/lib/geo";
 import type { MapModel } from "@/lib/map-model";
-import { unitTypeLabel } from "@/lib/sources";
-
-type Result = {
-  kind: "neighborhood" | "facility";
-  id: string;
-  label: string;
-  detail: string;
-};
+import { searchTerritory, type SearchResult } from "@/lib/search";
 
 type CommandPaletteProps = {
   model: MapModel;
@@ -26,7 +18,17 @@ type CommandPaletteProps = {
   onSelectFacility: (id: string) => void;
 };
 
-const LIMIT_PER_GROUP = 7;
+/** Pausa de digitação antes de refiltrar; Enter usa sempre o termo atual. */
+export const SEARCH_DEBOUNCE_MS = 150;
+
+function useDebouncedValue<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebounced(value), delay);
+    return () => window.clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
 
 export function CommandPalette({
   model,
@@ -42,43 +44,8 @@ export function CommandPalette({
   const listId = useId();
   const titleId = useId();
 
-  const neighborhoodNames = useMemo(
-    () => new Map(model.neighborhoods.map((item) => [item.code, item.name])),
-    [model.neighborhoods],
-  );
-
-  const results = useMemo<Result[]>(() => {
-    const term = normalizeName(query);
-    const matches = (value: string) => term === "" || normalizeName(value).includes(term);
-
-    const neighborhoods = model.neighborhoods
-      .filter(({ name }) => matches(name))
-      .slice(0, LIMIT_PER_GROUP)
-      .map<Result>(({ code, name, facilityIds }) => ({
-        kind: "neighborhood",
-        id: code,
-        label: name,
-        detail: `Bairro · ${facilityIds.length} UAPS no cadastro`,
-      }));
-
-    const facilities = [...model.facilities, ...model.otherUnits]
-      .filter(({ name, cnes }) => matches(name) || (cnes !== null && cnes.includes(query.trim())))
-      .slice(0, LIMIT_PER_GROUP)
-      .map<Result>(({ id, name, type, cnes, neighborhoodCode }) => ({
-        kind: "facility",
-        id,
-        label: name,
-        detail: [
-          unitTypeLabel(type),
-          neighborhoodCode ? neighborhoodNames.get(neighborhoodCode) : null,
-          cnes ? `CNES ${cnes}` : null,
-        ]
-          .filter(Boolean)
-          .join(" · "),
-      }));
-
-    return [...neighborhoods, ...facilities];
-  }, [model, neighborhoodNames, query]);
+  const searchTerm = useDebouncedValue(query, SEARCH_DEBOUNCE_MS);
+  const results = useMemo(() => searchTerritory(model, searchTerm), [model, searchTerm]);
 
   // Montado apenas enquanto aberto: foca o campo e devolve o foco ao fechar.
   useEffect(() => {
@@ -90,7 +57,7 @@ export function CommandPalette({
     };
   }, []);
 
-  const choose = (result: Result | undefined) => {
+  const choose = (result: SearchResult | undefined) => {
     if (!result) return;
     onClose();
     if (result.kind === "neighborhood") onSelectNeighborhood(result.id);
@@ -106,7 +73,8 @@ export function CommandPalette({
       setActive((index) => Math.max(0, index - 1));
     } else if (event.key === "Enter") {
       event.preventDefault();
-      choose(results[active]);
+      // Digitou e apertou Enter antes da pausa: busca agora em vez de abrir item da lista antiga.
+      choose(query === searchTerm ? results[active] : searchTerritory(model, query)[0]);
     } else if (event.key === "Escape") {
       event.preventDefault();
       onClose();
@@ -175,7 +143,7 @@ export function CommandPalette({
               ]
                 .filter(Boolean)
                 .join(" ")}
-              data-group={result.kind === "facility" ? "UAPS" : "Bairros"}
+              data-group={result.group}
               id={optionId(index)}
               key={`${result.kind}-${result.id}`}
               onClick={() => choose(result)}
@@ -205,9 +173,13 @@ export function CommandPalette({
 
         {results.length === 0 ? (
           <p className="palette-empty" role="status">
-            Nada encontrado para “{query}”.
+            Nada encontrado para “{searchTerm}”.
           </p>
-        ) : null}
+        ) : (
+          <p className="visually-hidden" role="status">
+            {results.length === 1 ? "1 resultado" : `${results.length} resultados`}
+          </p>
+        )}
 
         <footer className="palette-foot" aria-hidden="true">
           <span>

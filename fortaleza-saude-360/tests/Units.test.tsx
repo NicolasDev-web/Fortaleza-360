@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
 import { Observatory, STORY_SEEN_KEY } from "@/components/Observatory";
@@ -49,6 +49,7 @@ describe("UPAs e hospitais municipais", () => {
 
     await user.click(screen.getByRole("button", { name: /buscar bairro ou uaps/i }));
     await user.type(screen.getByRole("combobox"), "DEMO UPA");
+    await waitFor(() => expect(screen.getAllByRole("option")).toHaveLength(1));
     const option = screen.getByRole("option", { name: /DEMO UPA Oeste/ });
     expect(option).toHaveTextContent("UPA · DEMO Bairro Oeste");
     await user.keyboard("{Enter}");
