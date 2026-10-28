@@ -11,9 +11,9 @@ describe("Insights", () => {
       </>,
     );
 
-    expect(screen.getByText("Leitura responsável")).toBeInTheDocument();
+    expect(screen.getByText("Antes de tirar conclusões")).toBeInTheDocument();
     expect(
-      screen.getByText(/permanecem? em modo demonstrativo/i),
+      screen.getByText(/ainda são demonstrações/i),
     ).toBeInTheDocument();
     expect(container).not.toHaveTextContent(/bairro vulnerável/i);
     expect(container).not.toHaveTextContent(/cobertura (adequada|insuficiente)/i);

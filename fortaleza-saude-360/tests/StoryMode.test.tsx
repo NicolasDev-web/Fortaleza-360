@@ -12,7 +12,7 @@ describe("Modo História", () => {
   it("abre na primeira visita com foco no botão de avançar", async () => {
     render(<Observatory model={demoModel()} />);
 
-    const story = await screen.findByRole("region", { name: /Fortaleza, 2 bairros e 3 UAPS/ });
+    const story = await screen.findByRole("region", { name: /Fortaleza tem 2 bairros e 3 postos de saúde/ });
     expect(story).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "História" })).toHaveAttribute("aria-selected", "true");
     await waitFor(() => expect(screen.getByRole("button", { name: /próximo/i })).toHaveFocus());
@@ -35,7 +35,7 @@ describe("Modo História", () => {
     await user.keyboard("{ArrowRight}{ArrowRight}{ArrowRight}");
 
     expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuetext", "Capítulo 4 de 6");
-    expect(await screen.findByText("Capítulo 4 · Onde o contorno não tem ponto")).toBeInTheDocument();
+    expect(await screen.findByText("Capítulo 4 · Onde não tem ponto")).toBeInTheDocument();
     expect(await screen.findByText(/não mede acesso/i)).toBeInTheDocument();
 
     await user.keyboard("{ArrowLeft}");

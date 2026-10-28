@@ -32,32 +32,32 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
   }> = [
     {
       key: "boundary",
-      label: "Limite municipal",
-      meta: `${LAYER_SOURCES.boundary.agency} · ${LAYER_SOURCES.boundary.reference}`,
+      label: "Limite da cidade",
+      meta: `${LAYER_SOURCES.boundary.agency} · dados de ${LAYER_SOURCES.boundary.reference}`,
       count: null,
     },
     {
       key: "neighborhoods",
       label: "Bairros",
-      meta: `${LAYER_SOURCES.neighborhoods.agency} · ${LAYER_SOURCES.neighborhoods.reference}`,
+      meta: `${LAYER_SOURCES.neighborhoods.agency} · dados de ${LAYER_SOURCES.neighborhoods.reference}`,
       count: counts?.neighborhoods ?? null,
     },
     {
       key: "facilities",
-      label: "UAPS",
-      meta: `${LAYER_SOURCES.facilities.agency} · ${LAYER_SOURCES.facilities.reference}`,
+      label: "Postos de saúde (UAPS)",
+      meta: `${LAYER_SOURCES.facilities.agency} · dados de ${LAYER_SOURCES.facilities.reference}`,
       count: counts?.facilities ?? null,
     },
     {
       key: "upas",
-      label: "UPA",
-      meta: `${LAYER_SOURCES.upas.agency} · ${LAYER_SOURCES.upas.reference}`,
+      label: "UPAs (pronto atendimento)",
+      meta: `${LAYER_SOURCES.upas.agency} · dados de ${LAYER_SOURCES.upas.reference}`,
       count: counts?.upas ?? null,
     },
     {
       key: "hospitals",
       label: "Hospitais municipais",
-      meta: `${LAYER_SOURCES.hospitals.agency} · ${LAYER_SOURCES.hospitals.reference}`,
+      meta: `${LAYER_SOURCES.hospitals.agency} · dados de ${LAYER_SOURCES.hospitals.reference}`,
       count: counts?.hospitals ?? null,
     },
   ];
@@ -65,11 +65,11 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
   return (
     <section className="layer-rail" aria-labelledby="rail-title">
       <div className="rail-intro">
-        <span className="section-label">Exploração territorial</span>
-        <h1 id="rail-title">Onde está a atenção primária em Fortaleza?</h1>
+        <span className="section-label">Explore o mapa</span>
+        <h1 id="rail-title">Onde ficam os postos de saúde de Fortaleza?</h1>
         <p>
-          Contornos oficiais e unidades cadastradas, com fonte e ano em cada
-          camada.
+          O posto de saúde é a porta de entrada do SUS. Veja onde ficam os postos, as
+          UPAs e os hospitais municipais — e toque num bairro para saber o que tem lá.
         </p>
       </div>
 
@@ -81,14 +81,14 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
         type="button"
       >
         <SlidersHorizontal size={17} aria-hidden="true" />
-        <span>Camadas e fontes</span>
+        <span>O que mostrar e de onde vem</span>
         <ChevronDown className="rail-toggle-chevron" size={16} aria-hidden="true" />
       </button>
 
       <div className="rail-body" data-open={open} id="rail-body">
         <section className="rail-section" aria-labelledby="layers-title">
           <h2 className="section-label" id="layers-title">
-            Camadas
+            O que mostrar no mapa
           </h2>
           <ul className="layer-list">
             {rows.map(({ key, label, meta, count }) => (
@@ -118,8 +118,8 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
                   <Lock size={11} />
                 </span>
                 <span className="layer-text">
-                  <strong>Proxy de distância</strong>
-                  <small>Na ficha do bairro · camada no mapa em avaliação</small>
+                  <strong>Distância até o posto</strong>
+                  <small>Já aparece no bairro · no mapa, em breve</small>
                 </span>
               </div>
             </li>
@@ -132,7 +132,7 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
           </h2>
           <ul className="legend-list">
             <li>
-              <i className="legend-dot" aria-hidden="true" /> UAPS (ponto do cadastro)
+              <i className="legend-dot" aria-hidden="true" /> Posto de saúde (UAPS)
             </li>
             <li>
               <i className="legend-upa" aria-hidden="true" /> UPA (pronto atendimento)
@@ -144,17 +144,21 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
               <i className="legend-line" aria-hidden="true" /> Limite de bairro
             </li>
             <li>
-              <i className="legend-coast" aria-hidden="true" /> Limite municipal
+              <i className="legend-coast" aria-hidden="true" /> Limite da cidade
             </li>
             <li>
-              <i className="legend-selected" aria-hidden="true" /> Seleção atual
+              <i className="legend-selected" aria-hidden="true" /> O que você escolheu
             </li>
           </ul>
         </section>
 
-        <section className="rail-section rail-sources" aria-labelledby="sources-title">
+        <section
+          aria-labelledby="sources-title"
+          className="rail-section rail-sources"
+          data-technical
+        >
           <h2 className="section-label" id="sources-title">
-            Fontes
+            De onde vêm os dados
           </h2>
           <ul>
             {Object.values(LAYER_SOURCES).map((source) => (
@@ -165,7 +169,8 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
                   <span className="visually-hidden"> (abre em nova aba)</span>
                 </a>
                 <small>
-                  {source.agency} · ref. {source.reference} · catálogo {catalogUpdateLabel(source)}
+                  {source.agency} · dados de {source.reference} · atualizado{" "}
+                  {catalogUpdateLabel(source)}
                 </small>
               </li>
             ))}
@@ -176,8 +181,8 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
               {SOURCE_LICENSE}
               <span className="visually-hidden"> (abre em nova aba)</span>
             </a>
-            . Coleta em {SOURCE_COLLECTED_AT}. Camadas com anos de referência
-            diferentes não são combinadas em indicadores.
+            . Baixados em {SOURCE_COLLECTED_AT}. Dados de anos diferentes nunca são
+            misturados num mesmo número.
           </p>
         </section>
       </div>

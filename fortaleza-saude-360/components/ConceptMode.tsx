@@ -15,26 +15,30 @@ export type ConceptModeId = Exclude<Mode, "explore" | "story">;
 
 const concepts: Record<ConceptModeId, ConceptContent> = {
   compare: {
-    title: "Comparar territórios",
-    question: "Como dois bairros diferem em distância até a UAPS mais próxima?",
+    title: "Comparar dois bairros",
+    question: "Quem mora mais longe de um posto de saúde: o bairro A ou o bairro B?",
     method: [
-      "Denominador populacional do Censo 2022 compatibilizado com os bairros.",
-      "Proxy de distância em linha reta, sempre rotulado como proxy.",
-      "Faixas de incerteza lado a lado, sem ranking automático.",
+      "Quantas pessoas moram em cada bairro, pelo Censo 2022.",
+      "Distância em linha reta até o posto mais perto, sempre marcada como aproximação.",
+      "A margem de erro de cada número, lado a lado — sem ranking automático.",
     ],
-    dependencies: ["SDD-025 · Censo", "SDD-032 · Proxy de distância", "SDD-033 · Indicadores"],
-    guardrail: "Nenhum bairro será classificado como vulnerável a partir de contagens de cadastro.",
+    dependencies: [
+      "População por bairro (pronta)",
+      "Distância em linha reta (pronta)",
+      "Números por bairro (em breve)",
+    ],
+    guardrail: "Nenhum bairro será chamado de vulnerável só por contar postos.",
   },
   simulate: {
-    title: "Simulador de cenários",
-    question: "Quanto mudaria a cobertura modelada com uma unidade candidata?",
+    title: "Simular um posto novo",
+    question: "Se abrisse um posto aqui, quantas pessoas a mais ficariam perto de um?",
     method: [
-      "Tempo pela malha viária (OSM) em vez de linha reta.",
-      "Isócronas e população coberta com análise de sensibilidade.",
-      "Cenários salvos apenas no navegador, comparados a um cenário-base.",
+      "Distância pelo caminho das ruas (OpenStreetMap), não em linha reta.",
+      "Áreas que se alcança a pé em 10, 20 e 30 minutos, com margem de erro.",
+      "Cenários salvos só no seu navegador, comparados com a situação de hoje.",
     ],
-    dependencies: ["SDD-035 · Malha viária", "SDD-037 · Isócronas", "SDD-039 · Simulador"],
-    guardrail: "O simulador não promete capacidade assistencial nem demanda atendida.",
+    dependencies: ["Mapa das ruas para caminhar", "Áreas por tempo a pé", "Simulador"],
+    guardrail: "O simulador não promete vagas nem atendimento: só mostra quem ficaria mais perto.",
   },
 };
 
@@ -58,7 +62,7 @@ export function ConceptMode({ mode, onBack }: ConceptModeProps) {
       <div className="concept-card">
         <div className="story-kicker">
           <span className="concept-status">
-            <Lock size={13} aria-hidden="true" /> Modo em preparação
+            <Lock size={13} aria-hidden="true" /> Em breve
           </span>
         </div>
         <AnimatedHeading className="concept-title" text={content.title} />
@@ -72,7 +76,7 @@ export function ConceptMode({ mode, onBack }: ConceptModeProps) {
           ))}
         </ol>
 
-        <h3>Depende de</h3>
+        <h3>O que falta</h3>
         <ul className="concept-deps">
           {content.dependencies.map((item) => (
             <li key={item}>{item}</li>
@@ -82,10 +86,10 @@ export function ConceptMode({ mode, onBack }: ConceptModeProps) {
         <p className="concept-guardrail">{content.guardrail}</p>
 
         <div className="concept-foot">
-          <ProvenanceBadge label="Ilustração conceitual · não geográfica" tone="warning" />
+          <ProvenanceBadge label="Ilustração, não é mapa real" tone="warning" />
           <button className="action-button" onClick={onBack} type="button">
             <ArrowLeft size={15} aria-hidden="true" />
-            Voltar a Explorar
+            Voltar ao mapa
           </button>
         </div>
       </div>

@@ -30,13 +30,13 @@ describe("Modo História (DEMO)", () => {
       "limits",
       "explore",
     ]);
-    expect(chapters[0].title).toBe("Fortaleza, 2 bairros e 3 UAPS no cadastro.");
-    expect(chapters[1].title).toBe("488,2 km² divididos em 2 bairros.");
+    expect(chapters[0].title).toBe("Fortaleza tem 2 bairros e 3 postos de saúde.");
+    expect(chapters[1].title).toBe("Uma cidade de 488,2 km², dividida em 2 bairros.");
     expect(chapters[3].title).toBe(
-      "2 bairros têm ao menos uma UAPS dentro do contorno; 0, nenhuma.",
+      "Todos os 2 bairros têm posto dentro do próprio limite.",
     );
-    expect(chapters[4].body.join(" ")).toMatch(/1 unidade declara um bairro diferente/);
-    expect(bigIdea(facts)).toBe("3 UAPS em 2 bairros: onde estão, não quanto atendem.");
+    expect(chapters[4].body.join(" ")).toMatch(/1 posto aparece num bairro diferente/);
+    expect(bigIdea(facts)).toBe("3 postos de saúde para 2 bairros. Aqui você vê onde ficam — não quanto conseguem atender.");
   });
 
   it("acompanha a contagem por contorno da ressalva sobre acesso", () => {

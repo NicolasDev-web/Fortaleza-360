@@ -28,9 +28,9 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fortaleza Saúde 360° | Observatório territorial",
+  title: "Fortaleza Saúde 360° | Postos de saúde no mapa",
   description:
-    "Protótipo de inteligência territorial em saúde: UAPS cadastradas sobre os bairros oficiais de Fortaleza, contado como uma história, com fonte e limitações visíveis.",
+    "Veja onde ficam os postos de saúde, as UPAs e os hospitais municipais em cada bairro de Fortaleza — e o que esses dados ainda não contam. Com fonte e limites sempre à vista.",
 };
 
 export const viewport: Viewport = {

@@ -27,27 +27,27 @@ type StateContent = {
 
 const stateContent: Record<MapPanelState, StateContent> = {
   empty: {
-    kicker: "Base territorial pendente",
-    heading: "O mapa será ativado após validar o GeoJSON.",
-    body: "Nenhum ponto, bairro ou indicador fictício é apresentado como informação real.",
+    kicker: "Mapa em preparação",
+    heading: "O mapa aparece quando os dados forem conferidos.",
+    body: "Nada aqui é inventado: sem dado conferido, não mostramos ponto nem número.",
     icon: MapPinned,
   },
   loading: {
-    kicker: "Carregando base validada",
-    heading: "Preparando as camadas territoriais.",
-    body: "A visualização será exibida somente após concluir a leitura e a validação dos arquivos.",
+    kicker: "Carregando",
+    heading: "Preparando bairros e postos.",
+    body: "Só mostramos o mapa depois de conferir os arquivos. Leva poucos segundos.",
     icon: Clock3,
   },
   error: {
-    kicker: "Base indisponível",
-    heading: "Não foi possível carregar as camadas.",
-    body: "A análise permanece suspensa para evitar a exibição de informações incompletas.",
+    kicker: "Mapa fora do ar",
+    heading: "Não conseguimos carregar o mapa agora.",
+    body: "Preferimos não mostrar nada a mostrar dados pela metade. Tente recarregar a página.",
     icon: CircleAlert,
   },
   ready: {
-    kicker: "Base territorial validada",
-    heading: "Camadas prontas para visualização.",
-    body: "O conteúdo cartográfico validado será renderizado nesta área.",
+    kicker: "Mapa pronto",
+    heading: "Os dados conferidos aparecem aqui.",
+    body: "Bairros e postos de saúde de Fortaleza.",
     icon: Layers3,
   },
 };
@@ -70,19 +70,18 @@ export function MapPanel({ children, id, labelledBy, overlay, state }: MapPanelP
             01
           </span>
           <div>
-            <strong id="map-title">Território em análise</strong>
+            <strong id="map-title">Mapa de Fortaleza</strong>
             <small>
               {hasReadyContent
-                ? "Contornos oficiais e UAPS do cadastro"
-                : "Superfície cartográfica aguardando dados"}
+                ? "Postos de saúde, UPAs e hospitais municipais por bairro"
+                : "Aguardando os dados"}
             </small>
           </div>
         </div>
         <div className="map-meta">
           {hasReadyContent ? (
             <>
-              <ProvenanceBadge label="Projeção local · WGS 84" />
-              <ProvenanceBadge label="Bairros 2019 · UAPS 2026" tone="source" />
+              <ProvenanceBadge label="Bairros de 2019 · postos de 2026" tone="source" />
             </>
           ) : (
             <ProvenanceBadge label="Sem escala" />
@@ -107,7 +106,7 @@ export function MapPanel({ children, id, labelledBy, overlay, state }: MapPanelP
             <h3>{content.heading}</h3>
             <p>{content.body}</p>
             <ProvenanceBadge
-              label="Visualização conceitual · não é cartografia"
+              label="Ilustração, não é mapa real"
               tone="warning"
             />
           </div>

@@ -238,5 +238,7 @@ export function hasNeighborhoodMismatch(
 
 /** Resumo de um bairro, igual no tooltip do mapa e no anúncio ao leitor de tela. */
 export function neighborhoodSummary(neighborhood: NeighborhoodShape): string {
-  return `${neighborhood.facilityIds.length} UAPS no cadastro`;
+  const count = neighborhood.facilityIds.length;
+  if (count === 0) return "nenhum posto de saúde dentro do bairro";
+  return `${count} ${count === 1 ? "posto de saúde" : "postos de saúde"} dentro do bairro`;
 }

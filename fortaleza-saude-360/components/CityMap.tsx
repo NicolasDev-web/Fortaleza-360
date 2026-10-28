@@ -16,7 +16,7 @@ import { Crosshair, Minus, Plus } from "lucide-react";
 import { Basemap, BasemapCredit, type BasemapStatus } from "@/components/Basemap";
 import { cameraFromView } from "@/lib/basemap";
 import { unitTypeLabel } from "@/lib/sources";
-import { formatCoordinate, unproject, type Box } from "@/lib/geo";
+import { unproject, type Box } from "@/lib/geo";
 import { SeaWaves } from "@/components/fortaleza/SeaWaves";
 import {
   neighborhoodSummary,
@@ -344,7 +344,6 @@ export function CityMap({
   );
   const suppressClickRef = useRef(false);
   const [size, setSize] = useState({ w: width, h: height });
-  const [cursor, setCursor] = useState<[number, number] | null>(null);
   const [hover, setHover] = useState<Hover | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [basemapStatus, setBasemapStatus] = useState<BasemapStatus | null>(null);
@@ -446,8 +445,6 @@ export function CityMap({
         return;
       }
     }
-
-    setCursor(toUnits(event.clientX, event.clientY));
 
     const target = event.target as Element;
     const facilityId = target.closest?.("[data-facility]")?.getAttribute("data-facility");
@@ -559,7 +556,7 @@ export function CityMap({
       if (!facility || !layers[layerForUnitType(facility.type)]) return null;
       return {
         title: facility.name,
-        detail: `${unitTypeLabel(facility.type)} · clique para abrir a ficha`,
+        detail: `${unitTypeLabel(facility.type)} · toque para ver detalhes`,
       };
     }
     if (!layers.neighborhoods) return null;
@@ -570,10 +567,6 @@ export function CityMap({
       detail: neighborhoodSummary(neighborhood),
     };
   })();
-
-  const coordinateLabel = formatCoordinate(
-    unproject(projection, ...(cursor ?? [view.x + view.w / 2, view.y + view.h / 2])),
-  );
 
   return (
     <div
@@ -587,10 +580,7 @@ export function CityMap({
         onKeyDown={handleKeyDown}
         onPointerCancel={endDrag}
         onPointerDown={handlePointerDown}
-        onPointerLeave={() => {
-          setCursor(null);
-          setHover(null);
-        }}
+        onPointerLeave={() => setHover(null)}
         onPointerMove={handlePointerMove}
         onPointerUp={endDrag}
         ref={containerRef}
@@ -610,7 +600,7 @@ export function CityMap({
           viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
         >
           <title id="map-svg-title">
-            {`Contorno de Fortaleza com ${model.neighborhoods.length} bairros, ${model.facilities.length} UAPS cadastradas e ${visibleUnits.length} UPAs ou hospitais municipais visíveis. Use a busca ou o índice de bairros para navegar pelo teclado.`}
+            {`Mapa de Fortaleza com ${model.neighborhoods.length} bairros, ${model.facilities.length} postos de saúde e ${visibleUnits.length} UPAs ou hospitais municipais. Use a busca ou a lista de bairros para navegar pelo teclado.`}
           </title>
 
           <g className="graticule" aria-hidden="true">
@@ -710,7 +700,7 @@ export function CityMap({
       <BasemapCredit status={basemapStatus} />
 
       <p className="visually-hidden" id="map-keyboard-hint">
-        Setas movem o mapa, mais e menos ajustam o zoom e zero reenquadra a cidade.
+        Use as setas para mover o mapa, + e − para aproximar ou afastar e 0 para ver a cidade inteira.
       </p>
 
       <div className="map-controls" role="group" aria-label="Controles do mapa">
@@ -720,7 +710,7 @@ export function CityMap({
         <button aria-label="Afastar" onClick={() => zoomAt(1 / 1.5)} type="button">
           <Minus size={16} aria-hidden="true" />
         </button>
-        <button aria-label="Reenquadrar Fortaleza" onClick={() => animateTo(base)} type="button">
+        <button aria-label="Ver a cidade inteira" onClick={() => animateTo(base)} type="button">
           <Crosshair size={16} aria-hidden="true" />
         </button>
       </div>
@@ -731,7 +721,6 @@ export function CityMap({
       </div>
 
       <div className="map-telemetry" aria-hidden="true">
-        <span className="telemetry-coord">{coordinateLabel}</span>
         <span>{zoom.toFixed(1).replace(".", ",")}×</span>
         <span className="telemetry-scale">
           <i style={{ width: `${scaleBar.px}px` }} />

@@ -37,7 +37,7 @@ describe("distância em linha reta (proxy)", () => {
     }
     expect(formatStraightLineDistance(420)).toBe("420 m em linha reta");
     expect(formatStraightLineDistance(1234)).toBe("1,2 km em linha reta");
-    expect(STRAIGHT_LINE_CAVEAT).toMatch(/não é tempo de deslocamento/i);
+    expect(STRAIGHT_LINE_CAVEAT).toMatch(/não é o caminho pelas ruas nem o tempo de deslocamento/i);
   });
 
   it("aparece na ficha do bairro com rótulo e ressalva explícitos", async () => {
@@ -45,9 +45,9 @@ describe("distância em linha reta (proxy)", () => {
     render(<Observatory model={demoModel()} />);
     await screen.findByRole("heading", { level: 2, name: "DEMO Bairro Leste" });
 
-    const block = screen.getByRole("group", { name: /UAPS mais próxima em linha reta/i });
+    const block = screen.getByRole("group", { name: /posto mais perto em linha reta/i });
     expect(block).toHaveTextContent(/km em linha reta|m em linha reta/);
-    expect(block).toHaveTextContent(/proxy/i);
-    expect(block).toHaveTextContent(/não é tempo de deslocamento/i);
+    expect(block).toHaveTextContent(/aproximação/i);
+    expect(block).toHaveTextContent(/não é o caminho pelas ruas nem o tempo de deslocamento/i);
   });
 });

@@ -5,7 +5,7 @@ import type { FacilityPoint } from "@/lib/map-model";
 const EARTH_RADIUS_M = 6371008.8;
 
 export const STRAIGHT_LINE_CAVEAT =
-  "Proxy exploratório: distância em linha reta não é tempo de deslocamento, ignora ruas, barreiras e transporte, e não indica acesso efetivo.";
+  "É uma aproximação: em linha reta não é o caminho pelas ruas nem o tempo de deslocamento. Avenidas, rios e ônibus podem mudar muito a distância de verdade.";
 
 export type StraightLineResult = {
   method: "straight_line_proxy";

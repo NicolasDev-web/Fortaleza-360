@@ -13,11 +13,11 @@ describe("Observatory", () => {
     const user = userEvent.setup();
     render(<Observatory model={demoModel()} />);
 
-    const trigger = screen.getByRole("button", { name: /buscar bairro ou uaps/i });
+    const trigger = screen.getByRole("button", { name: /buscar bairro ou posto/i });
     trigger.focus();
     await user.keyboard("{Control>}k{/Control}");
 
-    const input = screen.getByRole("combobox", { name: /buscar bairro, uaps ou cnes/i });
+    const input = screen.getByRole("combobox", { name: /buscar bairro, posto ou código cnes/i });
     expect(input).toHaveFocus();
 
     await user.type(input, "leste");
@@ -47,7 +47,7 @@ describe("Observatory", () => {
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { level: 2, name: /UAPS em 2 bairros: onde estão, não quanto atendem/ }),
+      screen.getByRole("heading", { level: 2, name: /postos de saúde para 2 bairros\. Aqui você vê onde ficam/ }),
     ).toBeInTheDocument();
   });
 
@@ -55,15 +55,15 @@ describe("Observatory", () => {
     const user = userEvent.setup();
     render(<Observatory model={demoModel()} />);
 
-    await user.click(screen.getByRole("tab", { name: "Índice de bairros" }));
-    const index = screen.getByRole("region", { name: "Índice de bairros" });
+    await user.click(screen.getByRole("tab", { name: "Lista de bairros" }));
+    const index = screen.getByRole("region", { name: "Lista de bairros" });
     await user.click(within(index).getByRole("button", { name: /DEMO Bairro Oeste/ }));
 
     expect(screen.getByRole("heading", { level: 2, name: "DEMO Bairro Oeste" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /DEMO UAPS Oeste/ }));
 
-    expect(screen.getByText("Municipal (M)")).toBeInTheDocument();
-    expect(screen.getByText(/não indica horário, capacidade/i)).toBeInTheDocument();
+    expect(screen.getByText("Prefeitura (gestão municipal)")).toBeInTheDocument();
+    expect(screen.getByText(/não mostra horário, equipe/i)).toBeInTheDocument();
   });
 
   it("sinaliza divergência entre bairro declarado e bairro espacial", async () => {
@@ -73,14 +73,14 @@ describe("Observatory", () => {
     expect(
       await screen.findByRole("heading", { level: 2, name: "DEMO UAPS Leste" }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/A fonte declara o bairro “DEMO OUTRO NOME”/)).toBeInTheDocument();
+    expect(screen.getByText(/A Prefeitura lista este posto no bairro “DEMO OUTRO NOME”/)).toBeInTheDocument();
   });
 
   it("alterna camadas com estado acessível", async () => {
     const user = userEvent.setup();
     render(<Observatory model={demoModel()} />);
 
-    const toggle = screen.getByRole("button", { name: /^UAPS/ });
+    const toggle = screen.getByRole("button", { name: /^Postos de saúde/ });
     expect(toggle).toHaveAttribute("aria-pressed", "true");
     await user.click(toggle);
     expect(toggle).toHaveAttribute("aria-pressed", "false");

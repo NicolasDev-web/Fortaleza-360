@@ -135,7 +135,7 @@ export function BasemapCredit({ status }: { status: BasemapStatus | null }) {
   if (status === "failed" || status === "unsupported") {
     return (
       <p className="basemap-credit is-fallback" role="status">
-        Mapa de ruas indisponível; exibindo os contornos oficiais.
+        Não deu para carregar as ruas agora. Os limites dos bairros continuam aqui.
       </p>
     );
   }

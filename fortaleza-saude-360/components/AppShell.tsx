@@ -5,7 +5,7 @@ export function AppShell({ model }: { model: MapModel | null }) {
   return (
     <div className="shell">
       <a className="skip-link" href="#main-content">
-        Pular para a investigação
+        Pular para o conteúdo
       </a>
 
       <Observatory model={model} />

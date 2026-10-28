@@ -31,8 +31,8 @@ describe("searchTerritory", () => {
 
   it("agrupa UPAs e hospitais como unidades, com o tipo no detalhe", () => {
     const [upa] = searchTerritory(model, "DEMO UPA");
-    expect(upa).toMatchObject({ kind: "facility", group: "Unidades", id: "upa-1" });
-    expect(upa.detail).toMatch(/^UPA · /);
+    expect(upa).toMatchObject({ kind: "facility", group: "Postos e unidades", id: "upa-1" });
+    expect(upa.detail).toMatch(/^UPA \(pronto atendimento\) · /);
   });
 });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import {
   ArrowLeft,
   BookOpen,
@@ -58,10 +58,22 @@ type ReadingPanelProps = {
 
 type OverviewTab = "panorama" | "index";
 
+const NOT_INFORMED = "A Prefeitura não informa";
+
 function managementLabel(value: string | null): string {
-  if (value === null) return "Não informado";
-  if (value === "M") return "Municipal (M)";
+  if (value === null) return NOT_INFORMED;
+  if (value === "M") return "Prefeitura (gestão municipal)";
   return value;
+}
+
+/** Detalhe técnico sob demanda (docs/VOICE.md): a ressalva principal fica sempre fora. */
+function HowWeKnow({ children }: { children: ReactNode }) {
+  return (
+    <details className="how-we-know" data-technical>
+      <summary>Como sabemos disso</summary>
+      <div className="how-we-know-body">{children}</div>
+    </details>
+  );
 }
 
 function facilityBox({ x, y }: FacilityPoint): Box {
@@ -99,7 +111,7 @@ export function ReadingPanel({
       : undefined;
 
   const announcement = facility
-    ? `Unidade selecionada: ${facility.name}`
+    ? `Você abriu: ${facility.name}`
     : neighborhood
       ? `Bairro selecionado: ${neighborhood.name}, ${neighborhoodSummary(neighborhood)}`
       : "";
@@ -180,22 +192,22 @@ function Overview({
   return (
     <div className="reading-view">
       <header className="reading-header">
-        <span className="section-label">Leitura · a ideia central</span>
+        <span className="section-label">Em uma frase</span>
         <AnimatedHeading
           id="reading-title"
-          text={facts ? bigIdea(facts) : "Base territorial indisponível no momento."}
+          text={facts ? bigIdea(facts) : "O mapa está fora do ar no momento."}
         />
       </header>
 
       {model ? (
         <DiscreteTabs
-          ariaLabel="Visões do painel de leitura"
+          ariaLabel="Formas de ver os números"
           controls="reading-tabpanel"
           idPrefix="reading-tab"
           onChange={setTab}
           tabs={[
-            { id: "panorama", title: "Panorama", icon: <LayoutGrid size={15} /> },
-            { id: "index", title: "Índice de bairros", icon: <List size={15} /> },
+            { id: "panorama", title: "Resumo", icon: <LayoutGrid size={15} /> },
+            { id: "index", title: "Lista de bairros", icon: <List size={15} /> },
           ]}
           value={tab}
         />
@@ -211,11 +223,11 @@ function Overview({
             <div className="readout-list">
               <KpiCard
                 icon={Hospital}
-                label="UAPS cadastradas"
+                label="Postos de saúde (UAPS)"
                 note={
                   model
-                    ? `${LAYER_SOURCES.facilities.agency} · ref. ${LAYER_SOURCES.facilities.reference}`
-                    : "Base indisponível"
+                    ? `${LAYER_SOURCES.facilities.agency} · dados de ${LAYER_SOURCES.facilities.reference}`
+                    : "Sem dados agora"
                 }
                 value={model ? model.facilities.length : null}
               />
@@ -224,26 +236,26 @@ function Overview({
                 label="Bairros"
                 note={
                   model
-                    ? `${LAYER_SOURCES.neighborhoods.agency} · ref. ${LAYER_SOURCES.neighborhoods.reference}`
-                    : "Base indisponível"
+                    ? `${LAYER_SOURCES.neighborhoods.agency} · dados de ${LAYER_SOURCES.neighborhoods.reference}`
+                    : "Sem dados agora"
                 }
                 value={model ? model.neighborhoods.length : null}
               />
               <KpiCard
                 fractionDigits={1}
                 icon={Ruler}
-                label="Área municipal (km²)"
+                label="Tamanho da cidade (km²)"
                 note={
                   model?.areaKm2
-                    ? `${LAYER_SOURCES.boundary.agency} · ref. ${LAYER_SOURCES.boundary.reference}`
-                    : "Base indisponível"
+                    ? `${LAYER_SOURCES.boundary.agency} · dados de ${LAYER_SOURCES.boundary.reference}`
+                    : "Sem dados agora"
                 }
                 value={model?.areaKm2 ?? null}
               />
               <KpiCard
                 icon={Navigation}
-                label="Cobertura populacional"
-                note="Metodologia pendente · SDD-038"
+                label="Pessoas perto de um posto"
+                note="Ainda não calculado: falta medir pelas ruas"
                 value={null}
               />
             </div>
@@ -252,8 +264,8 @@ function Overview({
               <button className="story-reopen" onClick={onOpenStory} type="button">
                 <BookOpen size={16} aria-hidden="true" />
                 <span>
-                  <strong>Rever a história</strong>
-                  <small>Seis capítulos guiados, com fonte em cada um</small>
+                  <strong>Ver a história de novo</strong>
+                  <small>Seis telas curtas para entender o mapa</small>
                 </span>
               </button>
             ) : null}
@@ -261,34 +273,34 @@ function Overview({
         ) : (
           <section className="neighborhood-index" aria-labelledby="index-title">
             <div className="index-head">
-              <h3 id="index-title">Índice de bairros</h3>
+              <h3 id="index-title">Lista de bairros</h3>
               <span className="index-count">
                 {filtered.length}/{model.neighborhoods.length}
               </span>
             </div>
             <label className="index-filter">
-              <span className="visually-hidden">Filtrar bairros pelo nome</span>
+              <span className="visually-hidden">Procurar bairro pelo nome</span>
               <input
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Filtrar bairros…"
+                placeholder="Digite o nome do bairro…"
                 type="search"
                 value={query}
               />
             </label>
             <FilterList
-              items={filtered.map(({ code, name, facilityIds }) => ({
-                id: code,
-                label: name,
-                srText: ` ${facilityIds.length} UAPS no cadastro`,
+              items={filtered.map((item) => ({
+                id: item.code,
+                label: item.name,
+                srText: `, ${neighborhoodSummary(item)}`,
                 trailing: (
                   <>
                     <span className="index-meter" aria-hidden="true">
-                      {Array.from({ length: facilityIds.length }, (_, index) => (
+                      {Array.from({ length: item.facilityIds.length }, (_, index) => (
                         <i key={index} />
                       ))}
                     </span>
                     <span className="index-value" aria-hidden="true">
-                      {facilityIds.length}
+                      {item.facilityIds.length}
                     </span>
                   </>
                 ),
@@ -300,8 +312,8 @@ function Overview({
               <p className="index-empty">Nenhum bairro com esse nome.</p>
             ) : null}
             <p className="index-note">
-              Ordem alfabética. A quantidade de UAPS no cadastro não é ranking de acesso nem
-              de necessidade.
+              Em ordem alfabética. Ter mais postos não quer dizer melhor acesso, nem que o
+              bairro precisa menos.
             </p>
           </section>
         )}
@@ -331,10 +343,10 @@ function NeighborhoodDetails({
     <div className="reading-view">
       <button className="back-link" onClick={onBack} type="button">
         <ArrowLeft size={15} aria-hidden="true" />
-        Panorama
+        Resumo
       </button>
       <header className="reading-header">
-        <span className="section-label">Bairro · código {neighborhood.code}</span>
+        <span className="section-label">Bairro</span>
         <AnimatedHeading id="reading-title" text={neighborhood.name} />
       </header>
 
@@ -343,55 +355,64 @@ function NeighborhoodDetails({
           <RollingNumber value={facilities.length} />
         </strong>
         <span>
-          {facilities.length === 1 ? "UAPS localizada" : "UAPS localizadas"} dentro do contorno
-          do bairro (associação ponto-no-polígono)
+          {facilities.length === 1 ? "posto de saúde fica" : "postos de saúde ficam"} dentro do
+          limite do bairro
         </span>
       </div>
 
       <div className="detail-actions">
         <button className="action-button" onClick={onFrame} type="button">
           <Crosshair size={15} aria-hidden="true" />
-          Enquadrar no mapa
+          Mostrar no mapa
         </button>
       </div>
 
       {facilities.length > 0 ? (
         <ListStack
           collapseLabel="Recolher a lista"
-          expandLabel={(count) => `Ver as ${count} UAPS`}
+          expandLabel={(count) => `Ver os ${count} postos`}
           items={facilities.map((item) => ({
             id: item.id,
             title: item.name,
-            subtitle: `CNES ${item.cnes ?? "—"}`,
+            subtitle: "Toque para ver detalhes",
           }))}
           onSelect={onSelectFacility}
         />
       ) : (
         <p className="detail-empty">
-          Nenhuma UAPS do cadastro tem coordenada dentro deste contorno. Isso não indica,
-          sozinho, ausência de atendimento: moradores podem ser vinculados a unidades de bairros
-          vizinhos.
+          Nenhum posto de saúde fica dentro do limite deste bairro. Isso não quer dizer que
+          quem mora aqui fica sem atendimento: muita gente usa o posto de um bairro vizinho.
         </p>
       )}
 
       {nearest ? (
         <div aria-labelledby="nearest-title" className="detail-proxy" role="group">
           <span className="section-label" id="nearest-title">
-            UAPS mais próxima em linha reta <span className="proxy-badge">proxy</span>
+            Posto mais perto em linha reta <span className="proxy-badge">aproximação</span>
           </span>
           <p>
-            <strong>{nearestName(nearest.facilityId)}</strong>, a{" "}
-            {formatStraightLineDistance(nearest.distanceM)} do centro geométrico do bairro.
+            <strong>{nearestName(nearest.facilityId)}</strong> fica a{" "}
+            {formatStraightLineDistance(nearest.distanceM)} do centro do bairro.
           </p>
           <small>{STRAIGHT_LINE_CAVEAT}</small>
         </div>
       ) : null}
 
-      <p className="detail-source">
-        Contorno: {LAYER_SOURCES.neighborhoods.agency}, ref.{" "}
-        {neighborhood.reference ?? LAYER_SOURCES.neighborhoods.reference}. Pontos:{" "}
-        {LAYER_SOURCES.facilities.agency}, ref. {LAYER_SOURCES.facilities.reference}.
-      </p>
+      <p className="detail-caveat">{LAYER_SOURCES.neighborhoods.limitation}</p>
+
+      <HowWeKnow>
+        <p>
+          Limite do bairro: {LAYER_SOURCES.neighborhoods.agency}, dados de{" "}
+          {neighborhood.reference ?? LAYER_SOURCES.neighborhoods.reference} (código{" "}
+          {neighborhood.code}). Postos: {LAYER_SOURCES.facilities.agency}, dados de{" "}
+          {LAYER_SOURCES.facilities.reference}.
+        </p>
+        <p>
+          Um posto conta para o bairro quando o ponto dele no mapa fica dentro do limite do
+          bairro. A distância é medida em linha reta (fórmula de haversine) a partir do centro
+          geométrico do bairro, que nem sempre é onde as pessoas moram.
+        </p>
+      </HowWeKnow>
     </div>
   );
 }
@@ -416,56 +437,27 @@ function FacilityDetails({
     <div className="reading-view">
       <button className="back-link" onClick={onBack} type="button">
         <ArrowLeft size={15} aria-hidden="true" />
-        {neighborhood ? neighborhood.name : "Panorama"}
+        {neighborhood ? neighborhood.name : "Resumo"}
       </button>
       <header className="reading-header">
         <span className="section-label">
-          <Building2 size={13} aria-hidden="true" /> {unitTypeLabel(facility.type)} · ficha da
-          unidade
+          <Building2 size={13} aria-hidden="true" /> {unitTypeLabel(facility.type)}
         </span>
         <AnimatedHeading id="reading-title" text={facility.name} />
       </header>
 
       <dl className="detail-grid">
-        <div>
-          <dt>Tipo</dt>
-          <dd>{unitTypeLabel(facility.type)}</dd>
+        <div className="detail-wide">
+          <dt>Bairro</dt>
+          <dd>{neighborhood?.name ?? "Fora dos limites dos bairros"}</dd>
         </div>
         <div>
-          <dt>Natureza (fonte)</dt>
-          <dd>{facility.nature ?? "Não informado"}</dd>
+          <dt>Atende pelo SUS</dt>
+          <dd>{facility.sus === null ? NOT_INFORMED : facility.sus ? "Sim" : "Não"}</dd>
         </div>
         <div>
-          <dt>CNES</dt>
-          <dd>{facility.cnes ?? "Não informado"}</dd>
-        </div>
-        <div>
-          <dt>Gestão</dt>
+          <dt>Quem administra</dt>
           <dd>{managementLabel(facility.management)}</dd>
-        </div>
-        <div>
-          <dt>Atende SUS</dt>
-          <dd>{facility.sus === null ? "Não informado" : facility.sus ? "Sim" : "Não"}</dd>
-        </div>
-        <div>
-          <dt>Ano de referência</dt>
-          <dd>{facility.reference ?? "Não informado"}</dd>
-        </div>
-        <div>
-          <dt>Coleta</dt>
-          <dd>{SOURCE_COLLECTED_AT}</dd>
-        </div>
-        <div className="detail-wide">
-          <dt>Bairro declarado na fonte</dt>
-          <dd>{facility.declaredNeighborhood ?? "Não informado"}</dd>
-        </div>
-        <div className="detail-wide">
-          <dt>Bairro (associação espacial)</dt>
-          <dd>{neighborhood?.name ?? "Fora dos contornos de bairro"}</dd>
-        </div>
-        <div className="detail-wide">
-          <dt>Coordenada</dt>
-          <dd className="mono">{formatCoordinate(facility.position)}</dd>
         </div>
       </dl>
 
@@ -473,9 +465,9 @@ function FacilityDetails({
         <p className="detail-warning">
           <TriangleAlert size={15} aria-hidden="true" />
           <span>
-            A fonte declara o bairro “{facility.declaredNeighborhood}”. O ponto cai no contorno de
-            “{neighborhood?.name}”. Diferenças de grafia ou de limites não são corrigidas
-            automaticamente.
+            A Prefeitura lista este posto no bairro “{facility.declaredNeighborhood}”, mas o ponto
+            no mapa fica dentro de “{neighborhood?.name}”. Pode ser diferença de nome ou de
+            limite; não corrigimos isso por conta própria.
           </span>
         </p>
       ) : null}
@@ -483,7 +475,7 @@ function FacilityDetails({
       <div className="detail-actions">
         <button className="action-button" onClick={onFrame} type="button">
           <Crosshair size={15} aria-hidden="true" />
-          Enquadrar no mapa
+          Mostrar no mapa
         </button>
         {neighborhood ? (
           <button
@@ -492,16 +484,50 @@ function FacilityDetails({
             type="button"
           >
             <MapIcon size={15} aria-hidden="true" />
-            Ver bairro
+            Ver o bairro
           </button>
         ) : null}
       </div>
 
       <p className="detail-caveat">{source.limitation}</p>
-      <p className="detail-source">
-        Fonte: {source.agency} via Fortaleza em Mapas (camada {source.catalogId}), atualização do
-        catálogo {source.catalogUpdate ? `em ${source.catalogUpdate}` : catalogUpdateLabel(source)}.
-      </p>
+
+      <HowWeKnow>
+        <dl className="detail-grid">
+          <div>
+            <dt>Tipo</dt>
+            <dd>{unitTypeLabel(facility.type)}</dd>
+          </div>
+          <div>
+            <dt>Natureza (fonte)</dt>
+            <dd>{facility.nature ?? NOT_INFORMED}</dd>
+          </div>
+          <div>
+            <dt>Código nacional (CNES)</dt>
+            <dd>{facility.cnes ?? NOT_INFORMED}</dd>
+          </div>
+          <div>
+            <dt>Dados de</dt>
+            <dd>{facility.reference ?? NOT_INFORMED}</dd>
+          </div>
+          <div>
+            <dt>Baixados em</dt>
+            <dd>{SOURCE_COLLECTED_AT}</dd>
+          </div>
+          <div className="detail-wide">
+            <dt>Bairro informado pela Prefeitura</dt>
+            <dd>{facility.declaredNeighborhood ?? NOT_INFORMED}</dd>
+          </div>
+          <div className="detail-wide">
+            <dt>Coordenada</dt>
+            <dd className="mono">{formatCoordinate(facility.position)}</dd>
+          </div>
+        </dl>
+        <p>
+          Fonte: {source.agency}, via Fortaleza em Mapas (camada {source.catalogId}), atualizado{" "}
+          {source.catalogUpdate ? `em ${source.catalogUpdate}` : catalogUpdateLabel(source)}. O
+          bairro lá em cima vem de onde o ponto cai no mapa, não do que a Prefeitura escreveu.
+        </p>
+      </HowWeKnow>
     </div>
   );
 }

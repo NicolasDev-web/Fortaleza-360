@@ -22,23 +22,23 @@ describe("ficha da unidade", () => {
   it("mostra tipo, natureza, bairros, fonte e datas", async () => {
     await openFicha("demo-1", "DEMO UAPS Oeste");
 
-    expect(field("Tipo")).toBe("UAPS");
+    expect(field("Tipo")).toBe("Posto de saúde (UAPS)");
     expect(field("Natureza (fonte)")).toBe("DEMO ADMINISTRAÇÃO PÚBLICA");
-    expect(field("Bairro declarado na fonte")).toBe("DEMO BAIRRO OESTE");
-    expect(field("Bairro (associação espacial)")).toBe("DEMO Bairro Oeste");
-    expect(field("Ano de referência")).toBe("2026");
-    expect(field("Coleta")).toBe("2026-10-27");
+    expect(field("Bairro informado pela Prefeitura")).toBe("DEMO BAIRRO OESTE");
+    expect(field("Bairro")).toBe("DEMO Bairro Oeste");
+    expect(field("Dados de")).toBe("2026");
+    expect(field("Baixados em")).toBe("2026-10-27");
     expect(screen.getByText(/camada 824/)).toBeInTheDocument();
   });
 
   it("deixa explícito todo campo ausente", async () => {
     await openFicha("demo-3", "DEMO UAPS no vazio");
 
-    expect(field("CNES")).toBe("Não informado");
-    expect(field("Natureza (fonte)")).toBe("Não informado");
-    expect(field("Bairro declarado na fonte")).toBe("Não informado");
-    expect(field("Atende SUS")).toBe("Não informado");
-    expect(field("Bairro (associação espacial)")).toBe("Fora dos contornos de bairro");
+    expect(field("Código nacional (CNES)")).toBe("A Prefeitura não informa");
+    expect(field("Natureza (fonte)")).toBe("A Prefeitura não informa");
+    expect(field("Bairro informado pela Prefeitura")).toBe("A Prefeitura não informa");
+    expect(field("Atende pelo SUS")).toBe("A Prefeitura não informa");
+    expect(field("Bairro")).toBe("Fora dos limites dos bairros");
   });
 
   it("não alega horário, lotação ou funcionamento", async () => {
@@ -46,7 +46,7 @@ describe("ficha da unidade", () => {
 
     const panel = screen.getByRole("heading", { level: 2, name: "DEMO UPA Oeste" }).closest("section")!;
     expect(panel.textContent).not.toMatch(/aberto agora|horário de funcionamento:|lotação atual|tempo de espera:/i);
-    expect(panel.textContent).toMatch(/não representa horário, capacidade, lotação/i);
-    expect(field("Natureza (fonte)")).toBe("Não informado");
+    expect(panel.textContent).toMatch(/não mostra horário, lotação/i);
+    expect(field("Natureza (fonte)")).toBe("A Prefeitura não informa");
   });
 });

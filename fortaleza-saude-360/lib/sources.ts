@@ -38,7 +38,7 @@ export const LAYER_SOURCES: Record<LayerSourceId, LayerSource> = {
     pageUrl:
       "https://mapas.fortaleza.ce.gov.br/mapa/824/unidades-de-atencao-primaria-a-saude-uaps",
     limitation:
-      "Cadastro de localização. Não indica horário, capacidade, equipe ou disponibilidade de atendimento.",
+      "O mapa mostra onde o posto fica. Não mostra horário, equipe, se está aberto nem quanto consegue atender.",
   },
   upas: {
     id: "upas",
@@ -49,7 +49,7 @@ export const LAYER_SOURCES: Record<LayerSourceId, LayerSource> = {
     catalogUpdate: null,
     pageUrl: "https://mapas.fortaleza.ce.gov.br/mapa/825/unidades-de-pronto-atendimento-upa",
     limitation:
-      "Cadastro de localização. Não representa horário, capacidade, lotação ou tempo de espera.",
+      "O mapa mostra onde a UPA fica. Não mostra horário, lotação nem quanto tempo se espera.",
   },
   hospitals: {
     id: "hospitals",
@@ -60,7 +60,7 @@ export const LAYER_SOURCES: Record<LayerSourceId, LayerSource> = {
     catalogUpdate: null,
     pageUrl: "https://mapas.fortaleza.ce.gov.br/mapa/823/hospitais-municipais",
     limitation:
-      "Só hospitais da gestão municipal; estaduais, federais e privados não estão na camada. Não representa leitos, lotação ou disponibilidade.",
+      "Só aparecem os hospitais da Prefeitura; os do Estado, os federais e os particulares não estão aqui. O mapa não mostra leitos, lotação nem vagas.",
   },
   neighborhoods: {
     id: "neighborhoods",
@@ -71,7 +71,7 @@ export const LAYER_SOURCES: Record<LayerSourceId, LayerSource> = {
     catalogUpdate: "2023-09-22",
     pageUrl: "https://mapas.fortaleza.ce.gov.br/mapa/21/bairros-de-fortaleza",
     limitation:
-      "Divisão administrativa do Decreto nº 14.498/2019; não é unidade de planejamento em saúde.",
+      "Bairro é uma divisão da Prefeitura (Decreto nº 14.498/2019). Não é a área que cada posto atende.",
   },
   boundary: {
     id: "boundary",
@@ -82,12 +82,12 @@ export const LAYER_SOURCES: Record<LayerSourceId, LayerSource> = {
     catalogUpdate: "2023-07-25",
     pageUrl:
       "https://mapas.fortaleza.ce.gov.br/mapa/12/limite-administrativo-da-cidade-de-fortaleza",
-    limitation: "Usado para enquadramento e controle de qualidade, não como indicador.",
+    limitation: "Serve para desenhar a cidade, não para calcular números.",
   },
 };
 
 export function catalogUpdateLabel(source: LayerSource): string {
-  return source.catalogUpdate ?? "não informada pela API";
+  return source.catalogUpdate ?? "sem data informada";
 }
 
 /** Fonte da camada de origem de uma unidade, pelo tipo do contrato `facility`. */
@@ -98,5 +98,8 @@ export function sourceForUnitType(type: string): LayerSource {
 }
 
 export function unitTypeLabel(type: string): string {
-  return type === "HOSPITAL" ? "Hospital municipal" : type;
+  if (type === "UAPS") return "Posto de saúde (UAPS)";
+  if (type === "UPA") return "UPA (pronto atendimento)";
+  if (type === "HOSPITAL") return "Hospital municipal";
+  return "Unidade de saúde";
 }

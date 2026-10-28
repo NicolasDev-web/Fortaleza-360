@@ -54,8 +54,8 @@ describe("Basemap", () => {
   it("sem WebGL mantém o mapa SVG e avisa que as ruas estão indisponíveis", async () => {
     render(<Observatory model={demoModel()} />);
 
-    expect(await screen.findByText(/mapa de ruas indisponível/i)).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: /contorno de fortaleza/i })).toBeInTheDocument();
+    expect(await screen.findByText(/não deu para carregar as ruas/i)).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /mapa de fortaleza com/i })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /openstreetmap/i })).not.toBeInTheDocument();
     expect(fake.FakeMap.instances).toHaveLength(0);
   });
@@ -91,7 +91,7 @@ describe("Basemap", () => {
 
     act(() => map.emit("error", { sourceId: "protomaps", error: new Error("DEMO 404") }));
 
-    expect(await screen.findByText(/mapa de ruas indisponível/i)).toBeInTheDocument();
+    expect(await screen.findByText(/não deu para carregar as ruas/i)).toBeInTheDocument();
     expect(container.querySelector(".city-map")).not.toHaveClass("has-basemap");
     expect(map.remove).toHaveBeenCalled();
   });

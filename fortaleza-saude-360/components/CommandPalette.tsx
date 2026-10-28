@@ -106,7 +106,7 @@ export function CommandPalette({
         transition={{ type: "spring", stiffness: 420, damping: 34 }}
       >
         <h2 className="visually-hidden" id={titleId}>
-          Buscar bairro ou UAPS
+          Buscar bairro ou posto
         </h2>
         <div className="palette-input">
           <Search size={18} aria-hidden="true" />
@@ -115,14 +115,14 @@ export function CommandPalette({
             aria-autocomplete="list"
             aria-controls={listId}
             aria-expanded="true"
-            aria-label="Buscar bairro, UAPS ou CNES"
+            aria-label="Buscar bairro, posto ou código CNES"
             autoComplete="off"
             onChange={(event) => {
               setQuery(event.target.value);
               setActive(0);
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Bairro, UAPS ou CNES…"
+            placeholder="Nome do bairro ou do posto…"
             ref={inputRef}
             role="combobox"
             spellCheck={false}
@@ -173,7 +173,7 @@ export function CommandPalette({
 
         {results.length === 0 ? (
           <p className="palette-empty" role="status">
-            Nada encontrado para “{searchTerm}”.
+            Não achamos “{searchTerm}”. Tente outro nome.
           </p>
         ) : (
           <p className="visually-hidden" role="status">
@@ -187,7 +187,7 @@ export function CommandPalette({
             <kbd>↓</kbd> navegar
           </span>
           <span>
-            <kbd>Enter</kbd> abrir ficha
+            <kbd>Enter</kbd> abrir
           </span>
         </footer>
       </motion.div>

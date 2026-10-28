@@ -61,13 +61,13 @@ export function buildStoryFacts(model: MapModel): StoryFacts {
   };
 }
 
-/** Frase-tese (Big Idea) usada no painel de leitura. */
+/** Grande ideia (docs/VOICE.md): a frase que a tela inteira sustenta. */
 export function bigIdea(facts: Pick<StoryFacts, "facilities" | "neighborhoods">): string {
-  return `${plural(facts.facilities, "UAPS", "UAPS")} em ${plural(facts.neighborhoods, "bairro", "bairros")}: onde estão, não quanto atendem.`;
+  return `${plural(facts.facilities, "posto de saúde", "postos de saúde")} para ${plural(facts.neighborhoods, "bairro", "bairros")}. Aqui você vê onde ficam — não quanto conseguem atender.`;
 }
 
 export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
-  const uaps = plural(facts.facilities, "UAPS", "UAPS");
+  const postos = plural(facts.facilities, "posto de saúde", "postos de saúde");
   const bairros = plural(facts.neighborhoods, "bairro", "bairros");
 
   return [
@@ -75,10 +75,10 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
       id: "terra-da-luz",
       phase: "intro",
       kicker: "Terra da Luz",
-      title: `Fortaleza, ${bairros} e ${uaps} no cadastro.`,
+      title: `Fortaleza tem ${bairros} e ${postos}.`,
       body: [
-        "Uma leitura guiada, em seis capítulos, sobre onde estão as Unidades de Atenção Primária à Saúde — a porta de entrada do SUS — no território da cidade.",
-        "Cada número vem de uma fonte pública oficial, citada no próprio capítulo.",
+        "O posto de saúde (UAPS) é a porta de entrada do SUS: é por onde a maioria das pessoas começa um atendimento na rede pública.",
+        "Em seis telas curtas, você vê onde eles ficam — e o que os dados ainda não contam. Todo número vem de uma fonte pública.",
       ],
     },
     {
@@ -87,52 +87,55 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
       kicker: "A cidade",
       title:
         facts.areaKm2 === null
-          ? `${bairros} oficiais compõem a cidade.`
-          : `${decimal.format(facts.areaKm2)} km² divididos em ${bairros}.`,
+          ? `Uma cidade dividida em ${bairros}.`
+          : `Uma cidade de ${decimal.format(facts.areaKm2)} km², dividida em ${bairros}.`,
       body: [
-        "O contorno é o limite administrativo (IPECE, 2019); as linhas internas são os bairros oficiais (IPLANFOR, Decreto nº 14.498/2019).",
-        "Bairro é uma divisão administrativa — não é a área de responsabilidade de uma unidade de saúde.",
+        "A linha de fora é o limite da cidade. As linhas finas são os bairros, definidos pela Prefeitura em 2019.",
+        "Bairro é uma divisão da Prefeitura — não é a área que cada posto atende.",
       ],
     },
     {
       id: "portas-de-entrada",
       phase: "facilities",
-      kicker: "As portas de entrada",
-      title: `${plural(facts.facilities, "unidade", "unidades")} de atenção primária no cadastro da SMS (2026).`,
+      kicker: "Os postos",
+      title: `${postos} na lista da Prefeitura.`,
       body: [
-        "Cada ponto é a localização cadastrada de uma UAPS.",
-        "O cadastro diz onde a unidade está — não informa horário, equipe, capacidade nem se está atendendo.",
+        "Cada ponto é um posto de saúde, na lista de 2026 da Secretaria Municipal da Saúde.",
+        "A lista diz onde o posto fica. Não diz horário, equipe, se está aberto nem quanto consegue atender.",
       ],
     },
     {
       id: "contornos",
       phase: "contours",
-      kicker: "Onde o contorno não tem ponto",
-      title: `${plural(facts.withFacility, "bairro tem", "bairros têm")} ao menos uma UAPS dentro do contorno; ${integer.format(facts.withoutFacility)}, nenhuma.`,
-      body: ["Em destaque, os bairros com ao menos uma unidade dentro dos próprios limites."],
+      kicker: "Onde não tem ponto",
+      title:
+        facts.withoutFacility === 0
+          ? `Todos os ${bairros} têm posto dentro do próprio limite.`
+          : `${plural(facts.withFacility, "bairro tem", "bairros têm")} posto dentro do próprio limite. ${plural(facts.withoutFacility, "não tem", "não têm")}.`,
+      body: ["Em destaque, os bairros com pelo menos um posto lá dentro."],
       caveat:
-        "Isso não mede acesso. Moradores são atendidos por unidades de bairros vizinhos, e a distância real depende das ruas, que ainda não foram modeladas (SDD-035).",
+        "Isso não mede acesso: muita gente é atendida no posto do bairro vizinho. Para saber a distância de verdade, falta medir o caminho pelas ruas.",
     },
     {
       id: "o-que-nao-dizem",
       phase: "limits",
-      kicker: "O que os dados não dizem",
-      title: "O cadastro mostra onde — não quanto, nem para quem.",
+      kicker: "O que os dados não contam",
+      title: "O mapa mostra onde — não quanto, nem para quem.",
       body: [
-        "Esta base ainda não tem população por bairro, tempo de deslocamento nem capacidade de atendimento.",
+        "Ainda não estão aqui quantas pessoas moram perto de cada posto, quanto tempo se leva para chegar nem quantos atendimentos cada um faz.",
         facts.mismatches === 0
-          ? "Todas as unidades caem no bairro que a própria fonte declara."
-          : `${plural(facts.mismatches, "unidade declara", "unidades declaram")} um bairro diferente daquele em que o ponto cai. A diferença aparece na ficha, sem correção automática.`,
+          ? "Todos os postos ficam no bairro que a própria Prefeitura informa."
+          : `${plural(facts.mismatches, "posto aparece", "postos aparecem")} num bairro diferente do que a Prefeitura informa. A diferença aparece nos detalhes do posto, sem correção automática.`,
       ],
     },
     {
       id: "sua-vez",
       phase: "explore",
       kicker: "Sua vez",
-      title: "Agora, explore o território.",
+      title: "Agora, procure o seu bairro.",
       body: [
-        "Clique em um bairro ou em uma UAPS para abrir a ficha, sempre com fonte e ano.",
-        "Use Ctrl+K para buscar por nome ou CNES, ou percorra o Índice de bairros.",
+        "Toque num bairro ou num posto para ver os detalhes e de onde vêm os dados.",
+        "Ou use a busca (Ctrl+K) para achar pelo nome.",
       ],
     },
   ];

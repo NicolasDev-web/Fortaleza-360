@@ -26,8 +26,8 @@ describe("acessibilidade da estação", () => {
   it("não apresenta violações sérias ou críticas no estado de erro", async () => {
     const { container } = render(<AppShell model={null} />);
 
-    expect(screen.getByText("Não foi possível carregar as camadas.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /buscar bairro ou uaps/i })).toBeDisabled();
+    expect(screen.getByText("Não conseguimos carregar o mapa agora.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /buscar bairro ou posto/i })).toBeDisabled();
     expect(await blockingViolations(container)).toEqual([]);
   });
 
@@ -36,13 +36,13 @@ describe("acessibilidade da estação", () => {
     render(<AppShell model={demoModel()} />);
 
     await user.tab();
-    expect(screen.getByRole("link", { name: "Pular para a investigação" })).toHaveFocus();
+    expect(screen.getByRole("link", { name: "Pular para o conteúdo" })).toHaveFocus();
 
     await user.tab();
     expect(screen.getByRole("tab", { name: "Explorar" })).toHaveFocus();
 
     await user.tab();
-    expect(screen.getByRole("button", { name: /buscar bairro ou uaps/i })).toHaveFocus();
+    expect(screen.getByRole("button", { name: /buscar bairro ou posto/i })).toHaveFocus();
   });
 
   it("navega entre modos com as setas e mantém avisos de modo conceitual", async () => {
@@ -55,8 +55,8 @@ describe("acessibilidade da estação", () => {
     const compare = screen.getByRole("tab", { name: /comparar/i });
     expect(compare).toHaveFocus();
     expect(compare).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByText("Ilustração conceitual · não geográfica")).toBeInTheDocument();
-    expect(screen.getByText(/nenhum bairro será classificado como vulnerável/i)).toBeInTheDocument();
+    expect(screen.getByText("Ilustração, não é mapa real")).toBeInTheDocument();
+    expect(screen.getByText(/nenhum bairro será chamado de vulnerável/i)).toBeInTheDocument();
   });
 
   it("mantém aviso de protótipo e de emergência sempre visíveis", () => {

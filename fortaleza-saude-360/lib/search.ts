@@ -4,7 +4,7 @@ import { unitTypeLabel } from "@/lib/sources";
 
 export type SearchResult = {
   kind: "neighborhood" | "facility";
-  group: "Bairros" | "Unidades";
+  group: "Bairros" | "Postos e unidades";
   id: string;
   label: string;
   detail: string;
@@ -33,15 +33,14 @@ export function searchTerritory(model: MapModel, query: string): SearchResult[] 
   const units = [...model.facilities, ...model.otherUnits]
     .filter(({ name, cnes }) => matches(name) || (cnes !== null && digits !== "" && cnes.includes(digits)))
     .slice(0, SEARCH_LIMIT_PER_GROUP)
-    .map<SearchResult>(({ id, name, type, cnes, neighborhoodCode }) => ({
+    .map<SearchResult>(({ id, name, type, neighborhoodCode }) => ({
       kind: "facility",
-      group: "Unidades",
+      group: "Postos e unidades",
       id,
       label: name,
       detail: [
         unitTypeLabel(type),
         neighborhoodCode ? neighborhoodNames.get(neighborhoodCode) : null,
-        cnes ? `CNES ${cnes}` : null,
       ]
         .filter(Boolean)
         .join(" · "),

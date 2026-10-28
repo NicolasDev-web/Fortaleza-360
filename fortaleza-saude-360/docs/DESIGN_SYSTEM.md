@@ -79,3 +79,7 @@ O Tailwind v4 entra só com `theme` e `utilities`, sem o reset global, para conv
 - A história é uma região rotulada pelo título do capítulo: setas navegam, Esc fecha e o foco volta ao modo Explorar.
 - Seleções são anunciadas em região `aria-live`.
 - A história abre sozinha só na primeira visita (`localStorage`, com falha silenciosa) e nunca quando o link já traz uma seleção.
+
+## Voz e linguagem
+
+Todo texto da interface segue `docs/VOICE.md` (UX-004): linguagem simples, títulos que já dizem a conclusão e detalhe técnico em "Como sabemos disso". `tests/voice.test.tsx` barra jargão no texto principal.

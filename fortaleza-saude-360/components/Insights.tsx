@@ -5,11 +5,10 @@ export function Insights() {
     <div className="methodology-card">
       <Route size={18} aria-hidden="true" />
       <div>
-        <strong>Leitura responsável</strong>
+        <strong>Antes de tirar conclusões</strong>
         <p>
-          Distância em linha reta nunca será apresentada como tempo real de
-          deslocamento. Contagem de unidades no cadastro não mede cobertura,
-          capacidade ou demanda.
+          Distância em linha reta não é o tempo para chegar ao posto. E contar postos
+          não diz quantas pessoas cada um consegue atender.
         </p>
       </div>
     </div>
@@ -24,13 +23,13 @@ export function InsightsFooter() {
           <Navigation size={17} />
         </span>
         <div>
-          <small>Próximo instrumento</small>
-          <strong>Proxy de distância, explicitamente rotulado</strong>
+          <small>Vem aí</small>
+          <strong>Quantas pessoas moram perto de cada posto</strong>
         </div>
       </div>
       <p>
-        Os modos Comparar e Simular permanecem em modo demonstrativo até a
-        conclusão do pipeline de dados.
+        Comparar e Simular ainda são demonstrações: ficam prontos quando os
+        dados forem conferidos.
       </p>
     </div>
   );

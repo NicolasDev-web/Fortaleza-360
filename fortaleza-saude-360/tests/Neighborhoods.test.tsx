@@ -29,8 +29,8 @@ describe("camada de bairros", () => {
     window.history.replaceState(null, "", "/");
 
     const second = render(<Observatory model={demoModel()} />);
-    await user.click(screen.getByRole("tab", { name: "Índice de bairros" }));
-    const index = screen.getByRole("region", { name: "Índice de bairros" });
+    await user.click(screen.getByRole("tab", { name: "Lista de bairros" }));
+    const index = screen.getByRole("region", { name: "Lista de bairros" });
     await user.click(within(index).getByRole("button", { name: /DEMO Bairro Oeste/ }));
     expect(window.location.search).toBe("?neighborhood=1");
     expect(second.container.querySelector(".neighborhood-selected")?.getAttribute("d")).toBe(fromMap);
@@ -50,13 +50,13 @@ describe("camada de bairros", () => {
     fireEvent.pointerMove(neighborhoodPath(container, "1"), { clientX: 40, clientY: 40 });
     const tooltip = container.querySelector(".map-tooltip");
     expect(tooltip).toHaveTextContent("DEMO Bairro Oeste");
-    expect(tooltip).toHaveTextContent("1 UAPS no cadastro");
+    expect(tooltip).toHaveTextContent("1 posto de saúde dentro do bairro");
 
-    await user.click(screen.getByRole("tab", { name: "Índice de bairros" }));
-    const index = screen.getByRole("region", { name: "Índice de bairros" });
+    await user.click(screen.getByRole("tab", { name: "Lista de bairros" }));
+    const index = screen.getByRole("region", { name: "Lista de bairros" });
     await user.click(within(index).getByRole("button", { name: /DEMO Bairro Oeste/ }));
     expect(
-      screen.getByText("Bairro selecionado: DEMO Bairro Oeste, 1 UAPS no cadastro"),
+      screen.getByText("Bairro selecionado: DEMO Bairro Oeste, 1 posto de saúde dentro do bairro"),
     ).toBeInTheDocument();
   });
 

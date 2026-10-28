@@ -26,7 +26,7 @@ describe("UPAs e hospitais municipais", () => {
     const user = userEvent.setup();
     const { container } = render(<Observatory model={demoModel()} />);
 
-    const upaToggle = screen.getByRole("button", { name: /^UPA/ });
+    const upaToggle = screen.getByRole("button", { name: /^UPAs/ });
     const hospitalToggle = screen.getByRole("button", { name: /Hospitais municipais/ });
     expect(upaToggle).toHaveAttribute("aria-pressed", "true");
     expect(hospitalToggle).toHaveAttribute("aria-pressed", "true");
@@ -47,18 +47,18 @@ describe("UPAs e hospitais municipais", () => {
     const user = userEvent.setup();
     render(<Observatory model={demoModel()} />);
 
-    await user.click(screen.getByRole("button", { name: /buscar bairro ou uaps/i }));
+    await user.click(screen.getByRole("button", { name: /buscar bairro ou posto/i }));
     await user.type(screen.getByRole("combobox"), "DEMO UPA");
     await waitFor(() => expect(screen.getAllByRole("option")).toHaveLength(1));
     const option = screen.getByRole("option", { name: /DEMO UPA Oeste/ });
-    expect(option).toHaveTextContent("UPA · DEMO Bairro Oeste");
+    expect(option).toHaveTextContent("UPA (pronto atendimento) · DEMO Bairro Oeste");
     await user.keyboard("{Enter}");
 
     expect(screen.getByRole("heading", { level: 2, name: "DEMO UPA Oeste" })).toBeInTheDocument();
-    expect(screen.getByText("UPA · ficha da unidade")).toBeInTheDocument();
-    expect(screen.getAllByText("Não informado").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getByText("UPA (pronto atendimento)", { selector: ".section-label" })).toBeInTheDocument();
+    expect(screen.getAllByText("A Prefeitura não informa").length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText(/camada 825/)).toBeInTheDocument();
-    expect(screen.getByText(/não representa horário, capacidade, lotação/i)).toBeInTheDocument();
+    expect(screen.getByText(/não mostra horário, lotação/i)).toBeInTheDocument();
   });
 
   it("não entram no Modo História, que trata só de UAPS", () => {

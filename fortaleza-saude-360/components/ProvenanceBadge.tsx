@@ -20,11 +20,11 @@ export function DemoNotice() {
   return (
     <strong
       className="demo-notice"
-      aria-label="Protótipo em validação: dados de cadastro, não de capacidade"
+      aria-label="Protótipo em teste: mostra onde ficam os postos, não quanto atendem"
       role="note"
     >
       <span className="demo-notice-dot" aria-hidden="true" />
-      Protótipo<span className="demo-notice-extra"> · dados de cadastro</span>
+      Protótipo<span className="demo-notice-extra"> · em teste</span>
     </strong>
   );
 }

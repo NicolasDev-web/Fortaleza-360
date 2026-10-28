@@ -10,7 +10,7 @@ export type Mode = "story" | "explore" | "compare" | "simulate";
 const lockSuffix = (
   <>
     <Lock size={11} aria-hidden="true" className="opacity-70" />
-    <span className="visually-hidden"> (em preparação)</span>
+    <span className="visually-hidden"> (em breve)</span>
   </>
 );
 
@@ -40,12 +40,12 @@ export function CommandBar({ mode, onModeChange, onOpenSearch, searchDisabled }:
         </span>
         <div>
           <strong>Fortaleza Saúde 360°</strong>
-          <small>Observatório territorial · protótipo</small>
+          <small>Postos de saúde no mapa · protótipo</small>
         </div>
       </div>
 
       <ContinuousTabs
-        ariaLabel="Modos de análise"
+        ariaLabel="Formas de ver o mapa"
         className="mode-switch"
         controls="stage-panel"
         idPrefix="mode-tab"
@@ -67,7 +67,7 @@ export function CommandBar({ mode, onModeChange, onOpenSearch, searchDisabled }:
           type="button"
         >
           <Search size={15} aria-hidden="true" />
-          <span>Buscar bairro ou UAPS</span>
+          <span>Buscar bairro ou posto</span>
           <kbd aria-hidden="true">Ctrl K</kbd>
         </button>
         <DemoNotice />

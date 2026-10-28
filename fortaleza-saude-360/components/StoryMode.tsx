@@ -21,7 +21,7 @@ export function StoryMode({ chapters, index, onIndexChange, onClose }: StoryMode
   return (
     <FeatureTour
       className="story-card"
-      closeLabel="Pular a história e explorar"
+      closeLabel="Pular a história e ir para o mapa"
       footer={
         <div className="story-nav">
           <button
@@ -31,7 +31,7 @@ export function StoryMode({ chapters, index, onIndexChange, onClose }: StoryMode
             type="button"
           >
             <ArrowLeft size={15} aria-hidden="true" />
-            <span className="visually-hidden">Capítulo anterior</span>
+            <span className="visually-hidden">Tela anterior</span>
           </button>
           <LabeledProgress
             className="story-progress"
@@ -48,7 +48,7 @@ export function StoryMode({ chapters, index, onIndexChange, onClose }: StoryMode
           >
             {isLast ? (
               <>
-                <Compass size={15} aria-hidden="true" /> Explorar o mapa
+                <Compass size={15} aria-hidden="true" /> Ir para o mapa
               </>
             ) : (
               <>

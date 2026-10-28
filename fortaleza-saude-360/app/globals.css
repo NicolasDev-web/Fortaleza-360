@@ -1830,6 +1830,64 @@ kbd {
   font-size: 13px;
 }
 
+/* "Como sabemos disso" (UX-004): detalhe técnico só para quem quiser abrir. */
+.how-we-know {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.how-we-know summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  color: var(--text-muted);
+  cursor: pointer;
+  list-style: none;
+}
+
+.how-we-know summary::-webkit-details-marker {
+  display: none;
+}
+
+.how-we-know summary::before {
+  content: "+";
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.how-we-know[open] summary::before {
+  content: "−";
+}
+
+.how-we-know summary:hover {
+  color: var(--text);
+}
+
+.how-we-know summary:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.how-we-know-body {
+  display: grid;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.how-we-know-body p {
+  margin: 0;
+}
+
 /* Proxy em linha reta (SDD-032): sempre rotulado, com a ressalva visível. */
 .detail-proxy {
   display: grid;
