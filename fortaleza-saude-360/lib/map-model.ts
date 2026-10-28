@@ -29,6 +29,8 @@ export type FacilityPoint = {
   id: string;
   name: string;
   type: string;
+  /** Natureza publicada pela fonte; `null` quando a camada não a informa. */
+  nature: string | null;
   management: string | null;
   sus: boolean | null;
   cnes: string | null;
@@ -144,6 +146,7 @@ function readFacilityPoints(
       id,
       name,
       type: text(feature.properties.type) ?? defaultType,
+      nature: text(feature.properties.nature),
       management: text(feature.properties.management),
       sus: typeof sus === "boolean" ? sus : null,
       cnes: text(feature.properties.cnes),

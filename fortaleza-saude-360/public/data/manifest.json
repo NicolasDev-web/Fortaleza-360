@@ -31,7 +31,7 @@
     },
     "tiles": 265
   },
-  "generated_at": "2026-10-28T01:32:05Z",
+  "generated_at": "2026-10-28T01:42:49Z",
   "layers": [
     {
       "bbox": [
@@ -40,13 +40,14 @@
         -38.44053707,
         -3.69476567
       ],
-      "bytes": 37573,
+      "bytes": 42397,
       "crs": "EPSG:4326",
       "dictionary": {
         "cnes": "Código CNES como publicado; não é chave de deduplicação",
         "id": "Identificador estável do projeto: uaps-{source_id}",
         "management": "Código de gestão como publicado (campo `gestão`)",
         "name": "Nome da unidade (campo de origem `nome`)",
+        "nature": "Natureza como publicada (campo `natureza`)",
         "neighborhood": "Bairro declarado na fonte; não é o vínculo espacial",
         "reference_date": "Ano de referência declarado (campo `ano`)",
         "source_id": "Identificador da feição na API Fortaleza em Mapas",
@@ -74,13 +75,14 @@
         "id",
         "management",
         "name",
+        "nature",
         "neighborhood",
         "reference_date",
         "source_id",
         "sus",
         "type"
       ],
-      "sha256": "c5142138b8e60872b399150110d31e70ef34bbd68c8b94095e865d68eab8e162",
+      "sha256": "13c8744130534454bc243f6ede7f0500a2c72103b226adf76de21f7d5ea97740",
       "source": {
         "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
         "catalog_updated_at": "2026-06-08",
@@ -103,13 +105,14 @@
         -38.47447455,
         -3.7088265
       ],
-      "bytes": 1650,
+      "bytes": 1734,
       "crs": "EPSG:4326",
       "dictionary": {
         "cnes": "Código CNES como publicado (`cnes_n`)",
         "id": "Identificador estável do projeto: {prefixo}-{source_id}",
         "management": "Sempre null: a fonte não publica gestão",
         "name": "Nome da unidade (campo de origem `name`)",
+        "nature": "Sempre null: `natureza` na fonte é o código do tipo",
         "neighborhood": "Bairro declarado na fonte (`nm_bairro`); não é o vínculo espacial",
         "reference_date": "Ano de referência declarado (campo `ano`)",
         "source_id": "Identificador da feição na API Fortaleza em Mapas",
@@ -136,13 +139,14 @@
         "id",
         "management",
         "name",
+        "nature",
         "neighborhood",
         "reference_date",
         "source_id",
         "sus",
         "type"
       ],
-      "sha256": "c6fe66c074b2349dcc82f29c01c4e38a9d3066c8734fb22d72a977a585be4c91",
+      "sha256": "22eedb210420d8c1e91329ed268b238291a2dc88c1982bc3335b9b50d8277f62",
       "source": {
         "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
         "catalog_update_note": "A API não informa a data de atualização desta camada",
@@ -166,13 +170,14 @@
         -38.4813781,
         -3.715168
       ],
-      "bytes": 3154,
+      "bytes": 3294,
       "crs": "EPSG:4326",
       "dictionary": {
         "cnes": "Código CNES como publicado (`cnes_n`)",
         "id": "Identificador estável do projeto: {prefixo}-{source_id}",
         "management": "Sempre null: a fonte não publica gestão",
         "name": "Nome da unidade (campo de origem `name`)",
+        "nature": "Sempre null: `natureza` na fonte é o código do tipo",
         "neighborhood": "Bairro declarado na fonte (`nm_bairro`); não é o vínculo espacial",
         "reference_date": "Ano de referência declarado (campo `ano`)",
         "source_id": "Identificador da feição na API Fortaleza em Mapas",
@@ -199,13 +204,14 @@
         "id",
         "management",
         "name",
+        "nature",
         "neighborhood",
         "reference_date",
         "source_id",
         "sus",
         "type"
       ],
-      "sha256": "faaaa5eeaeb5883b2b9710ef0418044c1bfca0745afd5c3eed7710d3850e3c24",
+      "sha256": "b44b33c164019878f859f96da75d6b1913eec2d527691087841349647a9df842",
       "source": {
         "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
         "catalog_update_note": "A API não informa a data de atualização desta camada",

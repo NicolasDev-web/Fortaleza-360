@@ -58,6 +58,8 @@ def load_units(path: Path, unit_type: str) -> gpd.GeoDataFrame:
                 "type": unit_type,
                 # A fonte não publica gestão nem vínculo SUS: ficam nulos explícitos.
                 "management": None,
+                # `natureza` aqui é o código do tipo (UPA/HOSP), não natureza jurídica.
+                "nature": None,
                 "sus": None,
                 "neighborhood": _text(properties.get("nm_bairro")),
                 "source_id": source_id,

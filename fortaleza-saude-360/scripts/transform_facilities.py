@@ -106,6 +106,7 @@ def load_facilities(path: Path) -> tuple[gpd.GeoDataFrame, ImportReport]:
                 "id": f"uaps-{source_id}",
                 "name": name,
                 "type": "UAPS",
+                "nature": _text(properties.get("natureza")),
                 "management": _text(properties.get("gestão")),
                 "sus": _sus_value(properties.get("atende_sus")),
                 "neighborhood": _text(properties.get("bairro")),

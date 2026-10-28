@@ -27,6 +27,7 @@ LAYER_CONFIG: dict[str, dict[str, Any]] = {
             "id": "Identificador estável do projeto: uaps-{source_id}",
             "name": "Nome da unidade (campo de origem `nome`)",
             "type": "Tipo de equipamento; nesta fonte, sempre UAPS",
+            "nature": "Natureza como publicada (campo `natureza`)",
             "management": "Código de gestão como publicado (campo `gestão`)",
             "sus": "Atende SUS conforme `atende_sus`; null se ausente",
             "neighborhood": "Bairro declarado na fonte; não é o vínculo espacial",
@@ -54,6 +55,7 @@ LAYER_CONFIG: dict[str, dict[str, Any]] = {
             "name": "Nome da unidade (campo de origem `name`)",
             "type": "Tipo de equipamento atribuído pela camada de origem",
             "management": "Sempre null: a fonte não publica gestão",
+            "nature": "Sempre null: `natureza` na fonte é o código do tipo",
             "sus": "Sempre null: a fonte não publica vínculo SUS",
             "neighborhood": "Bairro declarado na fonte (`nm_bairro`); não é o vínculo "
             "espacial",
@@ -80,6 +82,7 @@ LAYER_CONFIG: dict[str, dict[str, Any]] = {
             "name": "Nome da unidade (campo de origem `name`)",
             "type": "Tipo de equipamento atribuído pela camada de origem",
             "management": "Sempre null: a fonte não publica gestão",
+            "nature": "Sempre null: `natureza` na fonte é o código do tipo",
             "sus": "Sempre null: a fonte não publica vínculo SUS",
             "neighborhood": "Bairro declarado na fonte (`nm_bairro`); não é o vínculo "
             "espacial",

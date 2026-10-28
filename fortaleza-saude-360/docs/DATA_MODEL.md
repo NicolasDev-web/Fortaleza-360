@@ -1,6 +1,6 @@
 # Contratos de dados
 ## facility (GeoJSON Feature, Point, WGS84)
-`id:string`, `name:string`, `type:'UAPS'|'UPA'|'HOSPITAL'|'OTHER'`, `management?:string`, `sus:boolean|null`, `neighborhood?:string`, `source_id:string`, `reference_date:string|null`, coordinates `[longitude,latitude]`.
+`id:string`, `name:string`, `type:'UAPS'|'UPA'|'HOSPITAL'|'OTHER'`, `nature:string|null` (natureza publicada pela fonte), `management?:string`, `sus:boolean|null`, `neighborhood?:string`, `source_id:string`, `reference_date:string|null`, coordinates `[longitude,latitude]`.
 ## neighborhood (Polygon/MultiPolygon)
 `code:string`, `name:string`, `source_id:string`, `reference_date:string|null`. Geometrias devem ser válidas.
 ## demand_unit (Polygon/Point)

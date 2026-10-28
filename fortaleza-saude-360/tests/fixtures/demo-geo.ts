@@ -46,6 +46,7 @@ export const demoFacilities = {
       type: "Feature",
       properties: {
         id: "demo-1",
+        nature: "DEMO ADMINISTRAÇÃO PÚBLICA",
         name: "DEMO UAPS Oeste",
         type: "UAPS",
         management: "M",

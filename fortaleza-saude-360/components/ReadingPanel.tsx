@@ -32,6 +32,7 @@ import {
 import {
   catalogUpdateLabel,
   LAYER_SOURCES,
+  SOURCE_COLLECTED_AT,
   sourceForUnitType,
   unitTypeLabel,
 } from "@/lib/sources";
@@ -395,6 +396,14 @@ function FacilityDetails({
 
       <dl className="detail-grid">
         <div>
+          <dt>Tipo</dt>
+          <dd>{unitTypeLabel(facility.type)}</dd>
+        </div>
+        <div>
+          <dt>Natureza (fonte)</dt>
+          <dd>{facility.nature ?? "Não informado"}</dd>
+        </div>
+        <div>
           <dt>CNES</dt>
           <dd>{facility.cnes ?? "Não informado"}</dd>
         </div>
@@ -409,6 +418,14 @@ function FacilityDetails({
         <div>
           <dt>Ano de referência</dt>
           <dd>{facility.reference ?? "Não informado"}</dd>
+        </div>
+        <div>
+          <dt>Coleta</dt>
+          <dd>{SOURCE_COLLECTED_AT}</dd>
+        </div>
+        <div className="detail-wide">
+          <dt>Bairro declarado na fonte</dt>
+          <dd>{facility.declaredNeighborhood ?? "Não informado"}</dd>
         </div>
         <div className="detail-wide">
           <dt>Bairro (associação espacial)</dt>
