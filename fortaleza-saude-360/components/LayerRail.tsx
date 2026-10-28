@@ -119,7 +119,7 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
                 </span>
                 <span className="layer-text">
                   <strong>Proxy de distância</strong>
-                  <small>Em preparação · SDD-032</small>
+                  <small>Na ficha do bairro · camada no mapa em avaliação</small>
                 </span>
               </div>
             </li>

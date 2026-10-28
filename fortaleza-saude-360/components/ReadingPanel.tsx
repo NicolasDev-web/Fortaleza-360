@@ -21,7 +21,13 @@ import { RollingNumber } from "@/components/motion/RollingNumber";
 import { DiscreteTabs } from "@/components/vendor/discrete-tabs";
 import { FilterList } from "@/components/vendor/filter-interaction";
 import { ListStack } from "@/components/vendor/list-stack";
-import { formatCoordinate, normalizeName, type Box } from "@/lib/geo";
+import {
+  formatStraightLineDistance,
+  nearestByStraightLine,
+  STRAIGHT_LINE_CAVEAT,
+  type StraightLineResult,
+} from "@/lib/accessibility";
+import { formatCoordinate, normalizeName, unproject, type Box } from "@/lib/geo";
 import {
   hasNeighborhoodMismatch,
   neighborhoodSummary,
@@ -117,6 +123,15 @@ export function ReadingPanel({
           facilities={neighborhood.facilityIds
             .map((id) => facilityById.get(id))
             .filter((item): item is FacilityPoint => item !== undefined)}
+          nearest={
+            model
+              ? nearestByStraightLine(
+                  unproject(model.projection, ...neighborhood.centroid),
+                  model.facilities,
+                )
+              : null
+          }
+          nearestName={(id) => facilityById.get(id)?.name ?? id}
           neighborhood={neighborhood}
           onBack={onClear}
           onFrame={() => onFrame(neighborhood.box)}
@@ -298,12 +313,16 @@ function Overview({
 function NeighborhoodDetails({
   neighborhood,
   facilities,
+  nearest,
+  nearestName,
   onBack,
   onFrame,
   onSelectFacility,
 }: {
   neighborhood: NeighborhoodShape;
   facilities: FacilityPoint[];
+  nearest: StraightLineResult | null;
+  nearestName: (id: string) => string;
   onBack: () => void;
   onFrame: () => void;
   onSelectFacility: (id: string) => void;
@@ -354,6 +373,19 @@ function NeighborhoodDetails({
           vizinhos.
         </p>
       )}
+
+      {nearest ? (
+        <div aria-labelledby="nearest-title" className="detail-proxy" role="group">
+          <span className="section-label" id="nearest-title">
+            UAPS mais próxima em linha reta <span className="proxy-badge">proxy</span>
+          </span>
+          <p>
+            <strong>{nearestName(nearest.facilityId)}</strong>, a{" "}
+            {formatStraightLineDistance(nearest.distanceM)} do centro geométrico do bairro.
+          </p>
+          <small>{STRAIGHT_LINE_CAVEAT}</small>
+        </div>
+      ) : null}
 
       <p className="detail-source">
         Contorno: {LAYER_SOURCES.neighborhoods.agency}, ref.{" "}

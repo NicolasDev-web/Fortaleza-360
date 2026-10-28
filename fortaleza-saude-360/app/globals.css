@@ -1830,6 +1830,37 @@ kbd {
   font-size: 13px;
 }
 
+/* Proxy em linha reta (SDD-032): sempre rotulado, com a ressalva visível. */
+.detail-proxy {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+}
+
+.detail-proxy p {
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.detail-proxy small {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.proxy-badge {
+  margin-left: 6px;
+  padding: 1px 7px;
+  border: 1px solid var(--signal);
+  border-radius: var(--radius-pill);
+  color: var(--signal);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .detail-source {
   color: var(--text-soft);
   font-family: var(--font-mono);
