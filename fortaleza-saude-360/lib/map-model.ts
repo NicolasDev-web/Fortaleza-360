@@ -210,3 +210,8 @@ export function hasNeighborhoodMismatch(
   if (!facility.declaredNeighborhood || !neighborhood) return false;
   return normalizeName(facility.declaredNeighborhood) !== normalizeName(neighborhood.name);
 }
+
+/** Resumo de um bairro, igual no tooltip do mapa e no anúncio ao leitor de tela. */
+export function neighborhoodSummary(neighborhood: NeighborhoodShape): string {
+  return `${neighborhood.facilityIds.length} UAPS no cadastro`;
+}

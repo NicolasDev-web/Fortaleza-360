@@ -24,6 +24,7 @@ import { ListStack } from "@/components/vendor/list-stack";
 import { formatCoordinate, normalizeName, type Box } from "@/lib/geo";
 import {
   hasNeighborhoodMismatch,
+  neighborhoodSummary,
   type FacilityPoint,
   type MapModel,
   type NeighborhoodShape,
@@ -85,7 +86,7 @@ export function ReadingPanel({
   const announcement = facility
     ? `Unidade selecionada: ${facility.name}`
     : neighborhood
-      ? `Bairro selecionado: ${neighborhood.name}`
+      ? `Bairro selecionado: ${neighborhood.name}, ${neighborhoodSummary(neighborhood)}`
       : "";
 
   return (

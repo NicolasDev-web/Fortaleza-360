@@ -17,7 +17,12 @@ import { Basemap, BasemapCredit, type BasemapStatus } from "@/components/Basemap
 import { cameraFromView } from "@/lib/basemap";
 import { formatCoordinate, unproject, type Box } from "@/lib/geo";
 import { SeaWaves } from "@/components/fortaleza/SeaWaves";
-import type { FacilityPoint, MapModel, NeighborhoodShape } from "@/lib/map-model";
+import {
+  neighborhoodSummary,
+  type FacilityPoint,
+  type MapModel,
+  type NeighborhoodShape,
+} from "@/lib/map-model";
 import type { StoryPhase } from "@/lib/story";
 
 export type LayerVisibility = {
@@ -407,6 +412,16 @@ export function CityMap({
     else if (target.closest?.("svg")) onClearSelection();
   };
 
+  // WCAG 1.4.13: o tooltip de hover sai com Esc, sem precisar mover o ponteiro.
+  useEffect(() => {
+    if (!hover) return;
+    const dismiss = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") setHover(null);
+    };
+    window.addEventListener("keydown", dismiss);
+    return () => window.removeEventListener("keydown", dismiss);
+  }, [hover]);
+
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const step = view.w * 0.12;
     const moves: Record<string, [number, number]> = {
@@ -476,10 +491,9 @@ export function CityMap({
     if (!layers.neighborhoods) return null;
     const neighborhood = neighborhoodByCode.get(hover.id);
     if (!neighborhood) return null;
-    const count = neighborhood.facilityIds.length;
     return {
       title: neighborhood.name,
-      detail: `${count} UAPS no cadastro`,
+      detail: neighborhoodSummary(neighborhood),
     };
   })();
 
