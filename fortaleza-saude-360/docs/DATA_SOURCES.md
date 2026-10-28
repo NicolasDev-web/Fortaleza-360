@@ -52,10 +52,17 @@ O arquivo informa área de 312,441 km² e código municipal `2304400`. A geometr
 
 Verificação de 2026-10-27: a [API de Dados Abertos do Ministério da Saúde](https://apidadosabertos.saude.gov.br/) recusou todas as conexões (TCP reset, inclusive na raiz), e o pacote CSV do OpenDataSUS estava com data de 2025-06-11. Por isso a conferência usa o arquivo mensal do FTP, mais recente. O DBC é convertido localmente por `scripts/dbc.py` (porte do `blast.c` do zlib) e só os campos `CNES`, `CODUFMUN`, `TP_UNID`, `TPGESTAO`, `VINC_SUS`, `NAT_JUR`, `DT_ATUAL` e `COMPETEN` são lidos; `CPF_CNPJ`, CEP, dados bancários e contratos são descartados. O CNES serve só para conferência (`docs/DATA_QUALITY_REPORT.md`) e não é publicado em `public/data/`.
 
+## Censo 2022 — denominadores (SDD-025)
+
+| Papel | Download | Órgão / referência | Licença e atribuição |
+|---|---|---|---|
+| População por setor | [`Agregados_por_setores_basico_BR_20260520.zip`](https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/Agregados_por_setores_basico_BR_20260520.zip) | IBGE; Censo 2022, revisão de 2026-05-20 | "Fonte: IBGE, Censo Demográfico 2022." Licença padronizada não confirmada (página de termos respondeu 403 na verificação) |
+| Malha de setores | [`CE_setores_CD2022.gpkg`](https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/gpkg/UF/CE/CE_setores_CD2022.gpkg) | IBGE; malha 2022 publicada em 2024-11-12 | Idem |
+
+Método, resultados e limitações do crosswalk setor → bairro estão em `docs/POPULATION.md`.
+
 ## Fontes complementares futuras
 
 | Tema | Fonte oficial | Uso previsto | Restrição principal |
 |---|---|---|---|
-| População | [Censo Demográfico 2022 — IBGE](https://www.ibge.gov.br/estatisticas/sociais/populacao/22827-censo-demografico-2022.html) | Denominadores | Compatibilizar a geografia e explicitar defasagem |
-| Setores censitários | [Malhas territoriais — IBGE](https://www.ibge.gov.br/geociencias/organizacao-do-territorio/estrutura-territorial/26565-malhas-de-setores-censitarios-divisoes-intramunicipais.html) | Análises intramunicipais | Validar CRS, topologia e granularidade |
 | Rede viária | [OpenStreetMap](https://www.openstreetmap.org/copyright) | Acessibilidade em fase posterior | ODbL, atribuição e regras para derivados |

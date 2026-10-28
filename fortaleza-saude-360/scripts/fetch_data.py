@@ -33,6 +33,17 @@ CNES_ATTRIBUTION = (
     "Estabelecimentos de Saúde (CNES), arquivo de estabelecimentos (ST)."
 )
 
+IBGE_LICENSE = (
+    "Dados públicos do IBGE; licença padronizada não verificada (página de "
+    "termos indisponível na coleta), citação da fonte obrigatória"
+)
+IBGE_ATTRIBUTION = "Fonte: IBGE, Censo Demográfico 2022."
+IBGE_CENSUS = "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/"
+IBGE_SECTORS = (
+    "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/"
+    "malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/"
+)
+
 
 @dataclass(frozen=True)
 class Source:
@@ -110,6 +121,31 @@ SOURCES: dict[str, Source] = {
         reference_year=2026,
         license=CNES_LICENSE,
         attribution=CNES_ATTRIBUTION,
+    ),
+    "ibge-setores-ce": Source(
+        source_id="IBGE-MALHA-SETORES-CD2022-CE",
+        filename="ibge-setores-ce-2022.gpkg",
+        page_url=f"{IBGE_SECTORS}gpkg/UF/CE/",
+        download_url=f"{IBGE_SECTORS}gpkg/UF/CE/CE_setores_CD2022.gpkg",
+        organization="IBGE",
+        reference_year=2022,
+        license=IBGE_LICENSE,
+        attribution=IBGE_ATTRIBUTION,
+    ),
+    "ibge-agregados-basico": Source(
+        source_id="IBGE-AGREGADOS-SETORES-BASICO-CD2022-20260520",
+        filename="ibge-agregados-basico-br-20260520.zip",
+        page_url=(
+            f"{IBGE_CENSUS}Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/"
+        ),
+        download_url=(
+            f"{IBGE_CENSUS}Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/"
+            "Agregados_por_setores_basico_BR_20260520.zip"
+        ),
+        organization="IBGE",
+        reference_year=2022,
+        license=IBGE_LICENSE,
+        attribution=IBGE_ATTRIBUTION,
     ),
 }
 
