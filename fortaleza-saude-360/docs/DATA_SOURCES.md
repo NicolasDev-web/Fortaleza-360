@@ -44,11 +44,18 @@ O arquivo informa área de 312,441 km² e código municipal `2304400`. A geometr
 - Registrar em `public/data/manifest.json`: ID, órgão, URL da página, URL do download, ano de referência, atualização do catálogo, coleta, arquivo, checksum, licença, método e limitações.
 - Não misturar anos silenciosamente e não apresentar UAPS como capacidade real de atendimento.
 
+## CNES — conferência cadastral (SDD-024)
+
+| Fonte | Arquivo | Órgão / referência | Licença e atribuição |
+|---|---|---|---|
+| [FTP de disseminação do DATASUS, CNES › Estabelecimentos (ST)](ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/ST/) | `STCE2609.dbc` (Ceará, competência 2026-09, publicado em 2026-10-15) | DATASUS/Ministério da Saúde; layout no informe técnico `Doc/IT_CNES_1706.pdf`; rótulos de códigos em `Auxiliar/TAB_CNES.zip` | Dados públicos de disseminação; o FTP não declara licença padronizada (CC/SPDX). Atribuição: "Fonte: Ministério da Saúde — DATASUS, Cadastro Nacional de Estabelecimentos de Saúde (CNES)". |
+
+Verificação de 2026-10-27: a [API de Dados Abertos do Ministério da Saúde](https://apidadosabertos.saude.gov.br/) recusou todas as conexões (TCP reset, inclusive na raiz), e o pacote CSV do OpenDataSUS estava com data de 2025-06-11. Por isso a conferência usa o arquivo mensal do FTP, mais recente. O DBC é convertido localmente por `scripts/dbc.py` (porte do `blast.c` do zlib) e só os campos `CNES`, `CODUFMUN`, `TP_UNID`, `TPGESTAO`, `VINC_SUS`, `NAT_JUR`, `DT_ATUAL` e `COMPETEN` são lidos; `CPF_CNPJ`, CEP, dados bancários e contratos são descartados. O CNES serve só para conferência (`docs/DATA_QUALITY_REPORT.md`) e não é publicado em `public/data/`.
+
 ## Fontes complementares futuras
 
 | Tema | Fonte oficial | Uso previsto | Restrição principal |
 |---|---|---|---|
-| CNES | [API de Dados Abertos do Ministério da Saúde](https://apidadosabertos.saude.gov.br/) | Conferência cadastral | Cadastro não comprova disponibilidade real |
 | População | [Censo Demográfico 2022 — IBGE](https://www.ibge.gov.br/estatisticas/sociais/populacao/22827-censo-demografico-2022.html) | Denominadores | Compatibilizar a geografia e explicitar defasagem |
 | Setores censitários | [Malhas territoriais — IBGE](https://www.ibge.gov.br/geociencias/organizacao-do-territorio/estrutura-territorial/26565-malhas-de-setores-censitarios-divisoes-intramunicipais.html) | Análises intramunicipais | Validar CRS, topologia e granularidade |
 | Rede viária | [OpenStreetMap](https://www.openstreetmap.org/copyright) | Acessibilidade em fase posterior | ODbL, atribuição e regras para derivados |

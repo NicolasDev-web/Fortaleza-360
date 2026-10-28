@@ -49,6 +49,28 @@ class FetchDataTests(unittest.TestCase):
             self.assertEqual(metadata["collected_at"], "2026-10-27T18:00:00Z")
             self.assertIn("atribuição obrigatória", metadata["license"])
 
+    def test_cnes_source_records_its_own_license(self) -> None:
+        class FtpResponse(BytesIO):
+            headers = None
+
+        def opener(request, timeout):  # type: ignore[no-untyped-def]
+            self.assertTrue(request.full_url.startswith("ftp://ftp.datasus.gov.br/"))
+            return FtpResponse(b"DEMO")
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            result = download_source(
+                "cnes-ce",
+                Path(temporary_directory),
+                opener=opener,
+                collected_at="2026-10-27T18:00:00Z",
+            )
+            metadata = json.loads(result.metadata_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(metadata["organization"], "DATASUS/MS")
+        self.assertIn("DATASUS", metadata["license"])
+        self.assertIn("CNES", metadata["attribution"])
+        self.assertIsNone(metadata["content_type"])
+
 
 if __name__ == "__main__":
     unittest.main()

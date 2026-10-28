@@ -24,14 +24,26 @@ ATTRIBUTION = (
 )
 
 
+CNES_LICENSE = (
+    "Dados públicos de disseminação do DATASUS/Ministério da Saúde; sem "
+    "licença padronizada (CC/SPDX) declarada no repositório FTP"
+)
+CNES_ATTRIBUTION = (
+    "Fonte: Ministério da Saúde — DATASUS, Cadastro Nacional de "
+    "Estabelecimentos de Saúde (CNES), arquivo de estabelecimentos (ST)."
+)
+
+
 @dataclass(frozen=True)
 class Source:
-    source_id: int
+    source_id: int | str
     filename: str
     page_url: str
     download_url: str
     organization: str
     reference_year: int
+    license: str = LICENSE
+    attribution: str = ATTRIBUTION
 
 
 @dataclass(frozen=True)
@@ -83,6 +95,21 @@ SOURCES: dict[str, Source] = {
         ),
         organization="IPECE",
         reference_year=2019,
+    ),
+    "cnes-ce": Source(
+        source_id="CNES-ST-CE-202609",
+        filename="cnes-st-ce-202609.dbc",
+        page_url=(
+            "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/ST/"
+        ),
+        download_url=(
+            "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/"
+            "Dados/ST/STCE2609.dbc"
+        ),
+        organization="DATASUS/MS",
+        reference_year=2026,
+        license=CNES_LICENSE,
+        attribution=CNES_ATTRIBUTION,
     ),
 }
 
@@ -148,7 +175,8 @@ def download_source(
     try:
         with os.fdopen(descriptor, "wb") as target:
             with opener(request, timeout=timeout) as response:
-                content_type = response.headers.get("Content-Type")
+                headers = getattr(response, "headers", None) or {}
+                content_type = headers.get("Content-Type")
                 while chunk := response.read(64 * 1024):
                     target.write(chunk)
                     digest.update(chunk)
@@ -171,8 +199,8 @@ def download_source(
         "content_type": content_type,
         "bytes": byte_count,
         "sha256": sha256,
-        "license": LICENSE,
-        "attribution": ATTRIBUTION,
+        "license": source.license,
+        "attribution": source.attribution,
     }
 
     _atomic_text(checksum_path, f"{sha256}  {source.filename}\n")

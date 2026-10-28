@@ -30,3 +30,12 @@ python scripts/generate_manifest.py
 ```
 
 Depois de `export_public.py`, gera `public/data/manifest.json` com fonte, órgão, datas de referência/catálogo/coleta, checksums do bruto e do público, licença, termos, dicionário de campos, método e limitações de cada camada. Propriedade publicada sem entrada no dicionário interrompe a geração.
+
+## Conferência com o CNES
+
+```powershell
+python scripts/fetch_data.py --source cnes-ce
+python -m scripts.check_cnes_divergence
+```
+
+Compara por código CNES as UAPS publicadas com o arquivo de estabelecimentos do DATASUS e regera `docs/DATA_QUALITY_REPORT.md`. Lê só códigos e datas do CNES; nenhum dado do CNES vai para `public/data/`.
