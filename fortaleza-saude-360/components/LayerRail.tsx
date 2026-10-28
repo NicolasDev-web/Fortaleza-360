@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown, ExternalLink, Lock, SlidersHorizontal } from "lucide-react";
 import type { LayerVisibility } from "@/components/CityMap";
 import {
+  catalogUpdateLabel,
   LAYER_SOURCES,
   SOURCE_ATTRIBUTION,
   SOURCE_COLLECTED_AT,
@@ -12,7 +13,7 @@ import {
 } from "@/lib/sources";
 
 type LayerRailProps = {
-  counts: { neighborhoods: number; facilities: number } | null;
+  counts: { neighborhoods: number; facilities: number; upas: number; hospitals: number } | null;
   layers: LayerVisibility;
   onToggle: (layer: keyof LayerVisibility) => void;
 };
@@ -46,6 +47,18 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
       label: "UAPS",
       meta: `${LAYER_SOURCES.facilities.agency} · ${LAYER_SOURCES.facilities.reference}`,
       count: counts?.facilities ?? null,
+    },
+    {
+      key: "upas",
+      label: "UPA",
+      meta: `${LAYER_SOURCES.upas.agency} · ${LAYER_SOURCES.upas.reference}`,
+      count: counts?.upas ?? null,
+    },
+    {
+      key: "hospitals",
+      label: "Hospitais municipais",
+      meta: `${LAYER_SOURCES.hospitals.agency} · ${LAYER_SOURCES.hospitals.reference}`,
+      count: counts?.hospitals ?? null,
     },
   ];
 
@@ -122,6 +135,12 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
               <i className="legend-dot" aria-hidden="true" /> UAPS (ponto do cadastro)
             </li>
             <li>
+              <i className="legend-upa" aria-hidden="true" /> UPA (pronto atendimento)
+            </li>
+            <li>
+              <i className="legend-hospital" aria-hidden="true" /> Hospital municipal
+            </li>
+            <li>
               <i className="legend-line" aria-hidden="true" /> Limite de bairro
             </li>
             <li>
@@ -146,7 +165,7 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
                   <span className="visually-hidden"> (abre em nova aba)</span>
                 </a>
                 <small>
-                  {source.agency} · ref. {source.reference} · catálogo {source.catalogUpdate}
+                  {source.agency} · ref. {source.reference} · catálogo {catalogUpdateLabel(source)}
                 </small>
               </li>
             ))}

@@ -16,6 +16,17 @@ Metadados devem ser consultados em `https://mapas.fortaleza.ce.gov.br/api/v1/map
 
 O portal não informa uma licença padronizada como CC BY nem identificador SPDX. Portanto, registrar no manifesto: `licenca="Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória"` e manter o link dos termos.
 
+### Camadas adicionadas na SDD-029
+
+| Camada | ID | Página | Download GeoJSON | Órgão / referência | Licença e atribuição |
+|---|---:|---|---|---|---|
+| UPA | 825 | [Unidades de Pronto Atendimento (UPA)](https://mapas.fortaleza.ce.gov.br/mapa/825/unidades-de-pronto-atendimento-upa) | [`api/v1/geojson?id=825&download=true`](https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=825&download=true) | SMS; ano 2026; data de atualização do catálogo não informada pela API | Termos da API: reutilização livre com atribuição obrigatória |
+| Hospitais municipais | 823 | [Hospitais Municipais](https://mapas.fortaleza.ce.gov.br/mapa/823/hospitais-municipais) | [`api/v1/geojson?id=823&download=true`](https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=823&download=true) | SMS; ano 2026; data de atualização do catálogo não informada pela API | Termos da API: reutilização livre com atribuição obrigatória |
+
+Verificação de 2026-10-27: 6 UPAs e 10 hospitais, cada feição como `MultiPoint` com um único ponto, campos `name`, `natureza` (`UPA`/`HOSP`), `cnes_n`, `nm_bairro`, `distrito`, `ano`. A transformação (`scripts/transform_units.py`) converte em `Point` sem mover a coordenada e rejeita natureza inesperada, mais de um ponto, ponto fora do município ou ano diferente de 2026. A fonte não publica gestão nem vínculo SUS: esses campos ficam nulos e aparecem como "Não informado". "Hospitais municipais" exclui hospitais estaduais, federais e privados. A camada "Equipamentos de Saúde" (ID 658, que também traz CAPS e policlínicas) não foi adotada.
+
+Essas unidades ficam em camadas próprias e fora das contagens de UAPS, do Modo História e dos KPIs de atenção primária.
+
 ## Como cada camada funcionará
 
 ### UAPS — pontos de serviço

@@ -15,6 +15,7 @@ import {
 import { Crosshair, Minus, Plus } from "lucide-react";
 import { Basemap, BasemapCredit, type BasemapStatus } from "@/components/Basemap";
 import { cameraFromView } from "@/lib/basemap";
+import { unitTypeLabel } from "@/lib/sources";
 import { formatCoordinate, unproject, type Box } from "@/lib/geo";
 import { SeaWaves } from "@/components/fortaleza/SeaWaves";
 import {
@@ -29,7 +30,16 @@ export type LayerVisibility = {
   boundary: boolean;
   neighborhoods: boolean;
   facilities: boolean;
+  upas: boolean;
+  hospitals: boolean;
 };
+
+/** Camada que controla a visibilidade de cada tipo do contrato `facility`. */
+export function layerForUnitType(type: string): keyof LayerVisibility {
+  if (type === "UPA") return "upas";
+  if (type === "HOSPITAL") return "hospitals";
+  return "facilities";
+}
 
 export type FrameRequest = { box: Box; nonce: number };
 
@@ -257,6 +267,62 @@ const FacilityLayer = memo(function FacilityLayer({
   );
 });
 
+/** UPAs (losango) e hospitais (quadrado com cruz): forma distinta, não só cor. */
+const UnitLayer = memo(function UnitLayer({
+  units,
+  unit,
+  selectedFacility,
+}: {
+  units: FacilityPoint[];
+  unit: number;
+  selectedFacility: string | null;
+}) {
+  const size = 4.4 * unit;
+  return (
+    <g className="layer-units">
+      {units.map((item) => (
+        <g
+          className={`unit unit-${item.type === "UPA" ? "upa" : "hospital"}${
+            item.id === selectedFacility ? " is-selected" : ""
+          }`}
+          data-facility={item.id}
+          key={item.id}
+          transform={`translate(${item.x} ${item.y})`}
+        >
+          <circle className="facility-hit" r={10 * unit} />
+          {item.type === "UPA" ? (
+            // Rotação no grupo: a animação CSS de entrada substituiria o transform do <rect>.
+            <g transform="rotate(45)">
+              <rect
+                className="unit-shape"
+                height={size * 1.6}
+                width={size * 1.6}
+                x={-size * 0.8}
+                y={-size * 0.8}
+              />
+            </g>
+          ) : (
+            <>
+              <rect
+                className="unit-shape"
+                height={size * 2}
+                width={size * 2}
+                x={-size}
+                y={-size}
+              />
+              <path
+                className="unit-cross"
+                d={`M${-size * 0.55} 0H${size * 0.55}M0 ${-size * 0.55}V${size * 0.55}`}
+                strokeWidth={1.4 * unit}
+              />
+            </>
+          )}
+        </g>
+      ))}
+    </g>
+  );
+});
+
 export function CityMap({
   model,
   layers,
@@ -288,8 +354,12 @@ export function CityMap({
     [model.neighborhoods],
   );
   const facilityById = useMemo(
-    () => new Map(model.facilities.map((item) => [item.id, item])),
-    [model.facilities],
+    () => new Map([...model.facilities, ...model.otherUnits].map((item) => [item.id, item])),
+    [model.facilities, model.otherUnits],
+  );
+  const visibleUnits = useMemo(
+    () => model.otherUnits.filter(({ type }) => layers[layerForUnitType(type)]),
+    [layers, model.otherUnits],
   );
 
   useEffect(() => {
@@ -407,7 +477,8 @@ export function CityMap({
     const facilityId = target.closest?.("[data-facility]")?.getAttribute("data-facility");
     const neighborhoodCode = target.closest?.("[data-nb]")?.getAttribute("data-nb");
 
-    if (facilityId && layers.facilities) onSelectFacility(facilityId);
+    const clicked = facilityId ? facilityById.get(facilityId) : undefined;
+    if (clicked && layers[layerForUnitType(clicked.type)]) onSelectFacility(clicked.id);
     else if (neighborhoodCode && layers.neighborhoods) onSelectNeighborhood(neighborhoodCode);
     else if (target.closest?.("svg")) onClearSelection();
   };
@@ -484,9 +555,12 @@ export function CityMap({
   const hoverLabel = (() => {
     if (!hover) return null;
     if (hover.kind === "facility") {
-      if (!layers.facilities) return null;
       const facility = facilityById.get(hover.id);
-      return facility ? { title: facility.name, detail: "UAPS · clique para abrir a ficha" } : null;
+      if (!facility || !layers[layerForUnitType(facility.type)]) return null;
+      return {
+        title: facility.name,
+        detail: `${unitTypeLabel(facility.type)} · clique para abrir a ficha`,
+      };
     }
     if (!layers.neighborhoods) return null;
     const neighborhood = neighborhoodByCode.get(hover.id);
@@ -536,7 +610,7 @@ export function CityMap({
           viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
         >
           <title id="map-svg-title">
-            {`Contorno de Fortaleza com ${model.neighborhoods.length} bairros e ${model.facilities.length} UAPS cadastradas. Use a busca ou o índice de bairros para navegar pelo teclado.`}
+            {`Contorno de Fortaleza com ${model.neighborhoods.length} bairros, ${model.facilities.length} UAPS cadastradas e ${visibleUnits.length} UPAs ou hospitais municipais visíveis. Use a busca ou o índice de bairros para navegar pelo teclado.`}
           </title>
 
           <g className="graticule" aria-hidden="true">
@@ -614,6 +688,10 @@ export function CityMap({
               selectedNeighborhood={selectedNeighborhood}
               unit={unit}
             />
+          ) : null}
+
+          {story === null && visibleUnits.length > 0 ? (
+            <UnitLayer selectedFacility={selectedFacility} unit={unit} units={visibleUnits} />
           ) : null}
         </svg>
 

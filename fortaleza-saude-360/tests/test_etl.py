@@ -48,8 +48,31 @@ def _bairro(code: str, ring: list[list[list[float]]], year: int = 2019) -> dict:
     }
 
 
+def _unit(source_id: int, natureza: str, coordinates: list[float]) -> dict:
+    return {
+        "type": "Feature",
+        "geometry": {"type": "MultiPoint", "coordinates": [coordinates]},
+        "properties": {
+            "id": source_id,
+            "name": f"{natureza} DEMO {source_id}",
+            "natureza": natureza,
+            "cnes_n": 2000000 + source_id,
+            "nm_bairro": "Bairro DEMO",
+            "ano": 2026,
+        },
+    }
+
+
 def _valid_raw() -> Raw:
     return {
+        "upas.geojson": {
+            "type": "FeatureCollection",
+            "features": [_unit(1, "UPA", [-38.54, -3.74])],
+        },
+        "hospitals.geojson": {
+            "type": "FeatureCollection",
+            "features": [_unit(1, "HOSP", [-38.53, -3.73])],
+        },
         "uaps.geojson": {
             "type": "FeatureCollection",
             "features": [
@@ -133,6 +156,15 @@ IRREGULAR: dict[str, Callable[[Raw], None]] = {
         _bairro_props(raw, index).update(ano_ref=2023) for index in (0, 1)
     ],
     "ano de UAPS ausente": lambda raw: _uaps_props(raw, 0).update(ano=None),
+    "UPA fora do município": lambda raw: raw["upas.geojson"]["features"][0][
+        "geometry"
+    ].update(coordinates=[[-40.0, -3.74]]),
+    "hospital com ano fora da referência": lambda raw: raw["hospitals.geojson"][
+        "features"
+    ][0]["properties"].update(ano=2019),
+    "UPA na camada de hospitais": lambda raw: raw["hospitals.geojson"]["features"][0][
+        "properties"
+    ].update(natureza="UPA"),
 }
 
 
@@ -141,7 +173,7 @@ def test_valid_demo_pipeline_exports_all_layers(tmp_path: Path) -> None:
 
     results = export_public_data(raw_dir, tmp_path / "public")
 
-    assert [result.feature_count for result in results] == [2, 2, 1]
+    assert [result.feature_count for result in results] == [2, 1, 1, 2, 1]
 
 
 def test_exact_duplicate_is_removed_not_rejected(tmp_path: Path) -> None:

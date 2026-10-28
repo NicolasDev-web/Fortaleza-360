@@ -8,12 +8,16 @@ from scripts.generate_manifest import generate_manifest, write_manifest
 
 SOURCE_FILES = {
     "facilities": "uaps.geojson",
+    "upas": "upas.geojson",
+    "hospitals": "hospitals.geojson",
     "neighborhoods": "neighborhoods.geojson",
     "municipal-boundary": "municipal-boundary.geojson",
 }
 
 DEMO_PROPERTIES = {
     "facilities": {"id": "demo-1", "name": "UAPS DEMO"},
+    "upas": {"id": "upa-demo", "type": "UPA"},
+    "hospitals": {"id": "hospital-demo", "type": "HOSPITAL"},
     "neighborhoods": {"code": "DEMO", "name": "Bairro DEMO"},
     "municipal-boundary": {"id": 1, "nome": "Município DEMO"},
 }
@@ -85,7 +89,9 @@ def test_every_public_layer_has_source_license_and_checksum(tmp_path: Path) -> N
         assert layer["source"]["license"]
         assert layer["source"]["terms_url"].startswith("https://")
         assert layer["source"]["page_url"]
-        assert layer["source"]["catalog_updated_at"]
+        assert layer["source"]["catalog_updated_at"] or layer["source"].get(
+            "catalog_update_note"
+        )
         assert layer["limitations"]
         assert set(layer["dictionary"]) == set(layer["properties"])
         assert all(layer["dictionary"].values())

@@ -34,6 +34,8 @@ const DEFAULT_LAYERS: LayerVisibility = {
   boundary: true,
   neighborhoods: true,
   facilities: true,
+  upas: true,
+  hospitals: true,
 };
 
 export const STORY_SEEN_KEY = "f360:story-seen";
@@ -77,7 +79,10 @@ export function Observatory({ model }: ObservatoryProps) {
     [model],
   );
   const facilityById = useMemo(
-    () => new Map(model?.facilities.map((item) => [item.id, item]) ?? []),
+    () =>
+      new Map(
+        model ? [...model.facilities, ...model.otherUnits].map((item) => [item.id, item]) : [],
+      ),
     [model],
   );
   const facts = useMemo(() => (model ? buildStoryFacts(model) : null), [model]);
@@ -212,7 +217,12 @@ export function Observatory({ model }: ObservatoryProps) {
         <LayerRail
           counts={
             model
-              ? { neighborhoods: model.neighborhoods.length, facilities: model.facilities.length }
+              ? {
+                  neighborhoods: model.neighborhoods.length,
+                  facilities: model.facilities.length,
+                  upas: model.otherUnits.filter(({ type }) => type === "UPA").length,
+                  hospitals: model.otherUnits.filter(({ type }) => type === "HOSPITAL").length,
+                }
               : null
           }
           layers={layers}

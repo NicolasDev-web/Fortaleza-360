@@ -47,7 +47,10 @@ export type MapModel = {
   boundaryPath: string;
   areaKm2: number | null;
   neighborhoods: NeighborhoodShape[];
+  /** Somente UAPS: base das contagens, do Modo História e dos KPIs. */
   facilities: FacilityPoint[];
+  /** UPAs e hospitais municipais: camadas próprias, fora das contagens de UAPS. */
+  otherUnits: FacilityPoint[];
 };
 
 type Feature = {
@@ -114,10 +117,51 @@ function text(value: unknown): string | null {
   return null;
 }
 
+type RawNeighborhood = { code: string; geometry: MultiPolygonCoords };
+
+function readFacilityPoints(
+  collection: unknown,
+  label: string,
+  defaultType: string,
+  projection: ProjectionParams,
+  neighborhoods: RawNeighborhood[],
+): FacilityPoint[] {
+  return readFeatures(collection, label).map((feature, index) => {
+    const id = text(feature.properties.id);
+    const name = text(feature.properties.name);
+    const coordinates = feature.geometry.coordinates;
+
+    if (!id || !name || feature.geometry.type !== "Point" || !isPosition(coordinates)) {
+      throw new Error(`${label}: feição ${index} inválida.`);
+    }
+
+    const position: Position = [coordinates[0], coordinates[1]];
+    const container = neighborhoods.find(({ geometry }) => pointInMultiPolygon(position, geometry));
+    const [x, y] = project(projection, position);
+    const sus = feature.properties.sus;
+
+    return {
+      id,
+      name,
+      type: text(feature.properties.type) ?? defaultType,
+      management: text(feature.properties.management),
+      sus: typeof sus === "boolean" ? sus : null,
+      cnes: text(feature.properties.cnes),
+      declaredNeighborhood: text(feature.properties.neighborhood),
+      neighborhoodCode: container?.code ?? null,
+      position,
+      x: quantize(x),
+      y: quantize(y),
+      reference: text(feature.properties.reference_date),
+    };
+  });
+}
+
 export function buildMapModel(
   boundaryCollection: unknown,
   neighborhoodCollection: unknown,
   facilityCollection: unknown,
+  otherUnitCollections: unknown[] = [],
 ): MapModel {
   const [boundaryFeature] = readFeatures(boundaryCollection, "Limite municipal");
   const boundary = toMultiPolygon(boundaryFeature.geometry, "Limite municipal");
@@ -138,38 +182,15 @@ export function buildMapModel(
     },
   );
 
-  const facilities: FacilityPoint[] = readFeatures(facilityCollection, "UAPS").map(
-    (feature, index) => {
-      const id = text(feature.properties.id);
-      const name = text(feature.properties.name);
-      const coordinates = feature.geometry.coordinates;
-
-      if (!id || !name || feature.geometry.type !== "Point" || !isPosition(coordinates)) {
-        throw new Error(`UAPS: feição ${index} inválida.`);
-      }
-
-      const position: Position = [coordinates[0], coordinates[1]];
-      const container = rawNeighborhoods.find(({ geometry }) =>
-        pointInMultiPolygon(position, geometry),
-      );
-      const [x, y] = project(projection, position);
-      const sus = feature.properties.sus;
-
-      return {
-        id,
-        name,
-        type: text(feature.properties.type) ?? "UAPS",
-        management: text(feature.properties.management),
-        sus: typeof sus === "boolean" ? sus : null,
-        cnes: text(feature.properties.cnes),
-        declaredNeighborhood: text(feature.properties.neighborhood),
-        neighborhoodCode: container?.code ?? null,
-        position,
-        x: quantize(x),
-        y: quantize(y),
-        reference: text(feature.properties.reference_date),
-      };
-    },
+  const facilities = readFacilityPoints(
+    facilityCollection,
+    "UAPS",
+    "UAPS",
+    projection,
+    rawNeighborhoods,
+  );
+  const otherUnits = otherUnitCollections.flatMap((collection, index) =>
+    readFacilityPoints(collection, `Unidades ${index + 1}`, "OTHER", projection, rawNeighborhoods),
   );
 
   const neighborhoods: NeighborhoodShape[] = rawNeighborhoods
@@ -199,6 +220,7 @@ export function buildMapModel(
     areaKm2: typeof area === "number" && Number.isFinite(area) ? area : null,
     neighborhoods,
     facilities,
+    otherUnits,
   };
 }
 

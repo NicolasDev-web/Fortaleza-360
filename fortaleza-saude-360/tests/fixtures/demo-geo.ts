@@ -87,6 +87,35 @@ export const demoFacilities = {
   ],
 };
 
+const demoUnit = (id: string, type: string, name: string, coordinates: [number, number]) => ({
+  type: "Feature",
+  properties: {
+    id,
+    name,
+    type,
+    management: null,
+    sus: null,
+    neighborhood: "DEMO BAIRRO",
+    source_id: id.split("-").pop(),
+    reference_date: "2026",
+    cnes: "0000000",
+  },
+  geometry: { type: "Point", coordinates },
+});
+
+export const demoUpas = {
+  type: "FeatureCollection",
+  features: [demoUnit("upa-1", "UPA", "DEMO UPA Oeste", [-38.57, -3.85])],
+};
+
+export const demoHospitals = {
+  type: "FeatureCollection",
+  features: [demoUnit("hospital-1", "HOSPITAL", "DEMO Hospital Central", [-38.47, -3.75])],
+};
+
 export function demoModel() {
-  return buildMapModel(demoBoundary, demoNeighborhoods, demoFacilities);
+  return buildMapModel(demoBoundary, demoNeighborhoods, demoFacilities, [
+    demoUpas,
+    demoHospitals,
+  ]);
 }

@@ -19,12 +19,14 @@ try:
         deduplicate_facilities,
         load_facilities,
     )
+    from scripts.transform_units import load_units
     from scripts.validate_geodata import load_bounds, validate_points
     from scripts.validate_period import validate_period
 except ModuleNotFoundError:  # Execução direta em scripts/
     from fetch_data import SOURCES
     from transform_boundaries import load_neighborhoods
     from transform_facilities import deduplicate_facilities, load_facilities
+    from transform_units import load_units
     from validate_geodata import load_bounds, validate_points
     from validate_period import validate_period
 
@@ -117,6 +119,18 @@ def export_public_data(raw_dir: Path, output_dir: Path) -> list[ExportResult]:
         layer="UAPS",
     )
 
+    units = {}
+    for source_key, unit_type in (("upas", "UPA"), ("hospitals", "HOSPITAL")):
+        layer = load_units(raw_dir / SOURCES[source_key].filename, unit_type)
+        validate_points(layer, bounds=bounds)
+        validate_period(
+            layer,
+            "reference_date",
+            SOURCES[source_key].reference_year,
+            layer=unit_type,
+        )
+        units[source_key] = layer
+
     neighborhoods, _ = load_neighborhoods(raw_dir / "neighborhoods.geojson")
     validate_period(
         neighborhoods,
@@ -136,6 +150,8 @@ def export_public_data(raw_dir: Path, output_dir: Path) -> list[ExportResult]:
 
     return [
         export_geojson(facilities, output_dir / "facilities.geojson"),
+        export_geojson(units["upas"], output_dir / "upas.geojson"),
+        export_geojson(units["hospitals"], output_dir / "hospitals.geojson"),
         export_geojson(neighborhoods, output_dir / "neighborhoods.geojson"),
         export_geojson(
             municipal_boundary,

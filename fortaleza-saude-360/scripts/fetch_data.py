@@ -107,6 +107,31 @@ SOURCES: dict[str, Source] = {
         organization="IPECE",
         reference_year=2019,
     ),
+    "upas": Source(
+        source_id=825,
+        filename="upas.geojson",
+        page_url=(
+            "https://mapas.fortaleza.ce.gov.br/mapa/825/"
+            "unidades-de-pronto-atendimento-upa"
+        ),
+        download_url=(
+            "https://mapas.fortaleza.ce.gov.br/api/v1/"
+            "geojson?id=825&download=true"
+        ),
+        organization="SMS",
+        reference_year=2026,
+    ),
+    "hospitals": Source(
+        source_id=823,
+        filename="hospitals.geojson",
+        page_url="https://mapas.fortaleza.ce.gov.br/mapa/823/hospitais-municipais",
+        download_url=(
+            "https://mapas.fortaleza.ce.gov.br/api/v1/"
+            "geojson?id=823&download=true"
+        ),
+        organization="SMS",
+        reference_year=2026,
+    ),
     "cnes-ce": Source(
         source_id="CNES-ST-CE-202609",
         filename="cnes-st-ce-202609.dbc",

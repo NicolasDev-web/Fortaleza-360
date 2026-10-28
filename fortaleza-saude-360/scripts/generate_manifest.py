@@ -44,6 +44,60 @@ LAYER_CONFIG: dict[str, dict[str, Any]] = {
             "CNES repetido não implica que duas feições sejam a mesma unidade",
         ],
     },
+    "upas": {
+        "title": "Unidades de Pronto Atendimento (UPA)",
+        "source_file": "upas.geojson",
+        "catalog_updated_at": None,
+        "catalog_update_note": "A API não informa a data de atualização desta camada",
+        "dictionary": {
+            "id": "Identificador estável do projeto: {prefixo}-{source_id}",
+            "name": "Nome da unidade (campo de origem `name`)",
+            "type": "Tipo de equipamento atribuído pela camada de origem",
+            "management": "Sempre null: a fonte não publica gestão",
+            "sus": "Sempre null: a fonte não publica vínculo SUS",
+            "neighborhood": "Bairro declarado na fonte (`nm_bairro`); não é o vínculo "
+            "espacial",
+            "source_id": "Identificador da feição na API Fortaleza em Mapas",
+            "reference_date": "Ano de referência declarado (campo `ano`)",
+            "cnes": "Código CNES como publicado (`cnes_n`)",
+        },
+        "methodology": [
+            "MultiPoint de um ponto convertido em Point, sem mover a coordenada",
+            "Validação de natureza UPA, bounding box municipal e ano 2026",
+        ],
+        "limitations": [
+            "Cadastro não representa horário, capacidade, lotação ou tempo de espera",
+            "UPA atende urgência; não é porta de entrada da atenção primária",
+        ],
+    },
+    "hospitals": {
+        "title": "Hospitais municipais",
+        "source_file": "hospitals.geojson",
+        "catalog_updated_at": None,
+        "catalog_update_note": "A API não informa a data de atualização desta camada",
+        "dictionary": {
+            "id": "Identificador estável do projeto: {prefixo}-{source_id}",
+            "name": "Nome da unidade (campo de origem `name`)",
+            "type": "Tipo de equipamento atribuído pela camada de origem",
+            "management": "Sempre null: a fonte não publica gestão",
+            "sus": "Sempre null: a fonte não publica vínculo SUS",
+            "neighborhood": "Bairro declarado na fonte (`nm_bairro`); não é o vínculo "
+            "espacial",
+            "source_id": "Identificador da feição na API Fortaleza em Mapas",
+            "reference_date": "Ano de referência declarado (campo `ano`)",
+            "cnes": "Código CNES como publicado (`cnes_n`)",
+        },
+        "methodology": [
+            "MultiPoint de um ponto convertido em Point, sem mover a coordenada",
+            "Validação de natureza HOSP, bounding box municipal e ano 2026",
+        ],
+        "limitations": [
+            "Somente hospitais da gestão municipal; estaduais, federais e privados "
+            "não estão na camada",
+            "Cadastro não representa leitos, especialidades, lotação ou "
+            "disponibilidade",
+        ],
+    },
     "neighborhoods": {
         "title": "Bairros de Fortaleza",
         "source_file": "neighborhoods.geojson",
@@ -222,6 +276,11 @@ def generate_manifest(
                     "page_url": metadata["page_url"],
                     "download_url": metadata["download_url"],
                     "catalog_updated_at": config["catalog_updated_at"],
+                    **(
+                        {"catalog_update_note": config["catalog_update_note"]}
+                        if config.get("catalog_update_note")
+                        else {}
+                    ),
                     "collected_at": metadata["collected_at"],
                     "raw_sha256": metadata["sha256"],
                     "license": metadata["license"],

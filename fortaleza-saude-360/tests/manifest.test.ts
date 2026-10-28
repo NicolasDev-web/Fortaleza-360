@@ -24,6 +24,8 @@ const manifest = JSON.parse(readFileSync(join(DATA_DIR, "manifest.json"), "utf8"
 
 const MANIFEST_LAYER: Record<LayerSourceId, string> = {
   facilities: "facilities",
+  upas: "upas",
+  hospitals: "hospitals",
   neighborhoods: "neighborhoods",
   boundary: "municipal-boundary",
 };

@@ -29,7 +29,12 @@ import {
   type MapModel,
   type NeighborhoodShape,
 } from "@/lib/map-model";
-import { LAYER_SOURCES } from "@/lib/sources";
+import {
+  catalogUpdateLabel,
+  LAYER_SOURCES,
+  sourceForUnitType,
+  unitTypeLabel,
+} from "@/lib/sources";
 import { bigIdea, type StoryFacts } from "@/lib/story";
 
 type ReadingPanelProps = {
@@ -72,7 +77,10 @@ export function ReadingPanel({
     [model],
   );
   const facilityById = useMemo(
-    () => new Map(model?.facilities.map((item) => [item.id, item]) ?? []),
+    () =>
+      new Map(
+        model ? [...model.facilities, ...model.otherUnits].map((item) => [item.id, item]) : [],
+      ),
     [model],
   );
 
@@ -369,6 +377,7 @@ function FacilityDetails({
   onOpenNeighborhood: (code: string) => void;
 }) {
   const mismatch = hasNeighborhoodMismatch(facility, neighborhood);
+  const source = sourceForUnitType(facility.type);
 
   return (
     <div className="reading-view">
@@ -378,7 +387,8 @@ function FacilityDetails({
       </button>
       <header className="reading-header">
         <span className="section-label">
-          <Building2 size={13} aria-hidden="true" /> {facility.type} · ficha da unidade
+          <Building2 size={13} aria-hidden="true" /> {unitTypeLabel(facility.type)} · ficha da
+          unidade
         </span>
         <AnimatedHeading id="reading-title" text={facility.name} />
       </header>
@@ -438,11 +448,10 @@ function FacilityDetails({
         ) : null}
       </div>
 
-      <p className="detail-caveat">{LAYER_SOURCES.facilities.limitation}</p>
+      <p className="detail-caveat">{source.limitation}</p>
       <p className="detail-source">
-        Fonte: {LAYER_SOURCES.facilities.agency} via Fortaleza em Mapas (camada{" "}
-        {LAYER_SOURCES.facilities.catalogId}), atualização do catálogo em{" "}
-        {LAYER_SOURCES.facilities.catalogUpdate}.
+        Fonte: {source.agency} via Fortaleza em Mapas (camada {source.catalogId}), atualização do
+        catálogo {source.catalogUpdate ? `em ${source.catalogUpdate}` : catalogUpdateLabel(source)}.
       </p>
     </div>
   );

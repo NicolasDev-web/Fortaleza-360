@@ -583,6 +583,19 @@ kbd {
   background: radial-gradient(circle, var(--signal-uaps) 0 4px, rgba(243, 238, 233, 0.18) 5px 8px, transparent 9px);
 }
 
+/* UPA e hospital: forma distinta da UAPS, em tons neutros (a cor fica com as UAPS). */
+.layer-toggle-upas .layer-swatch {
+  background: linear-gradient(var(--text-muted), var(--text-muted)) center / 8px 8px no-repeat;
+  transform: rotate(45deg) scale(0.8);
+}
+
+.layer-toggle-hospitals .layer-swatch {
+  background:
+    linear-gradient(var(--canvas-deep), var(--canvas-deep)) center / 6px 1.5px no-repeat,
+    linear-gradient(var(--canvas-deep), var(--canvas-deep)) center / 1.5px 6px no-repeat,
+    linear-gradient(var(--text), var(--text)) center / 10px 10px no-repeat;
+}
+
 .is-locked .layer-swatch {
   border: 1px dashed var(--line-strong);
 }
@@ -661,6 +674,18 @@ kbd {
 
 .legend-dot {
   background: radial-gradient(circle, var(--signal-uaps) 0 3.5px, transparent 4.5px);
+}
+
+.legend-upa {
+  background: linear-gradient(var(--text-muted), var(--text-muted)) center / 7px 7px no-repeat;
+  transform: rotate(45deg) scale(0.75);
+}
+
+.legend-hospital {
+  background:
+    linear-gradient(var(--canvas-deep), var(--canvas-deep)) center / 5px 1.5px no-repeat,
+    linear-gradient(var(--canvas-deep), var(--canvas-deep)) center / 1.5px 5px no-repeat,
+    linear-gradient(var(--text), var(--text)) center / 9px 9px no-repeat;
 }
 
 .legend-line {
@@ -1067,6 +1092,44 @@ kbd {
 
 .facility-hit {
   fill: transparent;
+}
+
+.unit {
+  cursor: pointer;
+}
+
+.unit-shape {
+  stroke: var(--sea);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dot-in 500ms 1200ms var(--ease-out) both;
+}
+
+.unit-upa .unit-shape {
+  fill: var(--text-muted);
+}
+
+.unit-hospital .unit-shape {
+  fill: var(--text);
+}
+
+.unit-cross {
+  fill: none;
+  stroke: var(--canvas-deep);
+  pointer-events: none;
+}
+
+.unit:hover .unit-shape {
+  stroke: var(--signal);
+  stroke-width: 2;
+}
+
+.unit.is-selected .unit-shape {
+  fill: var(--accent);
+  stroke: var(--text);
+  stroke-width: 2;
 }
 
 .facility-halo,

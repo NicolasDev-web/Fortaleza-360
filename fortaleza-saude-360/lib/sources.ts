@@ -3,7 +3,7 @@
  * (verificação de 2026-10-27). `tests/manifest.test.ts` garante que cada camada
  * coincide com sua entrada em `public/data/manifest.json` (SDD-023).
  */
-export type LayerSourceId = "facilities" | "neighborhoods" | "boundary";
+export type LayerSourceId = "facilities" | "upas" | "hospitals" | "neighborhoods" | "boundary";
 
 export type LayerSource = {
   id: LayerSourceId;
@@ -11,7 +11,8 @@ export type LayerSource = {
   agency: string;
   catalogId: number;
   reference: string;
-  catalogUpdate: string;
+  /** `null` quando a API não informa a data (camadas 823 e 825). */
+  catalogUpdate: string | null;
   pageUrl: string;
   limitation: string;
 };
@@ -39,6 +40,28 @@ export const LAYER_SOURCES: Record<LayerSourceId, LayerSource> = {
     limitation:
       "Cadastro de localização. Não indica horário, capacidade, equipe ou disponibilidade de atendimento.",
   },
+  upas: {
+    id: "upas",
+    title: "Unidades de Pronto Atendimento (UPA)",
+    agency: "SMS Fortaleza",
+    catalogId: 825,
+    reference: "2026",
+    catalogUpdate: null,
+    pageUrl: "https://mapas.fortaleza.ce.gov.br/mapa/825/unidades-de-pronto-atendimento-upa",
+    limitation:
+      "Cadastro de localização. Não representa horário, capacidade, lotação ou tempo de espera.",
+  },
+  hospitals: {
+    id: "hospitals",
+    title: "Hospitais municipais",
+    agency: "SMS Fortaleza",
+    catalogId: 823,
+    reference: "2026",
+    catalogUpdate: null,
+    pageUrl: "https://mapas.fortaleza.ce.gov.br/mapa/823/hospitais-municipais",
+    limitation:
+      "Só hospitais da gestão municipal; estaduais, federais e privados não estão na camada. Não representa leitos, lotação ou disponibilidade.",
+  },
   neighborhoods: {
     id: "neighborhoods",
     title: "Bairros de Fortaleza",
@@ -62,3 +85,18 @@ export const LAYER_SOURCES: Record<LayerSourceId, LayerSource> = {
     limitation: "Usado para enquadramento e controle de qualidade, não como indicador.",
   },
 };
+
+export function catalogUpdateLabel(source: LayerSource): string {
+  return source.catalogUpdate ?? "não informada pela API";
+}
+
+/** Fonte da camada de origem de uma unidade, pelo tipo do contrato `facility`. */
+export function sourceForUnitType(type: string): LayerSource {
+  if (type === "UPA") return LAYER_SOURCES.upas;
+  if (type === "HOSPITAL") return LAYER_SOURCES.hospitals;
+  return LAYER_SOURCES.facilities;
+}
+
+export function unitTypeLabel(type: string): string {
+  return type === "HOSPITAL" ? "Hospital municipal" : type;
+}

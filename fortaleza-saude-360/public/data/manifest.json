@@ -31,7 +31,7 @@
     },
     "tiles": 265
   },
-  "generated_at": "2026-10-28T01:23:36Z",
+  "generated_at": "2026-10-28T01:32:05Z",
   "layers": [
     {
       "bbox": [
@@ -95,6 +95,132 @@
         "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
       },
       "title": "Unidades de Atenção Primária à Saúde"
+    },
+    {
+      "bbox": [
+        -38.6248613,
+        -3.83844503,
+        -38.47447455,
+        -3.7088265
+      ],
+      "bytes": 1650,
+      "crs": "EPSG:4326",
+      "dictionary": {
+        "cnes": "Código CNES como publicado (`cnes_n`)",
+        "id": "Identificador estável do projeto: {prefixo}-{source_id}",
+        "management": "Sempre null: a fonte não publica gestão",
+        "name": "Nome da unidade (campo de origem `name`)",
+        "neighborhood": "Bairro declarado na fonte (`nm_bairro`); não é o vínculo espacial",
+        "reference_date": "Ano de referência declarado (campo `ano`)",
+        "source_id": "Identificador da feição na API Fortaleza em Mapas",
+        "sus": "Sempre null: a fonte não publica vínculo SUS",
+        "type": "Tipo de equipamento atribuído pela camada de origem"
+      },
+      "extent": "Fortaleza, Ceará",
+      "feature_count": 6,
+      "file": "/data/upas.geojson",
+      "geometry_types": [
+        "Point"
+      ],
+      "id": "upas",
+      "limitations": [
+        "Cadastro não representa horário, capacidade, lotação ou tempo de espera",
+        "UPA atende urgência; não é porta de entrada da atenção primária"
+      ],
+      "methodology": [
+        "MultiPoint de um ponto convertido em Point, sem mover a coordenada",
+        "Validação de natureza UPA, bounding box municipal e ano 2026"
+      ],
+      "properties": [
+        "cnes",
+        "id",
+        "management",
+        "name",
+        "neighborhood",
+        "reference_date",
+        "source_id",
+        "sus",
+        "type"
+      ],
+      "sha256": "c6fe66c074b2349dcc82f29c01c4e38a9d3066c8734fb22d72a977a585be4c91",
+      "source": {
+        "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+        "catalog_update_note": "A API não informa a data de atualização desta camada",
+        "catalog_updated_at": null,
+        "collected_at": "2026-10-28T01:32:02Z",
+        "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=825&download=true",
+        "id": 825,
+        "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+        "organization": "SMS",
+        "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/825/unidades-de-pronto-atendimento-upa",
+        "raw_sha256": "0425ab2689a0eae101e23d6e420d0c4b36b02515e21889f41b385a3b76500391",
+        "reference_year": 2026,
+        "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+      },
+      "title": "Unidades de Pronto Atendimento (UPA)"
+    },
+    {
+      "bbox": [
+        -38.6161906,
+        -3.8308671,
+        -38.4813781,
+        -3.715168
+      ],
+      "bytes": 3154,
+      "crs": "EPSG:4326",
+      "dictionary": {
+        "cnes": "Código CNES como publicado (`cnes_n`)",
+        "id": "Identificador estável do projeto: {prefixo}-{source_id}",
+        "management": "Sempre null: a fonte não publica gestão",
+        "name": "Nome da unidade (campo de origem `name`)",
+        "neighborhood": "Bairro declarado na fonte (`nm_bairro`); não é o vínculo espacial",
+        "reference_date": "Ano de referência declarado (campo `ano`)",
+        "source_id": "Identificador da feição na API Fortaleza em Mapas",
+        "sus": "Sempre null: a fonte não publica vínculo SUS",
+        "type": "Tipo de equipamento atribuído pela camada de origem"
+      },
+      "extent": "Fortaleza, Ceará",
+      "feature_count": 10,
+      "file": "/data/hospitals.geojson",
+      "geometry_types": [
+        "Point"
+      ],
+      "id": "hospitals",
+      "limitations": [
+        "Somente hospitais da gestão municipal; estaduais, federais e privados não estão na camada",
+        "Cadastro não representa leitos, especialidades, lotação ou disponibilidade"
+      ],
+      "methodology": [
+        "MultiPoint de um ponto convertido em Point, sem mover a coordenada",
+        "Validação de natureza HOSP, bounding box municipal e ano 2026"
+      ],
+      "properties": [
+        "cnes",
+        "id",
+        "management",
+        "name",
+        "neighborhood",
+        "reference_date",
+        "source_id",
+        "sus",
+        "type"
+      ],
+      "sha256": "faaaa5eeaeb5883b2b9710ef0418044c1bfca0745afd5c3eed7710d3850e3c24",
+      "source": {
+        "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+        "catalog_update_note": "A API não informa a data de atualização desta camada",
+        "catalog_updated_at": null,
+        "collected_at": "2026-10-28T01:32:03Z",
+        "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=823&download=true",
+        "id": 823,
+        "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+        "organization": "SMS",
+        "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/823/hospitais-municipais",
+        "raw_sha256": "f5963aa0ce7372ef72e946e959aa88f8cf854f92cf01b6896a7551c4813fae0b",
+        "reference_year": 2026,
+        "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+      },
+      "title": "Hospitais municipais"
     },
     {
       "bbox": [

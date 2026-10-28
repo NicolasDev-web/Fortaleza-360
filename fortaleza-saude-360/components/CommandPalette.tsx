@@ -10,6 +10,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { Hospital, Map as MapIcon, Search } from "lucide-react";
 import { normalizeName } from "@/lib/geo";
 import type { MapModel } from "@/lib/map-model";
+import { unitTypeLabel } from "@/lib/sources";
 
 type Result = {
   kind: "neighborhood" | "facility";
@@ -60,15 +61,15 @@ export function CommandPalette({
         detail: `Bairro · ${facilityIds.length} UAPS no cadastro`,
       }));
 
-    const facilities = model.facilities
+    const facilities = [...model.facilities, ...model.otherUnits]
       .filter(({ name, cnes }) => matches(name) || (cnes !== null && cnes.includes(query.trim())))
       .slice(0, LIMIT_PER_GROUP)
-      .map<Result>(({ id, name, cnes, neighborhoodCode }) => ({
+      .map<Result>(({ id, name, type, cnes, neighborhoodCode }) => ({
         kind: "facility",
         id,
         label: name,
         detail: [
-          "UAPS",
+          unitTypeLabel(type),
           neighborhoodCode ? neighborhoodNames.get(neighborhoodCode) : null,
           cnes ? `CNES ${cnes}` : null,
         ]
