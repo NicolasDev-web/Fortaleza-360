@@ -31,7 +31,7 @@
     },
     "tiles": 265
   },
-  "generated_at": "2026-10-28T01:42:49Z",
+  "generated_at": "2026-10-28T02:36:54Z",
   "layers": [
     {
       "bbox": [
@@ -345,5 +345,46 @@
   ],
   "mode": "official",
   "notice": "Camadas oficiais de localização e limites administrativos. Não há indicadores de capacidade, oferta ou cobertura populacional.",
+  "population": {
+    "bytes": 12623,
+    "dictionary": {
+      "code": "Código municipal do bairro (o mesmo de neighborhoods.geojson)",
+      "population": "Pessoas no bairro: soma dos setores com a maior parte da área nele",
+      "population_high": "Maior valor entre o central e a ponderação por área",
+      "population_low": "Menor valor entre o central e a ponderação por área",
+      "sectors": "Quantidade de setores censitários contados inteiros no bairro"
+    },
+    "file": "/data/neighborhood-population.json",
+    "limitations": [
+      "Censo 2022: quatro anos antes da lista de postos de 2026, sem projeção",
+      "Não é a população atendida por nenhum posto; bairro não é território de equipe de saúde",
+      "Licença do IBGE não confirmada: página de termos indisponível na coleta"
+    ],
+    "method": "Valor central: cada setor censitário entra inteiro no bairro onde fica a maior parte da sua área. Faixa: mínimo e máximo entre esse valor e a ponderação pela área do setor dentro de cada bairro.",
+    "reference_year": 2022,
+    "rows": 121,
+    "sha256": "d8c80e11402d7b5cbf5dd107ea6fc25c8e3eed3e18d9eb7a269cf0e56dc3a426",
+    "sources": [
+      {
+        "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+        "collected_at": "2026-10-28T00:37:45Z",
+        "download_url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/Agregados_por_setores_basico_BR_20260520.zip",
+        "id": "IBGE-AGREGADOS-SETORES-BASICO-CD2022-20260520",
+        "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+        "organization": "IBGE",
+        "sha256": "ec04624286233d699ebe69c7b9625744a1cfdfc8352126f30245bdef5e9bdc63"
+      },
+      {
+        "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+        "collected_at": "2026-10-28T00:37:43Z",
+        "download_url": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/gpkg/UF/CE/CE_setores_CD2022.gpkg",
+        "id": "IBGE-MALHA-SETORES-CD2022-CE",
+        "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+        "organization": "IBGE",
+        "sha256": "879ed9b7640906793c16ab1c02a24f5f24843f00b6330af9a7f882872d169aba"
+      }
+    ],
+    "total_population": 2428708
+  },
   "schema_version": "1.2"
 }

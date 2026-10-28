@@ -20,6 +20,14 @@ const manifest = JSON.parse(readFileSync(join(DATA_DIR, "manifest.json"), "utf8"
   mode: string;
   layers?: ManifestLayer[];
   basemap?: { file: string; sha256: string; source: { license: string; terms_url: string } };
+  population?: {
+    file: string;
+    sha256: string;
+    reference_year: number;
+    total_population: number;
+    sources: { organization: string; license: string }[];
+    limitations: string[];
+  };
 };
 
 const MANIFEST_LAYER: Record<LayerSourceId, string> = {
@@ -56,5 +64,19 @@ describe("manifesto público", () => {
     expect(manifest.basemap!.source.terms_url).toBe("https://www.openstreetmap.org/copyright");
     const bytes = readFileSync(join(process.cwd(), "public", manifest.basemap!.file));
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(manifest.basemap!.sha256);
+  });
+
+  it("registra a fonte IBGE, a ressalva de licença e o checksum da população", () => {
+    const population = manifest.population!;
+    expect(population.reference_year).toBe(2022);
+    expect(population.sources.every(({ organization }) => organization === "IBGE")).toBe(true);
+    expect(population.sources[0].license).toMatch(/não verificada/);
+    expect(population.limitations.join(" ")).toMatch(/Não é a população atendida/);
+    const bytes = readFileSync(join(process.cwd(), "public", population.file));
+    expect(createHash("sha256").update(bytes).digest("hex")).toBe(population.sha256);
+    const data = JSON.parse(bytes.toString("utf8")) as { neighborhoods: { population: number }[] };
+    expect(data.neighborhoods.reduce((sum, row) => sum + row.population, 0)).toBe(
+      population.total_population,
+    );
   });
 });

@@ -1889,7 +1889,8 @@ kbd {
 }
 
 /* Proxy em linha reta (SDD-032): sempre rotulado, com a ressalva visível. */
-.detail-proxy {
+.detail-proxy,
+.detail-people {
   display: grid;
   gap: 6px;
   padding: 12px 14px;
@@ -1897,13 +1898,15 @@ kbd {
   border-radius: var(--radius-md);
 }
 
-.detail-proxy p {
+.detail-proxy p,
+.detail-people p {
   margin: 0;
   color: var(--text);
   font-size: 14px;
 }
 
-.detail-proxy small {
+.detail-proxy small,
+.detail-people small {
   color: var(--text-muted);
   font-size: 12px;
 }

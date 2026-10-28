@@ -13,6 +13,7 @@ import {
   Navigation,
   Ruler,
   TriangleAlert,
+  Users,
 } from "lucide-react";
 import { Insights, InsightsFooter } from "@/components/Insights";
 import { KpiCard } from "@/components/KpiCard";
@@ -28,6 +29,12 @@ import {
   type StraightLineResult,
 } from "@/lib/accessibility";
 import { formatCoordinate, normalizeName, unproject, type Box } from "@/lib/geo";
+import {
+  peoplePerFacility,
+  POPULATION_SOURCE,
+  roundForReading,
+  type NeighborhoodPopulation,
+} from "@/lib/population";
 import {
   hasNeighborhoodMismatch,
   neighborhoodSummary,
@@ -64,6 +71,48 @@ function managementLabel(value: string | null): string {
   if (value === null) return NOT_INFORMED;
   if (value === "M") return "Prefeitura (gestão municipal)";
   return value;
+}
+
+const integer = new Intl.NumberFormat("pt-BR");
+
+/** Quem mora no bairro (SDD-033): número, faixa, razão só quando há posto, e a ressalva. */
+function PeopleBlock({
+  population,
+  facilities,
+}: {
+  population: NeighborhoodPopulation;
+  facilities: number;
+}) {
+  const ratio = peoplePerFacility(population, facilities);
+  return (
+    <div aria-labelledby="people-title" className="detail-people" role="group">
+      <span className="section-label" id="people-title">
+        Quem mora aqui
+      </span>
+      <p>
+        <strong>{integer.format(population.population)} pessoas</strong>, pelo Censo{" "}
+        {POPULATION_SOURCE.reference} ({POPULATION_SOURCE.agency}).
+      </p>
+      {population.low !== population.high ? (
+        <small>
+          Pode ser entre {integer.format(population.low)} e {integer.format(population.high)},
+          dependendo de como se contam as áreas do Censo que ficam na divisa do bairro.
+        </small>
+      ) : null}
+      {ratio ? (
+        <p>
+          Cerca de <strong>{integer.format(roundForReading(ratio.central))}</strong> pessoas
+          para cada posto dentro do bairro.
+        </p>
+      ) : (
+        <p>Sem posto dentro do bairro, não dá para fazer essa conta.</p>
+      )}
+      <small>
+        Isso não é quantas pessoas cada posto atende: muita gente usa o posto de outro bairro, e
+        a população é de {POPULATION_SOURCE.reference}, quatro anos antes da lista de postos.
+      </small>
+    </div>
+  );
 }
 
 /** Detalhe técnico sob demanda (docs/VOICE.md): a ressalva principal fica sempre fora. */
@@ -145,6 +194,7 @@ export function ReadingPanel({
           }
           nearestName={(id) => facilityById.get(id)?.name ?? id}
           neighborhood={neighborhood}
+          population={model?.population?.byCode[neighborhood.code] ?? null}
           onBack={onClear}
           onFrame={() => onFrame(neighborhood.box)}
           onSelectFacility={(id) => onSelectFacility(id, true)}
@@ -232,14 +282,14 @@ function Overview({
                 value={model ? model.facilities.length : null}
               />
               <KpiCard
-                icon={MapIcon}
-                label="Bairros"
+                icon={Users}
+                label="Moradores (Censo 2022)"
                 note={
-                  model
-                    ? `${LAYER_SOURCES.neighborhoods.agency} · dados de ${LAYER_SOURCES.neighborhoods.reference}`
+                  model?.population
+                    ? `${POPULATION_SOURCE.agency} · dados de ${POPULATION_SOURCE.reference}`
                     : "Sem dados agora"
                 }
-                value={model ? model.neighborhoods.length : null}
+                value={model?.population?.total ?? null}
               />
               <KpiCard
                 fractionDigits={1}
@@ -327,12 +377,14 @@ function NeighborhoodDetails({
   facilities,
   nearest,
   nearestName,
+  population,
   onBack,
   onFrame,
   onSelectFacility,
 }: {
   neighborhood: NeighborhoodShape;
   facilities: FacilityPoint[];
+  population: NeighborhoodPopulation | null;
   nearest: StraightLineResult | null;
   nearestName: (id: string) => string;
   onBack: () => void;
@@ -366,6 +418,8 @@ function NeighborhoodDetails({
           Mostrar no mapa
         </button>
       </div>
+
+      {population ? <PeopleBlock facilities={facilities.length} population={population} /> : null}
 
       {facilities.length > 0 ? (
         <ListStack
@@ -412,6 +466,14 @@ function NeighborhoodDetails({
           bairro. A distância é medida em linha reta (fórmula de haversine) a partir do centro
           geométrico do bairro, que nem sempre é onde as pessoas moram.
         </p>
+        {population ? (
+          <p>
+            População: {POPULATION_SOURCE.agency}, Censo {POPULATION_SOURCE.reference} (revisão
+            de {POPULATION_SOURCE.revision}), somada a partir dos setores do Censo. O número
+            principal conta cada setor inteiro no bairro onde fica a maior parte dele; a faixa
+            usa também a divisão pela área. {POPULATION_SOURCE.license}.
+          </p>
+        ) : null}
       </HowWeKnow>
     </div>
   );

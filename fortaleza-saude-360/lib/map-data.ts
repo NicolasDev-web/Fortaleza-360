@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { buildMapModel, type MapModel } from "@/lib/map-model";
+import { parsePopulation } from "@/lib/population";
 
 const DATA_DIR = join(process.cwd(), "public", "data");
 
@@ -19,7 +20,17 @@ export async function loadMapModel(): Promise<MapModel | null> {
       readJson("hospitals.geojson"),
     ]);
 
-    return buildMapModel(boundary, neighborhoods, facilities, [upas, hospitals]);
+    const model = buildMapModel(boundary, neighborhoods, facilities, [upas, hospitals]);
+    // A população é complementar: se faltar ou falhar na validação, o mapa segue sem ela.
+    try {
+      model.population = parsePopulation(
+        await readJson("neighborhood-population.json"),
+        model.neighborhoods.map(({ code }) => code),
+      );
+    } catch (error) {
+      console.error("[f360] População por bairro indisponível:", error);
+    }
+    return model;
   } catch (error) {
     console.error("[f360] Falha ao preparar camadas territoriais:", error);
     return null;

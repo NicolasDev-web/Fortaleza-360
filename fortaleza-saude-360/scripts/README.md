@@ -66,3 +66,14 @@ python scripts/generate_manifest.py
 ```
 
 Recorta, por requisições de intervalo, o build diário do Protomaps na caixa do limite municipal (+~3 km) até o zoom 14 e grava `public/basemap/fortaleza.pmtiles` com um relatório `.json` (fonte, SHA-256, licença, coleta). Escolha um build listado em `https://build-metadata.protomaps.dev/builds.json`; depois regenere o manifesto.
+
+## População por bairro
+
+```powershell
+python -m scripts.transform_population
+python -m scripts.aggregate_population
+python scripts/generate_manifest.py
+```
+
+Soma a população do Censo 2022 por bairro em `public/data/neighborhood-population.json`, com valor central (setor inteiro no bairro principal) e faixa (comparando com a ponderação por área). Falha se algum bairro ficar sem setor ou algum setor sem população.
+

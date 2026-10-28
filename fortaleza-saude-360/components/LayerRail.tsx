@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown, ExternalLink, Lock, SlidersHorizontal } from "lucide-react";
 import type { LayerVisibility } from "@/components/CityMap";
+import { POPULATION_SOURCE } from "@/lib/population";
 import {
   catalogUpdateLabel,
   LAYER_SOURCES,
@@ -174,6 +175,17 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
                 </small>
               </li>
             ))}
+            <li>
+              <a href={POPULATION_SOURCE.pageUrl} rel="noopener noreferrer" target="_blank">
+                {POPULATION_SOURCE.title}
+                <ExternalLink size={12} aria-hidden="true" />
+                <span className="visually-hidden"> (abre em nova aba)</span>
+              </a>
+              <small>
+                {POPULATION_SOURCE.agency} · dados de {POPULATION_SOURCE.reference} · revisão de{" "}
+                {POPULATION_SOURCE.revision} · {POPULATION_SOURCE.license}
+              </small>
+            </li>
           </ul>
           <p className="rail-attribution">{SOURCE_ATTRIBUTION}</p>
           <p className="rail-license">

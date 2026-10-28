@@ -202,6 +202,48 @@ def _inspect_geojson(path: Path) -> dict[str, Any]:
     }
 
 
+POPULATION_DICTIONARY = {
+    "code": "Código municipal do bairro (o mesmo de neighborhoods.geojson)",
+    "population": "Pessoas no bairro: soma dos setores com a maior parte da área nele",
+    "population_low": "Menor valor entre o central e a ponderação por área",
+    "population_high": "Maior valor entre o central e a ponderação por área",
+    "sectors": "Quantidade de setores censitários contados inteiros no bairro",
+}
+
+
+def _population_entry(public_dir: Path) -> dict[str, Any] | None:
+    """Proveniência de neighborhood-population.json (aggregate_population.py)."""
+    path = public_dir / "neighborhood-population.json"
+    if not path.exists():
+        return None
+    content = path.read_bytes()
+    data = json.loads(content.decode("utf-8"))
+    rows = data["neighborhoods"]
+    fields = sorted({key for row in rows for key in row})
+    undocumented = [name for name in fields if name not in POPULATION_DICTIONARY]
+    if undocumented:
+        raise ValueError(
+            f"população: propriedades sem dicionário: {', '.join(undocumented)}"
+        )
+    return {
+        "file": "/data/neighborhood-population.json",
+        "bytes": len(content),
+        "sha256": hashlib.sha256(content).hexdigest(),
+        "rows": len(rows),
+        "reference_year": data["reference_year"],
+        "total_population": data["total_population"],
+        "method": data["method"],
+        "sources": data["sources"],
+        "dictionary": {name: POPULATION_DICTIONARY[name] for name in fields},
+        "limitations": [
+            "Censo 2022: quatro anos antes da lista de postos de 2026, sem projeção",
+            "Não é a população atendida por nenhum posto; bairro não é território "
+            "de equipe de saúde",
+            "Licença do IBGE não confirmada: página de termos indisponível na coleta",
+        ],
+    }
+
+
 def _basemap_entry(public_dir: Path) -> dict[str, Any] | None:
     """Proveniência do recorte OSM gerado por scripts/build_basemap.py, se existir."""
     tiles = public_dir.parent / "basemap" / "fortaleza.pmtiles"
@@ -305,6 +347,9 @@ def generate_manifest(
         "generated_at": generated_at or _utc_now(),
         "layers": layers,
     }
+    population = _population_entry(public_dir)
+    if population:
+        manifest["population"] = population
     basemap = _basemap_entry(public_dir)
     if basemap:
         manifest["basemap"] = basemap

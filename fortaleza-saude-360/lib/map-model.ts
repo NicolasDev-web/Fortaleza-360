@@ -14,6 +14,7 @@ import {
   type Position,
   type ProjectionParams,
 } from "@/lib/geo";
+import type { PopulationData } from "@/lib/population";
 
 export type NeighborhoodShape = {
   code: string;
@@ -53,6 +54,8 @@ export type MapModel = {
   facilities: FacilityPoint[];
   /** UPAs e hospitais municipais: camadas próprias, fora das contagens de UAPS. */
   otherUnits: FacilityPoint[];
+  /** Censo 2022 por bairro; `null` se o arquivo faltar ou não passar na validação. */
+  population: PopulationData | null;
 };
 
 type Feature = {
@@ -224,6 +227,7 @@ export function buildMapModel(
     neighborhoods,
     facilities,
     otherUnits,
+    population: null,
   };
 }
 
