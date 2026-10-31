@@ -1,9 +1,9 @@
 # Qualidade e deploy
-## Estado em 2026-10-29
+## Estado em 2026-10-31
 
 Preparação local concluída para revisão. **Nenhum preview foi publicado; checklist de publicação ainda não assinado.** A SDD-045 foi adiada por decisão explícita do usuário em 2026-10-29. Retomar a escolha de hospedagem e a publicação somente quando solicitado.
 
-O usuário solicitou setup da Vercel e depois condicionou a publicação à conclusão das demandas. O projeto remoto `fortaleza-saude-360` foi criado e vinculado, mas nenhum deployment foi enviado; não houve push ou alterações de DNS. A integração Git criada pelo setup foi desconectada na SDD-054 e deploy automático bloqueado no arquivo local para não publicar em um futuro push de CI. Inventário atual e pendências em `READINESS.md`.
+O usuário solicitou setup da Vercel e depois condicionou a publicação à conclusão das demandas. O projeto remoto `fortaleza-saude-360` foi criado e vinculado, mas nenhum deployment foi enviado e não houve alterações de DNS. O push autorizado à branch `codex/pre-deploy-completion` executou somente revisão e CI no GitHub. A integração Git criada pelo setup foi desconectada na SDD-054 e deploy automático bloqueado no arquivo local. API e CLI reconferidas após o push: sem integração Git e sem deployments. Inventário atual e pendências em `READINESS.md`.
 
 ## Verificação local
 
@@ -16,7 +16,7 @@ O usuário solicitou setup da Vercel e depois condicionou a publicação à conc
 - [x] Auditoria técnica de privacidade e medições locais em `PRIVACY_ETHICS.md` e `PERFORMANCE.md`.
 - [x] `.vercelignore` exclui a pasta offline `/data/`, ambientes locais, traces e `.env*` do upload pelo CLI. O padrão é ancorado: **`public/data/` permanece incluído**.
 - [x] Nenhuma chave privada obrigatória. O modo dos dados vem do manifesto; a antiga variável de exemplo não era lida pelo runtime e foi removida do exemplo.
-- [ ] Primeiro workflow executado e aprovado no GitHub após push autorizado. A CI está preparada, mas não foi executada remotamente.
+- [x] Primeiro workflow executado e aprovado no GitHub após push autorizado: [41213816425](https://github.com/NicolasDev-web/Fortaleza-360/actions/runs/41213816425), revisão `3e1dcf5`; 117 JS, 109 Python, 24 E2E, lint/tipos/Ruff, guard e build.
 
 ## Decisões do responsável antes de publicar
 
@@ -25,7 +25,7 @@ O usuário solicitou setup da Vercel e depois condicionou a publicação à conc
 - [ ] Escolher preview público ou acesso protegido e revisar quem poderá abrir o link.
 - [ ] Conferir custos/limites da conta, métricas automáticas, acesso e retenção de logs de IP/URLs. Não ativar analytics, replay ou envio de coordenadas por padrão.
 - [ ] Revisar a licença padronizada do IBGE ainda não confirmada na coleta e as atribuições das fontes. A aprovação de um preview não elimina essa pendência.
-- [ ] Aceitar o escopo experimental e manter a pendência de conferência de rotas reais visível. Testes de código não equivalem a validação de campo.
+- [ ] Aceitar o escopo experimental e manter as limitações visíveis. Os cinco pares foram comparados com um roteador pedestre externo (`TRAVEL_TIME.md`), mas não houve medição de campo ou calibração local.
 - [ ] Definir o domínio do preview. Não alterar DNS ou domínio próprio sem autorização específica.
 
 ## Conferência após um preview autorizado

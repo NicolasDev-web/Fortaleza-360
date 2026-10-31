@@ -31,7 +31,7 @@
 - 029: [x] camada de unidades (UAPS + UPA + hospitais municipais, sem clusters por decisão do usuário)
 - 030: [x] ficha de unidade
 - 031: [x] busca territorial
-- 032: [x] proxy de distância (cálculo e ficha do bairro; camada no mapa aguarda decisão)
+- 032: [x] proxy de distância (cálculo e ficha do bairro; camada no mapa concluída na 048)
 - 033: [x] indicadores por bairro (população do Censo 2022 e pessoas por posto, com faixa)
 - 034: [x] exportar CSV
 - 035: [x] malha viária
@@ -54,13 +54,15 @@
 - 052: [x] corredores centrais 10/20/30 min no mapa, imagens leves sob demanda e checksum
 - 053: [x] títulos sem desfoque residual sob movimento reduzido, conferidos no navegador
 - 054: [x] integração Git da Vercel desconectada e deploy automático bloqueado durante revisão/CI
-- 055: [ ] revisão em branch autorizada; commits preparados e CI remota em execução/verificação
+- 055: [x] entrega em branch de revisão e CI remota aprovada: 117 JS, 109 Python, 24 E2E e build
 - UX-001: [x] redesign "Sonar costeiro" com mapa SVG real (tarefa extra aprovada; antecipa parcialmente SDD-028–031 sem MapLibre)
 - UX-002: [x] "Terra da Luz": paleta nova, tipografia animada, componentes uselayouts/Watermelon, Modo História (Storytelling com Dados) e toques de Fortaleza (tarefa extra aprovada)
 - UX-003: [x] remove cordel/renda, ondas e farol só no mar, transição de onda entre modos e interruptores de camada (tarefa extra aprovada)
 - UX-004: [x] linguagem simples guiada por Storytelling com Dados, com detalhe técnico em "Como sabemos disso" (tarefa extra aprovada)
 
 Log: preencha `ID | data | arquivos | teste executado | resultado | limitações` após cada tarefa.
+
+055 | 2026-10-31 | entrega SDD-034–054 commitada em codex/pre-deploy-completion, tests/public-data.test.ts, docs/{CI,READINESS,DEPLOY_TESTS,TRAVEL_TIME,DATA_SOURCES}.md, tarefa/status | primeiro run 41213402166: 116/117 JS; fixture de caminho continha DEMO e exercitava outra rejeição no Linux; isolada sem alterar guard, 7 testes locais passaram; run 41213816425 na revisão 3e1dcf530def532674ec8fa5203f392092583520: guard 14 arquivos, Ruff, 109 Python, lint, tipos, 117 JS, build e 24 E2E aprovados | CI real aprovada e evidências retidas por 7 dias; cinco pares públicos comparados na interface Valhalla/FOSSGIS perfil Pedestrian, tempos dentro da faixa local, URLs/versão/resultados documentados; índice IBGE ainda contém básico 20260520, outubro corresponde a características de domicílio; Vercel sem Git/deployments após push | sem merge/deploy; comparação entre motores OSM não é medição em campo nem calibração; distâncias externas arredondadas; termos específicos IBGE não confirmados; hospedagem/dispositivo físico pendentes; evidência aplica-se à árvore integrada citada, não a cada commit intermediário; atualização final de evidência somente documental
 
 055-preparação | 2026-10-31 | entrega acumulada SDD-034–054, tarefa/status | revisão dos caminhos e exclusões, varredura por padrões de credenciais sem expor conteúdo, guard de 14 arquivos; autenticação GitHub e repositório conferidos; Vercel API gitConnected=false e configuração automática false | usuário autorizou continuar após proposta de commits/push em codex/pre-deploy-completion; branch criada, módulos organizados por microtarefa e integração compartilhada separada | nenhuma credencial/ambiente/dado bruto nos caminhos preparados; validação da CI ainda não confirmada; sem merge/deploy; ressalvas de IBGE/rotas preservadas
 

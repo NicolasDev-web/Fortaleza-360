@@ -1,6 +1,6 @@
 # Modelo de custo de trajeto a pé (SDD-036)
 
-Converte os trechos da malha de `docs/WALK_NETWORK.md` em minutos de caminhada. Implementado em `scripts/travel_time.py`, usado nas isócronas offline (SDD-037) e no simulador (SDD-039). A conferência externa dos cinco trajetos abaixo permanece pendente.
+Converte os trechos da malha de `docs/WALK_NETWORK.md` em minutos de caminhada. Implementado em `scripts/travel_time.py`, usado nas isócronas offline (SDD-037) e no simulador (SDD-039). Os cinco pares abaixo foram comparados com os resultados de um roteador pedestre externo em 2026-10-31; medição em campo e calibração continuam pendentes.
 
 ## Regra central
 
@@ -54,7 +54,21 @@ Centro do bairro (ponto representativo) → UAPS mais rápida a pé. Sinuosidade
 | Messejana | Josafá Gomes da Silva | 713 m | 678 m | 1,05 | 7,8 / 8,9 / 10,7 |
 | Pirambu | Guiomar Arruda | 1.171 m | 1.112 m | 1,05 | 12,8 / 14,6 / 17,6 |
 
-**Conferência manual: pendente.** Falta comparar esses cinco trajetos com um mapa de rotas a pé (por exemplo, a camada de pedestres do OpenStreetMap). Sem isso o modelo não foi validado contra trajetos reais, só contra casos sintéticos e contra a faixa esperada de sinuosidade (1,05 a 1,51, dentro do esperado). Também não há medição de campo.
+## Conferência externa em 2026-10-31
+
+Consultados os mesmos pontos públicos de origem/destino na interface [Valhalla/FOSSGIS](https://valhalla.openstreetmap.de/), com perfil **Pedestrian** selecionado. Registrada a opção **Main Route**, sem escolher a alternativa mais parecida com o modelo. Interface informou versão `3.9.1-f221535` e grafo com cerca de nove horas. Os links preservam coordenadas em ordem longitude, latitude; não foi usada a localização do visitante. Formato do link e perfil conferidos no [adaptador oficial do OpenStreetMap](https://github.com/openstreetmap/openstreetmap-website/blob/master/app/assets/javascripts/index_modules/directions/engines/fossgis_valhalla.js).
+
+| Par (link reproduzível) | Modelo central | Main Route externa | Tempo externo | Externo − modelo central |
+|---|---|---|---|---|
+| [Parque Araxá → Santa Liduína](https://valhalla.openstreetmap.de/directions?profile=pedestrian&wps=-38.547695%2C-3.735325%2C-38.54566937%2C-3.73963531) | 801,6 m; 10,0 min | 0,8 km | 9 min 38 s | aproximadamente −0,4 min |
+| [Jangurussu → Marcus Aurélio](https://valhalla.openstreetmap.de/directions?profile=pedestrian&wps=-38.510954%2C-3.846285%2C-38.50678077%2C-3.84406047) | 756,3 m; 9,5 min | 0,7 km | 8 min 29 s | aproximadamente −1,0 min |
+| [Meireles → Flávio Marcílio](https://valhalla.openstreetmap.de/directions?profile=pedestrian&wps=-38.501418%2C-3.727597%2C-38.48041515%2C-3.72335437) | 2.657,7 m; 33,2 min | 2,7 km | 36 min 5 s | aproximadamente +2,9 min |
+| [Messejana → Josafá Gomes da Silva](https://valhalla.openstreetmap.de/directions?profile=pedestrian&wps=-38.493132%2C-3.826929%2C-38.4913663%2C-3.8210967) | 713,3 m; 8,9 min | 0,8 km | 10 min 6 s | aproximadamente +1,2 min |
+| [Pirambu → Guiomar Arruda](https://valhalla.openstreetmap.de/directions?profile=pedestrian&wps=-38.554796%2C-3.70939%2C-38.54556367%2C-3.71328008) | 1.170,8 m; 14,6 min | 1,2 km | 14 min 43 s | aproximadamente +0,1 min |
+
+A distância externa é a exibida pela interface, arredondada a 0,1 km; não permite afirmar erro percentual preciso em metros. As diferenças de tempo usam o central local arredondado a uma casa. O tempo externo ficou dentro da faixa local rápido–lento nos cinco pares, o que é uma verificação de plausibilidade desta pequena amostra, não uma calibração nem um intervalo de confiança.
+
+Os dois motores usam OSM: não são fontes cartográficas independentes. Perfil de custo, atualização do grafo, encaixe dos pontos e tratamento dos conectores podem diferir. Não houve comparação vértice a vértice das geometrias nem verificação da existência/condição de calçadas e travessias. O tempo externo também é calculado, não cronometrado. **Nenhuma medição em campo foi feita** e os parâmetros/corredores aprovados permanecem preservados. As tentativas sem resultado em 2026-10-29 não foram usadas como evidência; os cinco resultados acima foram efetivamente observados na interface em 2026-10-31.
 
 ## Reprodução
 
