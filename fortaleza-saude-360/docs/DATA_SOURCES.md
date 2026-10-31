@@ -72,6 +72,8 @@ Verificação de 2026-10-27: a [API de Dados Abertos do Ministério da Saúde](h
 
 Método, resultados e limitações do crosswalk setor → bairro estão em `docs/POPULATION.md`.
 
+Na SDD-038, esses mesmos setores e totais de 2022 são cruzados com os corredores de caminhada da SDD-037. `public/data/population-coverage.json` publica contagens e percentuais modelados, alternativas de alocação, limites espaciais e sensibilidade à velocidade. O bloco `population_coverage` no manifesto registra checksum, fontes e ressalvas. Método em `docs/COVERAGE.md`.
+
 ## Basemap OSM (SDD-027)
 
 | Papel | Download | Referência | Licença e atribuição |
@@ -81,8 +83,20 @@ Método, resultados e limitações do crosswalk setor → bairro estão em `docs
 
 O recorte (`public/basemap/fortaleza.pmtiles`, ~6,4 MB) e as fontes são servidos pelo próprio app: o navegador do visitante não faz requisição a terceiros, então nenhum provedor de tiles recebe IP ou área consultada. `tests/basemap.test.ts` falha se o estilo apontar para outra origem. O basemap é só referência visual: não entra em contagens, distâncias ou tempos de trajeto. A extração é reproduzível (`scripts/build_basemap.py`; mesmo build gera o mesmo SHA-256) e fica registrada no bloco `basemap` de `public/data/manifest.json`.
 
+## Malha viária a pé (SDD-035)
+
+| Papel | Download | Referência | Licença e atribuição |
+|---|---|---|---|
+| Grafo de pedestres (cruzamentos e trechos) | Extrato [`nordeste-261027.osm.pbf`](https://download.geofabrik.de/south-america/brazil/nordeste-261027.osm.pbf) da Geofabrik (423 MB), SHA-256 `e99014cf0d798654aa77060172ed2aea75213a547d1f5a718e4decaa51952bc3` | Dados OSM até 2026-10-27T21:23:59Z (cabeçalho do arquivo); coleta em 2026-10-28 | ODbL 1.0 — "© OpenStreetMap contributors"; extrato: Geofabrik GmbH |
+
+O arquivo bruto fica em `data/raw/` (fora do Git) e é pedido pelo nome (`fetch_data.py --source osm-nordeste`); `--all` não o baixa. Regras, custos e resultados de conectividade estão em `docs/WALK_NETWORK.md`. A malha alimenta os corredores, o resumo de cobertura e o simulador; o grafo bruto não é desenhado na interface.
+
+As isócronas da SDD-037 usam esse mesmo extrato, as UAPS de 2026 e o limite municipal de 2019. Seu manifesto offline (`data/processed/isochrones/manifest.json`) reúne os registros de fonte, checksums, datas, licenças, parâmetros e dicionário. Método e limitações em `docs/ISOCHRONES.md`.
+
 ## Fontes complementares futuras
+
+A lista de setores da SDD-050 reutiliza essas fontes de Censo 2022, UAPS 2026 e bairros 2019. Não acrescenta fonte externa: método, insumos, checksums e dicionário em `public/data/sector-ranking.json` e no bloco `sector_ranking` do manifesto. Ver `SECTOR_RANKING.md`.
 
 | Tema | Fonte oficial | Uso previsto | Restrição principal |
 |---|---|---|---|
-| Rede viária | [OpenStreetMap](https://www.openstreetmap.org/copyright) | Acessibilidade em fase posterior | ODbL, atribuição e regras para derivados |
+| Rede viária | [OpenStreetMap](https://www.openstreetmap.org/copyright) | Coletada na SDD-035; tempos e cobertura nas SDD-036 a 038 | ODbL, atribuição e regras para derivados |
