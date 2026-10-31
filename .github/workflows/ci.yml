@@ -1,0 +1,57 @@
+name: Fortaleza Saúde 360 — CI
+
+on:
+  push:
+    paths: ["fortaleza-saude-360/**", ".github/workflows/ci.yml"]
+  pull_request:
+    paths: ["fortaleza-saude-360/**", ".github/workflows/ci.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: f360-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: fortaleza-saude-360
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: fortaleza-saude-360/package-lock.json
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: fortaleza-saude-360/pyproject.toml
+      - run: npm ci
+      - run: python -m pip install '.[dev]'
+      - name: Dados públicos, proveniência e proteção contra mocks
+        run: npm run check:data
+      - run: python -m ruff check scripts tests
+      - run: python -m pytest
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test -- --maxWorkers=2
+      - run: npx playwright install --with-deps chromium
+      - name: Build de produção e E2E desktop/mobile
+        run: npm run test:e2e
+      - name: Evidências dos testes
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: f360-test-results
+          path: fortaleza-saude-360/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
