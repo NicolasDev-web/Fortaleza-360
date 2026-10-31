@@ -16,6 +16,8 @@ type MapPanelProps = {
   labelledBy?: string;
   overlay?: ReactNode;
   state: MapPanelState;
+  tools?: ReactNode;
+  context?: ReactNode;
 };
 
 type StateContent = {
@@ -52,7 +54,7 @@ const stateContent: Record<MapPanelState, StateContent> = {
   },
 };
 
-export function MapPanel({ children, id, labelledBy, overlay, state }: MapPanelProps) {
+export function MapPanel({ children, id, labelledBy, overlay, state, tools, context }: MapPanelProps) {
   const content = stateContent[state];
   const StateIcon = content.icon;
   const hasReadyContent = state === "ready" && children !== undefined;
@@ -70,7 +72,7 @@ export function MapPanel({ children, id, labelledBy, overlay, state }: MapPanelP
             01
           </span>
           <div>
-            <strong id="map-title">Mapa de Fortaleza</strong>
+            <h1 id="map-title">Mapa de Fortaleza</h1>
             <small>
               {hasReadyContent
                 ? "Postos de saúde, UPAs e hospitais municipais por bairro"
@@ -79,6 +81,7 @@ export function MapPanel({ children, id, labelledBy, overlay, state }: MapPanelP
           </div>
         </div>
         <div className="map-meta">
+          {tools}
           {hasReadyContent ? (
             <>
               <ProvenanceBadge label="Bairros de 2019 · postos de 2026" tone="source" />
@@ -88,6 +91,8 @@ export function MapPanel({ children, id, labelledBy, overlay, state }: MapPanelP
           )}
         </div>
       </header>
+
+      {context ? <div className="map-context">{context}</div> : null}
 
       <div className={`map-surface map-state-${state}`} aria-busy={state === "loading"}>
         <span className="hud-corner hud-corner-tl" aria-hidden="true" />

@@ -6,14 +6,16 @@ O observatório conta uma história antes de virar instrumento. A filosofia vem 
 
 | Princípio | Como aparece |
 |---|---|
-| Entender o contexto (*Big Idea*) | Frase-tese no painel de leitura: "134 UAPS em 121 bairros: onde estão, não quanto atendem." Os números são calculados do modelo. |
+| Entender o contexto (*Big Idea*) | História antes do aprofundamento; Explorar começa com “Comece pelo seu bairro”. Números gerais abrem sob demanda e as respostas usam os dados carregados. |
 | Escolher a visualização certa | Número grande + frase para valores isolados; mapa só para "onde"; nada de pizza ou 3D. |
-| Eliminar a poluição | Painéis lisos (sem textura), bordas discretas, filetes retos de 1 px, grade e alinhamento; o Índice fica em uma aba separada do Panorama. |
+| Eliminar a poluição | No desktop, mapa e leitura em duas áreas; camadas/fontes, números gerais e tabelas completas ficam sob demanda. Uma resposta principal acompanha a ação. |
 | Focar a atenção | Cinza como base e **uma** cor (Wisteria) para o foco de cada capítulo. O âmbar é raro e significa atenção: sol, foco de teclado, avisos e dados divergentes. |
 | Pensar como designer | Títulos-conclusão em vez de rótulos genéricos; ações explícitas ("Enquadrar no mapa", "Rever a história"). |
-| Contar uma história | Modo História em seis capítulos: Terra da Luz → A cidade → As portas de entrada → Onde o contorno não tem ponto → O que os dados não dizem → Sua vez. Lidos em sequência, os títulos resumem a narrativa. |
+| Contar uma história | Seis capítulos: Terra da Luz → A cidade → Os postos → Seu bairro → Como ler o mapa → Sua vez. A escolha de bairro participa da narrativa e segue para Explorar/Comparar. |
 
 Os textos dos capítulos ficam em `lib/story.ts`, e testes impedem rótulos como "desassistido" ou "vulnerável". O capítulo dos contornos sempre traz a ressalva de que contagem por bairro não mede acesso.
+
+A SDD-058 prioriza o computador e a leitura por pessoas não técnicas. Contratos de progressão, foco e interpretação estão em `NARRATIVE_DESKTOP.md`; mobile permanece como etapa de design posterior, com regressão dos recursos existentes.
 
 ## Paleta
 

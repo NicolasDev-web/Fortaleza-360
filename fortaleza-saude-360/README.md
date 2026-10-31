@@ -4,6 +4,8 @@ Plataforma open-source de inteligência territorial para mapear unidades de saú
 
 **Versão experimental publicada:** [fortaleza-saude-360.vercel.app](https://fortaleza-saude-360.vercel.app). Evidências de publicação e limitações em `docs/DEPLOY_TESTS.md`. Não é serviço de emergência nem medida de atendimento/capacidade.
 
+Evolução SDD-058: jornada narrativa para desktop, com escolha de bairro na História, resposta próxima da ação, comparação descritiva e detalhes sob demanda. Fluxo e limites em `docs/NARRATIVE_DESKTOP.md`.
+
 > **Estado atual:** protótipo com camadas oficiais, população do Censo, comparação de bairros e simulador de acesso geográfico. Estimativas não medem capacidade ou atendimento. As fixtures sintéticas de testes permanecem rotuladas DEMO e não entram nos dados públicos. Demandas abertas: `docs/READINESS.md`.
 
 ## Comece no VS Code

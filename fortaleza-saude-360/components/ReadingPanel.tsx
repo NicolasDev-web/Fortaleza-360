@@ -11,12 +11,11 @@ import {
   LayoutGrid,
   List,
   Map as MapIcon,
-  Navigation,
   Ruler,
   TriangleAlert,
   Users,
 } from "lucide-react";
-import { Insights, InsightsFooter } from "@/components/Insights";
+import { Insights } from "@/components/Insights";
 import { SectorRanking } from "@/components/SectorRanking";
 import { KpiCard } from "@/components/KpiCard";
 import { AnimatedHeading } from "@/components/motion/AnimatedHeading";
@@ -64,6 +63,9 @@ type ReadingPanelProps = {
   onClear: () => void;
   onFrame: (box: Box) => void;
   onOpenStory: () => void;
+  onOpenSearch?: () => void;
+  onCompareNeighborhood?: (code: string) => void;
+  onOpenSimulate?: () => void;
 };
 
 type OverviewTab = "panorama" | "index" | "sectors";
@@ -96,6 +98,7 @@ function PeopleBlock({
         <strong>{integer.format(population.population)} pessoas</strong>, pelo Censo{" "}
         {POPULATION_SOURCE.reference} ({POPULATION_SOURCE.agency}).
       </p>
+      <details className="people-details"><summary>Entender a faixa e a conta por posto</summary>
       {population.low !== population.high ? (
         <small>
           Pode ser entre {integer.format(population.low)} e {integer.format(population.high)},
@@ -110,6 +113,7 @@ function PeopleBlock({
       ) : (
         <p>Sem posto dentro do bairro, não dá para fazer essa conta.</p>
       )}
+      </details>
       <small>
         Isso não é quantas pessoas cada posto atende: muita gente usa o posto de outro bairro, e
         a população é de {POPULATION_SOURCE.reference}, quatro anos antes da lista de postos.
@@ -142,6 +146,9 @@ export function ReadingPanel({
   onClear,
   onFrame,
   onOpenStory,
+  onOpenSearch,
+  onCompareNeighborhood,
+  onOpenSimulate,
 }: ReadingPanelProps) {
   const neighborhoodByCode = useMemo(
     () => new Map(model?.neighborhoods.map((item) => [item.code, item]) ?? []),
@@ -201,6 +208,7 @@ export function ReadingPanel({
           onBack={onClear}
           onFrame={() => onFrame(neighborhood.box)}
           onSelectFacility={(id) => onSelectFacility(id, true)}
+          onCompare={() => onCompareNeighborhood?.(neighborhood.code)}
         />
       ) : (
         <Overview
@@ -209,13 +217,14 @@ export function ReadingPanel({
           onOpenStory={onOpenStory}
           onSelectNeighborhood={onSelectNeighborhood}
           selectedNeighborhood={selectedNeighborhood}
+          onOpenSearch={onOpenSearch}
         />
       )}
 
       <div className="reading-foot">
         <hr className="panel-rule" />
-        <Insights />
-        <InsightsFooter />
+        <details className="reading-guidance"><summary>O que este mapa permite concluir?</summary><Insights /></details>
+        {onOpenSimulate ? <button className="back-link next-question" type="button" onClick={onOpenSimulate}>E se houvesse um posto em outro lugar?</button> : null}
       </div>
     </section>
   );
@@ -227,12 +236,14 @@ function Overview({
   onOpenStory,
   onSelectNeighborhood,
   selectedNeighborhood,
+  onOpenSearch,
 }: {
   facts: StoryFacts | null;
   model: MapModel | null;
   onOpenStory: () => void;
   onSelectNeighborhood: (code: string, frame?: boolean) => void;
   selectedNeighborhood: string | null;
+  onOpenSearch?: () => void;
 }) {
   const [tab, setTab] = useState<OverviewTab>("panorama");
   const [query, setQuery] = useState("");
@@ -254,11 +265,14 @@ function Overview({
   return (
     <div className="reading-view">
       <header className="reading-header">
-        <span className="section-label">Em uma frase</span>
         <AnimatedHeading
           id="reading-title"
-          text={facts ? bigIdea(facts) : "O mapa está fora do ar no momento."}
+          text={model ? "Comece pelo seu bairro." : "O mapa está fora do ar no momento."}
         />
+        {model ? <>
+          <p className="journey-intro">Um lugar conhecido ajuda a entender a cidade. Escolha um bairro e descubra os postos que ficam por ali.</p>
+          {onOpenSearch ? <button type="button" className="action-button journey-start" onClick={onOpenSearch}>Escolher um bairro</button> : null}
+        </> : null}
       </header>
 
       {model ? (
@@ -283,6 +297,9 @@ function Overview({
       >
         {tab === "sectors" && model ? <SectorRanking model={model} /> : tab === "panorama" || !model ? (
           <div className="panorama">
+            <p className="overview-invitation">O mapa mostra onde estão os equipamentos. A ficha de cada bairro explica o que esses dados significam.</p>
+            <details className="city-figures"><summary>Números da cidade</summary>
+            {facts ? <p className="city-idea">{bigIdea(facts)}</p> : null}
             <div className="readout-list">
               <KpiCard
                 icon={Hospital}
@@ -315,20 +332,15 @@ function Overview({
                 }
                 value={model?.areaKm2 ?? null}
               />
-              <KpiCard
-                icon={Navigation}
-                label="Pessoas perto de um posto"
-                note="Veja as estimativas e os limites no modo Simular"
-                value={null}
-              />
             </div>
+            </details>
 
             {model ? (
               <button className="story-reopen" onClick={onOpenStory} type="button">
                 <BookOpen size={16} aria-hidden="true" />
                 <span>
                   <strong>Ver a história de novo</strong>
-                  <small>Seis telas curtas para entender o mapa</small>
+                  <small>Conheça a cidade e escolha um bairro ao longo do caminho</small>
                 </span>
               </button>
             ) : null}
@@ -409,6 +421,7 @@ function NeighborhoodDetails({
   onBack,
   onFrame,
   onSelectFacility,
+  onCompare,
 }: {
   neighborhood: NeighborhoodShape;
   facilities: FacilityPoint[];
@@ -418,6 +431,7 @@ function NeighborhoodDetails({
   onBack: () => void;
   onFrame: () => void;
   onSelectFacility: (id: string) => void;
+  onCompare: () => void;
 }) {
   return (
     <div className="reading-view">
@@ -445,6 +459,7 @@ function NeighborhoodDetails({
           <Crosshair size={15} aria-hidden="true" />
           Mostrar no mapa
         </button>
+        <button className="action-button action-ghost" type="button" onClick={onCompare}>Comparar este bairro</button>
       </div>
 
       {population ? <PeopleBlock facilities={facilities.length} population={population} /> : null}

@@ -2,8 +2,8 @@
 
 /**
  * Adaptado de "discrete-tabs" — useLayouts (uselayouts.com, licença MIT).
- * A aba ativa se expande mostrando o rótulo com desfoque e um brilho; as
- * inativas ficam só com ícone (nome acessível preservado). ARIA de abas.
+ * Todas as abas mantêm rótulos visíveis; o estado ativo recebe destaque.
+ * Nomes, controles e navegação por setas preservam a semântica de abas.
  */
 import { useRef, type KeyboardEvent, type ReactNode } from "react";
 import { LayoutGroup, motion, useReducedMotion } from "motion/react";
@@ -73,7 +73,7 @@ export function DiscreteTabs<T extends string>({
               <motion.span aria-hidden="true" className="shrink-0" layout="position">
                 {tab.icon}
               </motion.span>
-              {active ? (
+              {(
                 <motion.span
                   animate={{ opacity: 1, filter: "blur(0px)" }}
                   aria-hidden="true"
@@ -83,7 +83,7 @@ export function DiscreteTabs<T extends string>({
                 >
                   {tab.title}
                 </motion.span>
-              ) : null}
+              )}
               {active && !reduce ? (
                 <motion.span
                   animate={{ x: "220%" }}

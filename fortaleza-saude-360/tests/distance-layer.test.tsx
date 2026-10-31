@@ -10,6 +10,7 @@ describe("linha de distância no mapa", () => {
   it("orienta sem seleção, atualiza com o bairro e some ao desativar", async () => {
     const user = userEvent.setup();
     const { container } = render(<Observatory model={demoModel()} />);
+    await user.click(screen.getByRole("button", { name: "O que mostrar e de onde vem" }));
     const toggle = screen.getByRole("button", { name: /^Distância até o posto/ });
     expect(toggle).toHaveAttribute("aria-pressed", "false");
     toggle.focus();
@@ -33,6 +34,7 @@ describe("linha de distância no mapa", () => {
     window.history.replaceState(null, "", "/?neighborhood=1");
     const user = userEvent.setup();
     const { container } = render(<Observatory model={model} />);
+    await user.click(screen.getByRole("button", { name: "O que mostrar e de onde vem" }));
     await user.click(screen.getByRole("button", { name: /^Distância até o posto/ }));
     expect(screen.getByText("Nenhuma UAPS disponível para calcular a distância.")).toBeInTheDocument();
     expect(container.querySelector("[data-distance-proxy]")).toBeNull();

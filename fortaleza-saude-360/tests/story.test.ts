@@ -30,12 +30,13 @@ describe("Modo História (DEMO)", () => {
       "limits",
       "explore",
     ]);
-    expect(chapters[0].title).toBe("Fortaleza tem 2 bairros e 3 postos de saúde.");
-    expect(chapters[1].title).toBe("Uma cidade de 488,2 km², dividida em 2 bairros.");
+    expect(chapters[0].title).toBe("Fortaleza, vista pelo caminho até o cuidado.");
+    expect(chapters[1].title).toBe("Uma cidade, 2 bairros.");
     expect(chapters[3].title).toBe(
-      "Todos os 2 bairros têm posto dentro do próprio limite.",
+      "E no bairro que você conhece?",
     );
-    expect(chapters[4].body.join(" ")).toMatch(/1 posto aparece num bairro diferente/);
+    expect(chapters[4].body.join(" ")).toMatch(/conjunto de postos/);
+    expect(chapters[4].body.join(" ")).toMatch(/não diz quantas pessoas cada unidade atende/);
     expect(bigIdea(facts)).toBe("3 postos de saúde para 2 bairros. Aqui você vê onde ficam — não quanto conseguem atender.");
   });
 

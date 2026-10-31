@@ -75,23 +75,20 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
       id: "terra-da-luz",
       phase: "intro",
       kicker: "Terra da Luz",
-      title: `Fortaleza tem ${bairros} e ${postos}.`,
+      title: "Fortaleza, vista pelo caminho até o cuidado.",
       body: [
-        "O posto de saúde (UAPS) é a porta de entrada do SUS: é por onde a maioria das pessoas começa um atendimento na rede pública.",
-        "Em seis telas curtas, você vê onde eles ficam — e o que os dados ainda não contam. Todo número vem de uma fonte pública.",
+        "Um posto de saúde faz parte da vida de um bairro. Mas onde ficam os postos de Fortaleza?",
+        "Vamos olhar a cidade, conhecer os pontos no mapa e escolher um bairro para explorar juntos.",
       ],
     },
     {
       id: "a-cidade",
       phase: "city",
       kicker: "A cidade",
-      title:
-        facts.areaKm2 === null
-          ? `Uma cidade dividida em ${bairros}.`
-          : `Uma cidade de ${decimal.format(facts.areaKm2)} km², dividida em ${bairros}.`,
+      title: `Uma cidade, ${bairros}.`,
       body: [
-        "A linha de fora é o limite da cidade. As linhas finas são os bairros, definidos pela Prefeitura em 2019.",
-        "Bairro é uma divisão da Prefeitura — não é a área que cada posto atende.",
+        "A linha de fora mostra Fortaleza. Cada contorno menor é um bairro: um jeito de localizar a conversa.",
+        facts.areaKm2 === null ? "Os limites vêm da Prefeitura, com referência de 2019." : `São ${decimal.format(facts.areaKm2)} km², segundo o limite oficial de 2019. Bairro não é a área de atendimento de um posto.`,
       ],
     },
     {
@@ -107,35 +104,30 @@ export function buildStoryChapters(facts: StoryFacts): StoryChapter[] {
     {
       id: "contornos",
       phase: "contours",
-      kicker: "Onde não tem ponto",
-      title:
-        facts.withoutFacility === 0
-          ? `Todos os ${bairros} têm posto dentro do próprio limite.`
-          : `${plural(facts.withFacility, "bairro tem", "bairros têm")} posto dentro do próprio limite. ${plural(facts.withoutFacility, "não tem", "não têm")}.`,
-      body: ["Em destaque, os bairros com pelo menos um posto lá dentro."],
+      kicker: "Seu bairro",
+      title: "E no bairro que você conhece?",
+      body: ["Escolha um bairro. O mapa se aproxima e a história passa a ter um lugar que faz sentido para você."],
       caveat:
-        "Isso não mede acesso: muita gente é atendida no posto do bairro vizinho. Para saber a distância de verdade, falta medir o caminho pelas ruas.",
+        "Contar postos dentro de um bairro não mede acesso: quem mora ali também pode usar um posto do bairro vizinho.",
     },
     {
       id: "o-que-nao-dizem",
       phase: "limits",
-      kicker: "O que os dados não contam",
-      title: "O mapa mostra onde — não quanto, nem para quem.",
+      kicker: "Como ler o mapa",
+      title: "Estar perto é uma parte da história.",
       body: [
-        "Ainda não estão aqui quantas pessoas moram perto de cada posto, quanto tempo se leva para chegar nem quantos atendimentos cada um faz.",
-        facts.mismatches === 0
-          ? "Todos os postos ficam no bairro que a própria Prefeitura informa."
-          : `${plural(facts.mismatches, "posto aparece", "postos aparecem")} num bairro diferente do que a Prefeitura informa. A diferença aparece nos detalhes do posto, sem correção automática.`,
+        "No Simular, estimamos quantos moradores ficam no alcance de uma caminhada de 10, 20 ou 30 minutos até algum posto.",
+        "É uma estimativa para o conjunto de postos. Ela não diz quantas pessoas cada unidade atende, se há vagas ou quanto uma pessoa realmente leva no trajeto.",
       ],
     },
     {
       id: "sua-vez",
       phase: "explore",
       kicker: "Sua vez",
-      title: "Agora, procure o seu bairro.",
+      title: "Agora, faça uma pergunta ao mapa.",
       body: [
-        "Toque num bairro ou num posto para ver os detalhes e de onde vêm os dados.",
-        "Ou use a busca (Ctrl+K) para achar pelo nome.",
+        "Conheça um bairro, coloque dois lado a lado ou experimente uma nova localização para um posto.",
+        "Cada escolha revela uma resposta. Você pode voltar a esta história quando quiser.",
       ],
     },
   ];

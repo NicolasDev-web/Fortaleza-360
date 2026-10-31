@@ -17,6 +17,7 @@ describe("Comparar bairros", () => {
     await user.selectOptions(first, "1");
     expect(within(screen.getByLabelText("Bairro B")).getByRole("option", { name: "DEMO Bairro Oeste" })).toBeDisabled();
     await user.selectOptions(screen.getByLabelText("Bairro B"), "2");
+    await user.click(screen.getByText("Ver os números lado a lado"));
     const table = screen.getByRole("table");
     expect(within(table).getByRole("columnheader", { name: "A · DEMO Bairro Oeste" })).toBeInTheDocument();
     expect(document.querySelectorAll("[data-comparison]")).toHaveLength(2);
@@ -34,6 +35,7 @@ describe("Comparar bairros", () => {
       "2": { population: 1000, low: 900, high: 1100 },
     } };
     const { container } = render(<NeighborhoodComparison model={model} codes={["1", "2"]} onChange={vi.fn()} onFrame={vi.fn()} />);
+    await userEvent.setup().click(screen.getByText("Ver os números lado a lado"));
     const table = screen.getByRole("table");
     expect(table).toHaveTextContent("Faixa: 0 a 10");
     expect(table).toHaveTextContent("Sem posto no bairro");
@@ -44,10 +46,11 @@ describe("Comparar bairros", () => {
     expect(audit.violations.filter(({ impact }) => impact === "critical" || impact === "serious")).toEqual([]);
   });
 
-  it("distingue população ausente, rede vazia e mapa indisponível", () => {
+  it("distingue população ausente, rede vazia e mapa indisponível", async () => {
     const model = demoModel();
     model.facilities = [];
     const { rerender } = render(<NeighborhoodComparison model={model} codes={["1", "2"]} onChange={vi.fn()} onFrame={vi.fn()} />);
+    await userEvent.setup().click(screen.getByText("Ver os números lado a lado"));
     expect(within(screen.getByRole("table")).getAllByText("Não disponível").length).toBeGreaterThanOrEqual(4);
     rerender(<NeighborhoodComparison model={null} codes={["1", "2"]} onChange={vi.fn()} onFrame={vi.fn()} />);
     expect(screen.getByRole("alert")).toHaveTextContent("Dados do mapa indisponíveis");

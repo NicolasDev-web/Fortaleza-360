@@ -1,8 +1,18 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { readFileSync, writeFileSync } from "node:fs";
 
 const firstUnit = JSON.parse(readFileSync("public/data/facilities.geojson", "utf8")).features[0].properties;
 const distanceNeighborhood = JSON.parse(readFileSync("public/data/neighborhoods.geojson", "utf8")).features.find((item: { properties: { name: string } }) => item.properties.name === "Meireles").properties;
+
+async function openDisclosure(page: Page, selector: string) {
+  const details = page.locator(selector);
+  await expect(details).toBeVisible();
+  if (await details.getAttribute("open") === null) await details.locator("summary").first().click();
+}
+
+async function openCoordinates(page: Page) {
+  await openDisclosure(page, ".scenario-coordinates");
+}
 
 test("linha de distância é aproximação e responde ao interruptor", async ({ page }, testInfo) => {
   await page.goto(`/?neighborhood=${distanceNeighborhood.code}`);
@@ -32,6 +42,8 @@ test("compara bairros, inverte a dupla e exporta apenas A e B", async ({ page },
   await expect(page.getByRole("table")).toHaveCount(0);
   await a.selectOption({ label: "Meireles" });
   await b.selectOption({ label: "Jangurussu" });
+  await expect(page.getByRole("region", { name: "O que a comparação mostra" })).toBeVisible();
+  await openDisclosure(page, ".comparison-figures");
   await expect(page.locator("[data-comparison]")).toHaveCount(2);
   const table = page.getByRole("table");
   await expect(table).toContainText("em linha reta");
@@ -154,18 +166,23 @@ test("salva cenário explicitamente, recarrega, recalcula e exclui dados locais"
   await page.goto("/");
   await page.getByRole("tab", { name: "Simular", exact: true }).click();
   const calculate = page.getByRole("button", { name: "Calcular este ponto" });
+  await openCoordinates(page);
   await expect(calculate).toBeEnabled();
   await page.getByRole("spinbutton", { name: "Latitude", exact: true }).fill("-3.8");
   await page.getByRole("spinbutton", { name: "Longitude", exact: true }).fill("-38.5");
   await calculate.click();
+  await openDisclosure(page, ".scenario-figures");
   await expect(page.getByRole("table")).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("f360:saved-scenarios:v1"))).toBeNull();
+  await openDisclosure(page, ".scenario-saved");
   await page.getByLabel("Nome do cenário").fill("DEMO proposta local");
   await page.getByRole("button", { name: "Salvar neste navegador", exact: true }).click();
   await expect(page.getByText("Cenário “DEMO proposta local” salvo neste navegador.")).toBeVisible();
   await page.reload();
   await page.getByRole("tab", { name: "Simular", exact: true }).click();
+  await openDisclosure(page, ".scenario-saved");
   await page.getByRole("button", { name: "Reabrir DEMO proposta local", exact: true }).click();
+  await openDisclosure(page, ".scenario-figures");
   await expect(page.getByRole("table")).toBeVisible();
   await expect(page.getByText("Cenário calculado.", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Excluir todos os cenários salvos" }).click();
@@ -189,6 +206,7 @@ test("mapa, busca por teclado e filtros de camada", async ({ page }) => {
   await upas.click();
   await expect(upas).toHaveAttribute("aria-pressed", "false");
   await upas.click();
+  await disclosure.click();
   await page.keyboard.press("Control+k");
   const unit = firstUnit;
   await page.getByRole("combobox").fill(unit.name);
@@ -222,18 +240,23 @@ test("simula sem mudar a base e limpa o ponto sem persistir coordenadas", async 
   await page.goto("/");
   await page.getByRole("tab", { name: "Simular", exact: true }).click();
   const calculate = page.getByRole("button", { name: "Calcular este ponto" });
+  await openCoordinates(page);
   await expect(calculate).toBeEnabled();
   await page.locator(`[data-facility="${firstUnit.id}"]`).click();
+  await openDisclosure(page, ".scenario-figures");
   await expect(page.getByRole("table")).toBeVisible();
   await expect(page.getByRole("table").getByText("+0", { exact: true })).toHaveCount(3);
   await page.getByRole("spinbutton", { name: "Latitude", exact: true }).fill("-3.8");
   await page.getByRole("spinbutton", { name: "Longitude", exact: true }).fill("-38.5");
   await calculate.click();
+  await openDisclosure(page, ".scenario-figures");
   const table = page.getByRole("table");
   await expect(table).toBeVisible();
   await expect(table).toContainText("1.114.166");
   await expect(table).toContainText("1.745.333");
   await expect(table).toContainText("1.838.800");
+  await page.getByRole("button", { name: "Ver resultado", exact: true }).click();
+  await expect(page.getByRole("region", { name: "O que muda com esse ponto?", exact: true })).toBeFocused();
   expect(await page.locator(".scenario-table-wrap").evaluate(element => element.clientHeight)).toBeGreaterThan(100);
   await table.scrollIntoViewIfNeeded();
   await page.screenshot({ path: `test-results/scenario-${testInfo.project.name}.png`, fullPage: true });
@@ -254,6 +277,7 @@ test("falha de download do modelo mantém números indisponíveis", async ({ pag
   await page.getByRole("tab", { name: "Simular", exact: true }).click();
   await expect(page.locator(".scenario-panel").getByRole("alert")).toContainText("Não foi possível carregar a malha");
   await expect(page.getByRole("table")).toHaveCount(0);
+  await openCoordinates(page);
   await expect(page.getByRole("button", { name: "Calcular este ponto" })).toBeDisabled();
 });
 
@@ -276,6 +300,7 @@ test("mede abertura e cálculo mantendo o modelo fora da carga inicial", async (
   const enter = performance.now();
   await page.getByRole("tab", { name: "Simular", exact: true }).click();
   const calculate = page.getByRole("button", { name: "Calcular este ponto" });
+  await openCoordinates(page);
   await expect(calculate).toBeEnabled();
   const simulatorReadyMs = performance.now() - enter;
   await page.getByRole("spinbutton", { name: "Latitude", exact: true }).fill("-3.8");
@@ -294,4 +319,49 @@ test("mede abertura e cálculo mantendo o modelo fora da carga inicial", async (
   const file = `test-results/performance-${testInfo.project.name}.json`;
   writeFileSync(file, JSON.stringify(report, null, 2));
   await testInfo.attach(process.env.F360_E2E_BASE_URL ? "performance-https" : "performance-local", { path: file, contentType: "application/json" });
+});
+
+test("história participativa conduz do bairro à comparação no computador", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Foco desta evolução: desktop.");
+  await page.addInitScript(() => localStorage.removeItem("f360:story-seen"));
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Fortaleza, vista pelo caminho até o cuidado." })).toBeVisible();
+  await expect(page.locator(".reading-host")).toHaveCount(0);
+  await page.screenshot({ path: "test-results/journey-story-desktop.png", fullPage: true });
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await expect(page.getByRole("button", { name: "Próximo", exact: true })).toBeInViewport();
+  await page.screenshot({ path: "test-results/journey-story-1280.png", fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.getByRole("button", { name: "Ir para o capítulo: Seu bairro" }).click();
+  await page.getByLabel("Escolha um bairro na história").selectOption({ label: "Meireles" });
+  await expect(page.locator(".story-participation")).toContainText("Meireles");
+  await page.screenshot({ path: "test-results/journey-participation-desktop.png", fullPage: true });
+  await page.getByRole("button", { name: "Conhecer este bairro" }).click();
+  await expect(page.getByRole("heading", { name: "Meireles", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Ver detalhes", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Leitura do mapa", exact: true })).toBeFocused();
+  await page.getByRole("button", { name: "Comparar este bairro" }).click();
+  await expect(page.getByLabel("Bairro A", { exact: true })).toHaveValue(distanceNeighborhood.code);
+  await page.getByLabel("Bairro B", { exact: true }).selectOption({ label: "Jangurussu" });
+  await expect(page.getByRole("region", { name: "O que a comparação mostra" })).toBeVisible();
+  await expect(page.locator("[data-comparison='A'] path")).toBeInViewport();
+  await expect(page.locator("[data-comparison='B'] path")).toBeInViewport();
+  await expect(page.getByRole("table")).toHaveCount(0);
+  await page.screenshot({ path: "test-results/journey-comparison-desktop.png", fullPage: true });
+  await openDisclosure(page, ".comparison-figures");
+  await expect(page.getByRole("columnheader", { name: "A · Meireles" })).toBeVisible();
+});
+
+test("leitura inicial é progressiva e números cabem no desktop de 1280 px", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Foco desta evolução: desktop.");
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Comece pelo seu bairro." })).toBeVisible();
+  await expect(page.locator(".city-figures")).not.toHaveAttribute("open");
+  await expect(page.locator(".rail-body")).toBeHidden();
+  await page.screenshot({ path: "test-results/journey-explore-desktop.png", fullPage: true });
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await openDisclosure(page, ".city-figures");
+  expect(await page.locator(".readout strong").evaluateAll(values => values.every(value => value.scrollWidth <= value.clientWidth))).toBe(true);
+  expect(await page.locator(".reading-host").evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+  await page.screenshot({ path: "test-results/journey-1280-desktop.png", fullPage: true });
 });

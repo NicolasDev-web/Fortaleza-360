@@ -26,6 +26,8 @@ describe("UPAs e hospitais municipais", () => {
     const user = userEvent.setup();
     const { container } = render(<Observatory model={demoModel()} />);
 
+    await user.click(screen.getByRole("button", { name: "O que mostrar e de onde vem" }));
+
     const upaToggle = screen.getByRole("button", { name: /^UPAs/ });
     const hospitalToggle = screen.getByRole("button", { name: /Hospitais municipais/ });
     expect(upaToggle).toHaveAttribute("aria-pressed", "true");

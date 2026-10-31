@@ -49,6 +49,9 @@ export function FeatureTour({
   }, []);
 
   const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.target instanceof HTMLElement && (event.target.isContentEditable || ["INPUT", "SELECT", "TEXTAREA"].includes(event.target.tagName))) {
+      if (event.key !== "Escape") return;
+    }
     if (event.key === "ArrowRight" && index < steps.length - 1) onIndexChange(index + 1);
     else if (event.key === "ArrowLeft" && index > 0) onIndexChange(index - 1);
     else if (event.key === "Escape") onClose();

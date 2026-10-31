@@ -43,3 +43,23 @@ it("expõe erro de carregamento sem apresentar números de exemplo", () => {
   expect(screen.queryByRole("table")).not.toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Calcular este ponto" })).toBeDisabled();
 });
+
+it("liga apenas o resultado atual ao resumo e o invalida ao trocar de ponto", () => {
+  vi.stubGlobal("Worker", DemoWorker);
+  const onResultChange = vi.fn();
+  const onCandidate = vi.fn();
+  const { rerender } = render(<ScenarioSimulator candidate={[-38.5, -3.8]} onCandidate={onCandidate} onResultChange={onResultChange} />);
+  const worker = DemoWorker.current;
+  worker.send({ kind: "ready" });
+  const id = worker.postMessage.mock.calls.at(-1)![0].id;
+  // DEMO: resultado sintético restrito a este teste, sem representar setor real.
+  const result = { snapM: 20, total: 1000, rows: ["slow", "central", "fast"].flatMap(scenario => [10, 20, 30].map(minutes => ({ scenario, minutes, base: 100, proposed: 105, delta: 5, deltaPercentagePoints: 0.5 }))) };
+  worker.send({ kind: "result", id, result });
+  expect(onResultChange).toHaveBeenLastCalledWith(result);
+  expect(screen.getByText("+5 moradores")).toBeVisible();
+  rerender(<ScenarioSimulator candidate={[-38.51, -3.81]} onCandidate={onCandidate} onResultChange={onResultChange} />);
+  expect(onResultChange).toHaveBeenLastCalledWith(null);
+  worker.send({ kind: "result", id, result });
+  expect(onResultChange).toHaveBeenLastCalledWith(null);
+  expect(screen.queryByText("+5 moradores")).not.toBeInTheDocument();
+});

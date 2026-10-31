@@ -78,17 +78,15 @@ export function LayerRail({ counts, layers, onToggle, locationControl, corridorO
   ];
 
   return (
-    <section className="layer-rail" aria-labelledby="rail-title">
-      <div className="rail-intro">
-        <span className="section-label">Explore o mapa</span>
-        <h1 id="rail-title">Onde ficam os postos de saúde de Fortaleza?</h1>
-        <p>
-          O posto de saúde é a porta de entrada do SUS. Veja onde ficam os postos, as
-          UPAs e os hospitais municipais — e toque num bairro para saber o que tem lá.
-        </p>
-      </div>
-
+    <section className="layer-rail" aria-labelledby="rail-title" onKeyDown={event => {
+      if (event.key === "Escape" && open) {
+        event.stopPropagation();
+        setOpen(false);
+        document.getElementById("rail-title")?.focus();
+      }
+    }}>
       <button
+        id="rail-title"
         aria-controls="rail-body"
         aria-expanded={open}
         className="rail-toggle"
@@ -100,7 +98,7 @@ export function LayerRail({ counts, layers, onToggle, locationControl, corridorO
         <ChevronDown className="rail-toggle-chevron" size={16} aria-hidden="true" />
       </button>
 
-      <div className="rail-body" data-open={open} id="rail-body">
+      <div className="rail-body" data-open={open} hidden={!open} id="rail-body">
         <section className="rail-section" aria-labelledby="layers-title">
           <h2 className="section-label" id="layers-title">
             O que mostrar no mapa

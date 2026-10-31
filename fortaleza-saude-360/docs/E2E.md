@@ -39,3 +39,9 @@ A inspeção visual detectou um contêiner flex que podia encolher a tabela no d
 O Vitest exclui `tests/e2e.spec.ts`, pois esse arquivo pertence ao runner Playwright. A suíte unitária continua independente (`npm run test -- --maxWorkers=2`). Evitar rodar a suíte JSDOM e o build ao mesmo tempo em máquinas limitadas: essa concorrência já causou timeouts que desapareceram na execução isolada, sem aumentar os limites dos testes.
 
 Estes testes validam o funcionamento da aplicação e sua integração com os arquivos locais. Não validam trajetos de campo, cobertura assistencial ou disponibilidade das unidades.
+
+## Jornada narrativa desktop — SDD-058
+
+Dois casos adicionais, executados somente no projeto desktop, verificam abertura participativa em 1440×900 e 1280×720, avanço visível na tela menor, escolha de bairro na História, continuação na ficha, foco em “Ver detalhes”, A preenchido e enquadramento de A/B, síntese antes da tabela e KPIs sem cortes. Os 12 casos anteriores continuam nos dois projetos. Total esperado: 26 aprovados e dois casos novos intencionalmente ignorados no projeto mobile, que não é foco de redesign nesta etapa.
+
+Tabelas, coordenadas e cenários locais são abertos por seus controles antes das assertions; a cobertura das informações e privacidade anteriores permanece. “Ver resultado” deve focar a explicação do cenário atual. A regressão de viewport menor também verifica área útil do mapa para não tornar marcadores antes alcançáveis inacessíveis.

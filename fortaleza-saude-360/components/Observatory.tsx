@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { AnimatePresence } from "motion/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   CityMap,
   type FrameRequest,
@@ -28,6 +27,7 @@ import {
 } from "@/lib/filters";
 import { buildStoryChapters, buildStoryFacts } from "@/lib/story";
 import type { CorridorMinutes } from "@/lib/corridor-preview";
+import type { ScenarioResult } from "@/lib/scenario";
 
 type ObservatoryProps = {
   model: MapModel | null;
@@ -44,6 +44,7 @@ const DEFAULT_LAYERS: LayerVisibility = {
 };
 
 export const STORY_SEEN_KEY = "f360:story-seen";
+const integer = new Intl.NumberFormat("pt-BR");
 
 function isTypingTarget(target: EventTarget | null): boolean {
   return (
@@ -82,6 +83,21 @@ export function Observatory({ model }: ObservatoryProps) {
   const [comparison, setComparison] = useState<[string, string]>(["", ""]);
   const [devicePosition, setDevicePosition] = useState<{ point: Position; accuracy: number } | null>(null);
   const [corridorMinutes, setCorridorMinutes] = useState<CorridorMinutes>(10);
+  const [scenarioResult, setScenarioResult] = useState<ScenarioResult | null>(null);
+  const readingRef = useRef<HTMLDivElement>(null);
+
+  const focusReading = useCallback(() => {
+    const result = readingRef.current?.querySelector<HTMLDivElement>("#scenario-result");
+    const target = result ?? readingRef.current;
+    if (!result) readingRef.current?.querySelector<HTMLElement>(".reading-panel")?.scrollTo?.({ top: 0 });
+    target?.focus({ preventScroll: true });
+    target?.scrollIntoView?.({ block: "nearest", behavior: "auto" });
+  }, []);
+
+  const proposeCandidate = useCallback((point: Position | null) => {
+    setScenarioResult(null);
+    setCandidate(point);
+  }, []);
 
   const neighborhoodByCode = useMemo(
     () => new Map(model?.neighborhoods.map((item) => [item.code, item]) ?? []),
@@ -129,6 +145,7 @@ export function Observatory({ model }: ObservatoryProps) {
 
   const switchMode = useCallback((next: Mode) => {
     if (next !== "simulate") setCandidate(null);
+    setScenarioResult(null);
     setMode(next);
     setWave((count) => count + 1);
   }, []);
@@ -154,6 +171,19 @@ export function Observatory({ model }: ObservatoryProps) {
       switchMode(next);
     }
   };
+
+  const startComparison = (code?: string) => {
+    if (code) setComparison(current => [code, current[1] === code ? "" : current[1]]);
+    changeMode("compare");
+  };
+
+  const openSearch = useCallback(() => {
+    if (mode === "story") {
+      rememberStory();
+      switchMode("explore");
+    }
+    setPaletteOpen(true);
+  }, [mode, switchMode]);
 
   // Restaura a seleção compartilhada pela URL; sem link de seleção, abre a história na 1ª visita.
   useEffect(() => {
@@ -191,18 +221,23 @@ export function Observatory({ model }: ObservatoryProps) {
 
       if (isShortcut || isSlash) {
         event.preventDefault();
-        setPaletteOpen(true);
+        openSearch();
       }
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [model]);
+  }, [model, openSearch]);
 
   const toggleLayer = (layer: keyof LayerVisibility) =>
     setLayers((current) => ({ ...current, [layer]: !current[layer] }));
 
   const isStory = mode === "story" && chapters.length > 0;
+  const selectedNeighborhood = neighborhoodByCode.get(filters.neighborhoodId ?? "");
+  const selectedFacility = facilityById.get(filters.selectedFacilityId ?? "");
+  const comparisonNames = comparison.map(code => neighborhoodByCode.get(code)?.name);
+  const resultAtTen = scenarioResult?.rows.find(row => row.scenario === "central" && row.minutes === 10);
+  const gainRange = scenarioResult?.rows.filter(row => row.minutes === 10).map(row => row.delta) ?? [];
 
   const storyFocus: StoryMapFocus | null =
     isStory && facts
@@ -218,12 +253,25 @@ export function Observatory({ model }: ObservatoryProps) {
       <CommandBar
         mode={mode}
         onModeChange={changeMode}
-        onOpenSearch={() => setPaletteOpen(true)}
+        onOpenSearch={openSearch}
         searchDisabled={!model}
       />
 
-      <main className="workspace" id="main-content" tabIndex={-1}>
-        <LayerRail
+      <main className={`workspace journey-workspace${isStory ? " is-story" : ""}`} id="main-content" tabIndex={-1}>
+        {isStory && model ? <div className="story-host">
+          <StoryMode
+            chapters={chapters} index={chapter} onClose={closeStory} onIndexChange={setChapter}
+            neighborhoods={model.neighborhoods} selectedNeighborhood={selectedNeighborhood}
+            onSelectNeighborhood={code => selectNeighborhood(code, true)}
+            onExplore={closeStory} onCompare={() => startComparison(selectedNeighborhood?.code)}
+            onSimulate={() => changeMode("simulate")}
+          />
+        </div> : null}
+
+        <MapPanel
+          id="stage-panel"
+          labelledBy={`mode-tab-${mode}`}
+          tools={!isStory ? <LayerRail
           counts={
             model
               ? {
@@ -250,27 +298,22 @@ export function Observatory({ model }: ObservatoryProps) {
             requestFrame([x - 2, y - 2, x + 2, y + 2]);
             return true;
           }} /> : undefined}
-        />
-
-        <MapPanel
-          id="stage-panel"
-          labelledBy={`mode-tab-${mode}`}
-          overlay={
-            <>
-              {wave > 0 ? <ModeWave key={wave} /> : null}
-              <AnimatePresence>
-                {isStory ? (
-                  <StoryMode
-                    chapters={chapters}
-                    index={chapter}
-                    key="story"
-                    onClose={closeStory}
-                    onIndexChange={setChapter}
-                  />
-                ) : null}
-              </AnimatePresence>
-            </>
-          }
+          /> : null}
+          context={!isStory && model ? <>
+            <div>
+              <strong>{mode === "simulate" ? resultAtTen ? `+${integer.format(resultAtTen.delta)} moradores no alcance de 10 min, na hipótese central` : candidate ? "Ponto proposto no mapa" : "Onde você colocaria um novo posto?"
+                : mode === "compare" ? comparisonNames.every(Boolean) ? `${comparisonNames[0]} e ${comparisonNames[1]}` : "Quais bairros você quer colocar lado a lado?" : selectedFacility?.name ?? selectedNeighborhood?.name ?? "O mapa começa com uma escolha sua"}</strong>
+              <p>{mode === "simulate" ? resultAtTen ? `Faixa de ${integer.format(Math.min(...gainRange))} a ${integer.format(Math.max(...gainRange))}, variando a caminhada. Estimativa, não atendimento.` : "Clique no mapa para experimentar. O resultado aparece ao lado."
+                : mode === "compare" ? comparisonNames.every(Boolean) ? "A e B identificam os contornos. A leitura ao lado explica as diferenças." : "Escolha os dois bairros no painel ao lado para ler as diferenças."
+                  : selectedFacility ? "A ficha ao lado explica o cadastro e suas limitações."
+                    : selectedNeighborhood ? `${selectedNeighborhood.facilityIds.length} ${selectedNeighborhood.facilityIds.length === 1 ? "posto dentro" : "postos dentro"} do limite do bairro, na lista de 2026. Contagem não mede atendimento.`
+                      : "Clique em um bairro ou procure pelo nome. Os detalhes aparecem ao lado."}</p>
+            </div>
+            <button type="button" className="action-button action-ghost" onClick={mode === "explore" && !selectedNeighborhood && !selectedFacility ? openSearch : focusReading}>
+              {mode === "simulate" ? resultAtTen ? "Ver resultado" : "Ver como simular" : mode === "compare" ? "Ver comparação" : selectedNeighborhood || selectedFacility ? "Ver detalhes" : "Buscar no mapa"}
+            </button>
+          </> : undefined}
+          overlay={wave > 0 ? <ModeWave key={wave} /> : undefined}
           state={model ? "ready" : "error"}
         >
           {model ? (
@@ -290,13 +333,14 @@ export function Observatory({ model }: ObservatoryProps) {
                 distanceEnabled={mode === "explore"}
                 devicePosition={devicePosition}
                 corridorMinutes={corridorMinutes}
-                onProposeCandidate={mode === "simulate" ? setCandidate : undefined}
+                onProposeCandidate={mode === "simulate" ? proposeCandidate : undefined}
               />
             </div>
           ) : undefined}
         </MapPanel>
 
-        {mode === "compare" ? <NeighborhoodComparison model={model} codes={comparison} onChange={setComparison} onFrame={requestFrame} /> : mode === "simulate" ? <ScenarioSimulator candidate={candidate} onCandidate={setCandidate} /> : <ReadingPanel
+        {!isStory ? <div className="reading-host" tabIndex={-1} ref={readingRef} role="region" aria-label="Leitura do mapa">
+        {mode === "compare" ? <NeighborhoodComparison model={model} codes={comparison} onChange={setComparison} onFrame={requestFrame} /> : mode === "simulate" ? <ScenarioSimulator candidate={candidate} onCandidate={proposeCandidate} onResultChange={setScenarioResult} /> : <ReadingPanel
           facts={facts}
           model={model}
           onClear={clearSelection}
@@ -306,7 +350,11 @@ export function Observatory({ model }: ObservatoryProps) {
           onSelectNeighborhood={selectNeighborhood}
           selectedFacility={filters.selectedFacilityId}
           selectedNeighborhood={filters.neighborhoodId}
+          onOpenSearch={openSearch}
+          onCompareNeighborhood={startComparison}
+          onOpenSimulate={() => changeMode("simulate")}
         />}
+        </div> : null}
       </main>
 
       {model && paletteOpen ? (

@@ -47,7 +47,7 @@ describe("Observatory", () => {
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { level: 2, name: /postos de saúde para 2 bairros\. Aqui você vê onde ficam/ }),
+      screen.getByRole("heading", { level: 2, name: "Comece pelo seu bairro." }),
     ).toBeInTheDocument();
   });
 
@@ -79,6 +79,8 @@ describe("Observatory", () => {
   it("alterna camadas com estado acessível", async () => {
     const user = userEvent.setup();
     render(<Observatory model={demoModel()} />);
+
+    await user.click(screen.getByRole("button", { name: "O que mostrar e de onde vem" }));
 
     const toggle = screen.getByRole("button", { name: /^Postos de saúde/ });
     expect(toggle).toHaveAttribute("aria-pressed", "true");

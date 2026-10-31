@@ -6,15 +6,22 @@ import { AnimatedHeading } from "@/components/motion/AnimatedHeading";
 import { FeatureTour } from "@/components/vendor/feature-tour";
 import { LabeledProgress } from "@/components/vendor/labeled-progress-indicator";
 import type { StoryChapter } from "@/lib/story";
+import type { NeighborhoodShape } from "@/lib/map-model";
 
 type StoryModeProps = {
   chapters: StoryChapter[];
   index: number;
   onIndexChange: (index: number) => void;
   onClose: () => void;
+  neighborhoods: NeighborhoodShape[];
+  selectedNeighborhood: NeighborhoodShape | undefined;
+  onSelectNeighborhood: (code: string) => void;
+  onExplore: () => void;
+  onCompare: () => void;
+  onSimulate: () => void;
 };
 
-export function StoryMode({ chapters, index, onIndexChange, onClose }: StoryModeProps) {
+export function StoryMode({ chapters, index, onIndexChange, onClose, neighborhoods, selectedNeighborhood, onSelectNeighborhood, onExplore, onCompare, onSimulate }: StoryModeProps) {
   const chapter = chapters[index];
   const isLast = index === chapters.length - 1;
 
@@ -43,7 +50,7 @@ export function StoryMode({ chapters, index, onIndexChange, onClose }: StoryMode
           <button
             className="action-button story-next"
             data-autofocus
-            onClick={() => (isLast ? onClose() : onIndexChange(index + 1))}
+            onClick={() => (isLast ? onExplore() : onIndexChange(index + 1))}
             type="button"
           >
             {isLast ? (
@@ -78,6 +85,23 @@ export function StoryMode({ chapters, index, onIndexChange, onClose }: StoryMode
           <p key={paragraph}>{paragraph}</p>
         ))}
       </div>
+
+      {chapter.phase === "contours" ? <div className="story-participation">
+        <label htmlFor="story-neighborhood">Escolha um bairro na história</label>
+        <select id="story-neighborhood" value={selectedNeighborhood?.code ?? ""} onChange={event => onSelectNeighborhood(event.target.value)}>
+          <option value="">Um bairro que você conhece…</option>
+          {neighborhoods.map(item => <option key={item.code} value={item.code}>{item.name}</option>)}
+        </select>
+        {selectedNeighborhood ? <>
+          <p role="status"><strong>{selectedNeighborhood.name}</strong> {selectedNeighborhood.facilityIds.length === 0 ? "não tem posto" : `tem ${selectedNeighborhood.facilityIds.length} ${selectedNeighborhood.facilityIds.length === 1 ? "posto" : "postos"}`} dentro do seu limite, na lista de 2026.</p>
+          <button className="action-button" type="button" onClick={onExplore}>Conhecer este bairro</button>
+        </> : null}
+      </div> : null}
+
+      {isLast ? <div className="story-choices">
+        <button className="action-button action-ghost" type="button" onClick={onCompare}>{selectedNeighborhood ? "Comparar este bairro" : "Comparar dois bairros"}</button>
+        <button className="action-button action-ghost" type="button" onClick={onSimulate}>Experimentar um posto novo</button>
+      </div> : null}
 
       {chapter.caveat ? (
         <p className="story-caveat">

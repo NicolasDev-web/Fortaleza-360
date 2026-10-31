@@ -5,8 +5,8 @@ O mantra da aplicação é o livro *Storytelling com Dados* (Cole Nussbaumer Kna
 ## Princípios
 
 1. **Contexto primeiro.** Antes de mostrar o dado, diga para quem é e o que dá para fazer com ele.
-2. **Uma grande ideia.** A tela inteira sustenta uma frase: *Fortaleza tem {n} postos de saúde para {n} bairros. Este mapa mostra onde cada um fica — e o que esses dados ainda não contam.*
-3. **Título que já diz a conclusão.** "39 bairros não têm posto dentro do próprio limite" diz mais que "Distribuição por bairro".
+2. **Uma grande ideia.** A abertura apresenta o assunto; depois, uma pergunta conduz a leitura: *Comece pelo seu bairro.* Números entram quando respondem à escolha, acompanhados do que representam.
+3. **Título que orienta a próxima leitura.** “E no bairro que você conhece?” convida à escolha; “O que a comparação mostra” introduz uma resposta. Contagens e diferenças vêm do modelo, sem exemplo fixo apresentado como fato.
 4. **Menos ruído.** Uma ideia por frase. Nada de sigla solta. Não repita em texto o que o mapa já mostra.
 5. **Foco.** Um número em destaque por bloco, sempre acompanhado do que ele significa.
 6. **Começo, meio e fim.** Contexto, achado (com a tensão) e o convite: veja o seu bairro.
