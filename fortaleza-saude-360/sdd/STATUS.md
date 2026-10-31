@@ -55,12 +55,15 @@
 - 053: [x] títulos sem desfoque residual sob movimento reduzido, conferidos no navegador
 - 054: [x] integração Git da Vercel desconectada e deploy automático bloqueado durante revisão/CI
 - 055: [x] entrega em branch de revisão e CI remota aprovada: 117 JS, 109 Python, 24 E2E e build
+- 056: [x] projeto remoto alinhado a Next.js/Node 22 e comandos de build, sem deploy
 - UX-001: [x] redesign "Sonar costeiro" com mapa SVG real (tarefa extra aprovada; antecipa parcialmente SDD-028–031 sem MapLibre)
 - UX-002: [x] "Terra da Luz": paleta nova, tipografia animada, componentes uselayouts/Watermelon, Modo História (Storytelling com Dados) e toques de Fortaleza (tarefa extra aprovada)
 - UX-003: [x] remove cordel/renda, ondas e farol só no mar, transição de onda entre modos e interruptores de camada (tarefa extra aprovada)
 - UX-004: [x] linguagem simples guiada por Storytelling com Dados, com detalhe técnico em "Como sabemos disso" (tarefa extra aprovada)
 
 Log: preencha `ID | data | arquivos | teste executado | resultado | limitações` após cada tarefa.
+
+056 | 2026-10-31 | configuração remota do projeto criado no setup, docs/{READINESS,DEPLOY_TESTS}.md, tarefa/status | inspect confirmou alvo antes da mutação; comando oficial project update alterou somente framework/nodeVersion/installCommand/buildCommand; inspect/API posteriores e vercel ls | Next.js, Node22.x, npm ci e npm run build confirmados; raiz . preparada para CLI a partir da aplicação; zero deployments, Git desconectado, analytics false e proteção existente preservada | sem código/dados alterados, sem merge/deploy/domínio ou serviços pagos; validação de código já registrada na 055; logs/retenção, licença IBGE e testes em HTTPS/aparelho continuam pendentes
 
 055 | 2026-10-31 | entrega SDD-034–054 commitada em codex/pre-deploy-completion, tests/public-data.test.ts, docs/{CI,READINESS,DEPLOY_TESTS,TRAVEL_TIME,DATA_SOURCES}.md, tarefa/status | primeiro run 41213402166: 116/117 JS; fixture de caminho continha DEMO e exercitava outra rejeição no Linux; isolada sem alterar guard, 7 testes locais passaram; run 41213816425 na revisão 3e1dcf530def532674ec8fa5203f392092583520: guard 14 arquivos, Ruff, 109 Python, lint, tipos, 117 JS, build e 24 E2E aprovados | CI real aprovada e evidências retidas por 7 dias; cinco pares públicos comparados na interface Valhalla/FOSSGIS perfil Pedestrian, tempos dentro da faixa local, URLs/versão/resultados documentados; índice IBGE ainda contém básico 20260520, outubro corresponde a características de domicílio; Vercel sem Git/deployments após push | sem merge/deploy; comparação entre motores OSM não é medição em campo nem calibração; distâncias externas arredondadas; termos específicos IBGE não confirmados; hospedagem/dispositivo físico pendentes; evidência aplica-se à árvore integrada citada, não a cada commit intermediário; atualização final de evidência somente documental
 

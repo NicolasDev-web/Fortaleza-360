@@ -21,7 +21,7 @@ O usuário solicitou setup da Vercel e depois condicionou a publicação à conc
 ## Decisões do responsável antes de publicar
 
 - [ ] Autorizar explicitamente a publicação de um **preview experimental**, com os arquivos agregados de população, malha pública e cenários de teste da aplicação.
-- [ ] Definir conta, projeto e plataforma. Se Vercel, configurar a raiz como `fortaleza-saude-360`, framework Next.js, Node 22 e build `npm run build`; não é necessário rodar ETL ou instalar Python no deploy.
+- [x] Conta/projeto do setup identificados e build alinhado na SDD-056: `nicolas-santos-projects2/fortaleza-saude-360`, Next.js, Node 22.x, `npm ci`, `npm run build`. Envio futuro pela CLI executada em `fortaleza-saude-360/`, com raiz remota `.`; não exige Python/ETL no deploy. Integração Git continua desligada; se escolhida futuramente, requer raiz de repositório `fortaleza-saude-360` e revisão própria.
 - [ ] Escolher preview público ou acesso protegido e revisar quem poderá abrir o link.
 - [ ] Conferir custos/limites da conta, métricas automáticas, acesso e retenção de logs de IP/URLs. Não ativar analytics, replay ou envio de coordenadas por padrão.
 - [ ] Revisar a licença padronizada do IBGE ainda não confirmada na coleta e as atribuições das fontes. A aprovação de um preview não elimina essa pendência.
