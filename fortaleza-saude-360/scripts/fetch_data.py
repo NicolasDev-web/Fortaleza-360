@@ -33,6 +33,12 @@ CNES_ATTRIBUTION = (
     "Estabelecimentos de Saúde (CNES), arquivo de estabelecimentos (ST)."
 )
 
+OSM_LICENSE = (
+    "Open Database License (ODbL) 1.0; atribuição obrigatória a "
+    "OpenStreetMap contributors"
+)
+OSM_ATTRIBUTION = "© OpenStreetMap contributors. Extrato: Geofabrik GmbH."
+
 IBGE_LICENSE = (
     "Dados públicos do IBGE; licença padronizada não verificada (página de "
     "termos indisponível na coleta), citação da fonte obrigatória"
@@ -55,6 +61,8 @@ class Source:
     reference_year: int
     license: str = LICENSE
     attribution: str = ATTRIBUTION
+    # Arquivos grandes só são baixados quando pedidos pelo nome, nunca por `--all`.
+    bulk: bool = False
 
 
 @dataclass(frozen=True)
@@ -156,6 +164,20 @@ SOURCES: dict[str, Source] = {
         reference_year=2022,
         license=IBGE_LICENSE,
         attribution=IBGE_ATTRIBUTION,
+    ),
+    "osm-nordeste": Source(
+        source_id="OSM-GEOFABRIK-NORDESTE-261027",
+        filename="osm-nordeste-261027.osm.pbf",
+        page_url="https://download.geofabrik.de/south-america/brazil/nordeste.html",
+        download_url=(
+            "https://download.geofabrik.de/south-america/brazil/"
+            "nordeste-261027.osm.pbf"
+        ),
+        organization="OpenStreetMap / Geofabrik",
+        reference_year=2026,
+        license=OSM_LICENSE,
+        attribution=OSM_ATTRIBUTION,
+        bulk=True,
     ),
     "ibge-agregados-basico": Source(
         source_id="IBGE-AGREGADOS-SETORES-BASICO-CD2022-20260520",
@@ -285,7 +307,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    source_keys = sorted(SOURCES) if args.all else [args.source]
+    source_keys = (
+        sorted(key for key, source in SOURCES.items() if not source.bulk)
+        if args.all
+        else [args.source]
+    )
 
     for source_key in source_keys:
         result = download_source(

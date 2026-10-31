@@ -9,6 +9,8 @@ description = "Pipeline geoespacial reproduzível do Fortaleza Saúde 360°"
 requires-python = ">=3.11,<3.14"
 dependencies = [
   "geopandas==1.2.0",
+  "networkx==3.7",
+  "osmium==4.3.2",
   "pandas==3.1.0",
   "pmtiles==3.8.1",
   "shapely==2.2.0",
