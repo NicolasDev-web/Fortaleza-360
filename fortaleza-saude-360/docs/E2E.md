@@ -8,6 +8,12 @@ npm run test:e2e
 
 `playwright.config.ts` cria um build de produção e um servidor isolado em `127.0.0.1:3100`, encerrado pelo runner. Os fluxos são executados em Chromium headless para desktop (1440 × 900) e mobile (390 × 844, toque habilitado). Um worker, sem retries automáticos; movimento reduzido para reduzir instabilidade de animação.
 
+## HTTPS hospedado (SDD-045)
+
+Definir `F360_E2E_BASE_URL` com a origem HTTPS publicada e executar `npx playwright test`. O runner usa essa origem sem iniciar/recompilar servidor local. Rejeita HTTP, credenciais, caminho, query ou fragmento antes dos testes. Sem essa variável, mantém o comportamento local acima. Para preview protegido, usar `vercel env run -- npx playwright test`: o token OIDC temporário é anexado somente a requisições da origem alvo. Não imprimir o token ou salvar traces remotos; estes ficam desativados para evitar registrar o header. Screenshots e relatórios continuam em `test-results/` ignorado.
+
+Medições remotas são rotuladas como HTTPS hospedado; não são localhost, aparelho físico nem Web Vitals de visitantes. Os testes usam apenas coordenadas públicas/constantes de teste, inclusive na simulação de permissão GPS.
+
 ## Cobertura
 
 1. Mapa visível, esconder/reexibir UPA, busca pelo teclado, seleção de uma unidade real e URL com a seleção correta. O controle de abrir camadas só é acionado quando visível no layout móvel.

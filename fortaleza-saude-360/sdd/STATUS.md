@@ -44,7 +44,7 @@
 - 042: [x] auditoria técnica de privacidade, consentimento e rastreio
 - 043: [x] metas e medições de bundle/interação registradas; carga do simulador sob demanda
 - 044: [x] CI preparada, prebuild com guard de dados e checksums; validação local concluída
-- 045: [ ] publicação adiada por decisão explícita do usuário; preparação local preservada
+- 045: [ ] publicação autorizada em 2026-10-31; verificações HTTPS e deploy em andamento
 - 046: [x] Comparar dois bairros: indicadores existentes, contornos A/B, inversão e CSV da dupla
 - 047: [x] conciliação documental e inventário de demandas reais em docs/READINESS.md
 - 048: [x] camada de distância em linha reta do centro do bairro até a UAPS mais próxima
@@ -62,6 +62,8 @@
 - UX-004: [x] linguagem simples guiada por Storytelling com Dados, com detalhe técnico em "Como sabemos disso" (tarefa extra aprovada)
 
 Log: preencha `ID | data | arquivos | teste executado | resultado | limitações` após cada tarefa.
+
+045-retomada | 2026-10-31 | playwright.config.ts, tests/e2e.spec.ts, docs/{E2E,HOSTING}.md, tarefa/status | autorização explícita de publicação; CI 41214330741 aprovada na revisão 5d5484a; inspeção do projeto/conta, dry-run sem arquivos privados, 14 dados públicos; lint, tipos, build; runner lista 24 testes e recusa HTTP antes do navegador | preparação aprovada para preview; Next.js/Node22, Hobby, analytics false, proteção existente, sem drains ou Git automático; token remoto restrito à origem, traces remotos off | deploy/testes HTTPS ainda em andamento; termos específicos IBGE não confirmados, sem medição de campo/celular físico; sem upgrade/domínio próprio
 
 056 | 2026-10-31 | configuração remota do projeto criado no setup, docs/{READINESS,DEPLOY_TESTS}.md, tarefa/status | inspect confirmou alvo antes da mutação; comando oficial project update alterou somente framework/nodeVersion/installCommand/buildCommand; inspect/API posteriores e vercel ls | Next.js, Node22.x, npm ci e npm run build confirmados; raiz . preparada para CLI a partir da aplicação; zero deployments, Git desconectado, analytics false e proteção existente preservada | sem código/dados alterados, sem merge/deploy/domínio ou serviços pagos; validação de código já registrada na 055; logs/retenção, licença IBGE e testes em HTTPS/aparelho continuam pendentes
 

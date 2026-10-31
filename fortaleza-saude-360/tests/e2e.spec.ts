@@ -56,7 +56,14 @@ test("compara bairros, inverte a dupla e exporta apenas A e B", async ({ page },
   await expect(b).toBeFocused();
 });
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, context, baseURL }) => {
+  const token = process.env.VERCEL_OIDC_TOKEN;
+  if (process.env.F360_E2E_BASE_URL && token && baseURL) {
+    const origin = new URL(baseURL).origin;
+    await context.route(url => url.origin === origin, route => route.continue({
+      headers: { ...route.request().headers(), "x-vercel-trusted-oidc-idp-token": token },
+    }));
+  }
   await page.addInitScript(() => localStorage.setItem("f360:story-seen", "1"));
 });
 
@@ -281,8 +288,10 @@ test("mede abertura e cálculo mantendo o modelo fora da carga inicial", async (
     ...initial, modelNotRequestedInitially: true,
     targets: { mapVisibleMs: testInfo.project.name === "mobile" ? 8000 : 5000,
       simulatorReadyMs: 5000, calculateMs: 2000 },
-    environment: "Chromium headless, build de produção, localhost, sem throttling" };
+    environment: process.env.F360_E2E_BASE_URL
+      ? "Chromium headless, HTTPS hospedado, sem throttling"
+      : "Chromium headless, build de produção, localhost, sem throttling" };
   const file = `test-results/performance-${testInfo.project.name}.json`;
   writeFileSync(file, JSON.stringify(report, null, 2));
-  await testInfo.attach("performance-local", { path: file, contentType: "application/json" });
+  await testInfo.attach(process.env.F360_E2E_BASE_URL ? "performance-https" : "performance-local", { path: file, contentType: "application/json" });
 });
