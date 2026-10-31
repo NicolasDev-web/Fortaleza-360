@@ -1,4 +1,6 @@
-# Demandas antes de publicar — revisão de 2026-10-31
+# Estado da entrega e pendências — revisão de 2026-10-31
+
+**Aplicação publicada:** [fortaleza-saude-360.vercel.app](https://fortaleza-saude-360.vercel.app), versão experimental, revisão `d9e7174`, deployment READY. Usuário autorizou expressamente a publicação/configuração após receber as ressalvas. Passaram 24 testes E2E no domínio HTTPS, checksums dos 14 arquivos, verificação de Range do mapa e exclusão de caminhos privados. Detalhes e medições em `DEPLOY_TESTS.md`; configuração/privacidade em `HOSTING.md`.
 
 Este inventário confronta o PRD, tarefas e evidências de STATUS. Uma tarefa de implementação concluída não equivale a validação científica, CI remota ou publicação. No fechamento da SDD-052 passaram build, lint, tipos, Ruff, guard de 14 arquivos, 117 testes JS, 109 Python e 24 E2E desktop/mobile.
 
@@ -34,16 +36,17 @@ Atualização das fontes conferida no índice oficial do IBGE: o básico populac
 
 ## Pendências operacionais
 
-- CI real concluída na revisão `3e1dcf5`; exigir resultado aprovado também para qualquer revisão de código escolhida futuramente para hospedagem.
-- Definir revisão a publicar e revisar logs/retenção/visibilidade do provedor.
-- Validação HTTPS, arquivos/checksums, Worker, mapa, CSV, privacidade e desempenho na URL hospedada. Só é possível depois do primeiro deploy de teste.
+- CI da revisão publicada `d9e7174` aprovada no [run 41214979987](https://github.com/NicolasDev-web/Fortaleza-360/actions/runs/41214979987). Novas alterações de código exigem nova validação antes de republicar.
+- Logs/retenção/visibilidade revisados em `HOSTING.md`: Hobby, runtime logs de uma hora, analytics false, sem drains, domínio padrão público e URL individual protegida. Não há monitoramento contínuo nem promessa de exclusão de todo dado operacional do provedor.
+- HTTPS, 14 checksums, mapa/Range, Worker, CSV, privacidade e 24 fluxos desktop/mobile aprovados no domínio publicado. Medições são de laboratório via HTTPS, não Web Vitals de visitantes.
 - Teste em celular físico e medição de desempenho com rede limitada; viewport headless não substitui aparelho.
+- Manutenção de ferramentas: auditoria completa encontrou 16 entradas moderadas na cadeia de lint, ligadas a um advisory de minimatch; dependências de produção sem alertas no `npm audit --omit=dev`. Não foi aplicado downgrade incompatível automático. Detalhes em `HOSTING.md`.
 
 ## Vercel: configuração não é publicação
 
 CLI 65.7.0 instalada, autenticada. MCP oficial configurado em `https://mcp.vercel.com`, com login concluído e acesso à equipe ainda dependente de consentimento. Projeto `fortaleza-saude-360`, na equipe `nicolas-santos-projects2`, criado e vinculado à pasta da aplicação. Configuração local `vercel.json`: Next.js, `npm ci`, `npm run build`; dados offline, ambientes e traces excluídos do upload. A CLI gerou `.env.local`, ignorado no Git e no upload; seu conteúdo não deve ser registrado nos relatórios.
 
-Consulta `vercel ls fortaleza-saude-360 --scope nicolas-santos-projects2 --non-interactive`: nenhum deployment encontrado. Publicação suspensa conforme pedido do usuário para terminar demandas primeiro. A criação do projeto não permite marcar SDD-045 como concluída.
+O setup inicialmente não tinha deployments. Após nova autorização expressa em 2026-10-31, a SDD-045 publicou e verificou a versão experimental: [fortaleza-saude-360.vercel.app](https://fortaleza-saude-360.vercel.app), deployment `dpl_hdZp1TEL4Zu6BKsueNBWgqJrmgTz`. O primeiro envio solicitado como preview foi classificado production pela plataforma; esse resultado foi inspecionado e comunicado. Não foi desligada a proteção de URLs individuais, habilitado Git automático, comprado domínio ou alterado DNS próprio.
 
 Conferência após o push de revisão em 2026-10-31: API sem vínculo Git, `latestDeployments=[]`, Web Analytics desativado; CLI continua sem deployments. A branch foi publicada somente no GitHub para revisão e CI.
 

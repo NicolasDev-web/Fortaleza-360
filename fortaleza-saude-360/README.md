@@ -2,6 +2,8 @@
 
 Plataforma open-source de inteligência territorial para mapear unidades de saúde, analisar acesso geográfico e SIMULAR implantação de serviços em Fortaleza (CE).
 
+**Versão experimental publicada:** [fortaleza-saude-360.vercel.app](https://fortaleza-saude-360.vercel.app). Evidências de publicação e limitações em `docs/DEPLOY_TESTS.md`. Não é serviço de emergência nem medida de atendimento/capacidade.
+
 > **Estado atual:** protótipo com camadas oficiais, população do Censo, comparação de bairros e simulador de acesso geográfico. Estimativas não medem capacidade ou atendimento. As fixtures sintéticas de testes permanecem rotuladas DEMO e não entram nos dados públicos. Demandas abertas: `docs/READINESS.md`.
 
 ## Comece no VS Code

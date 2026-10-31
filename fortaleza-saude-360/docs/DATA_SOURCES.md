@@ -74,6 +74,8 @@ Revisão de atualização em 2026-10-31: o [índice oficial de agregados CSV](ht
 
 Método, resultados e limitações do crosswalk setor → bairro estão em `docs/POPULATION.md`.
 
+Revisão de reutilização para a publicação de 2026-10-31: além da consulta de fontes oficiais, o GPKG bruto foi aberto em SQLite somente leitura e não contém tabela de metadados; o ZIP básico coletado contém uma entrada, sem README/termo/licença anexado. Foram encontradas declarações de reprodução com atribuição em outros mapas IBGE, mas o escopo não confirma automaticamente estes dois arquivos. Mantida a atribuição "Fonte: IBGE, Censo Demográfico 2022" e o estado de termos específicos não confirmados. Nenhuma licença CC/SPDX foi inventada, fonte ou número recalculado. Publicação experimental foi autorizada pelo usuário após conhecer essa pendência; autorização do usuário não substitui esclarecimento do IBGE.
+
 Na SDD-038, esses mesmos setores e totais de 2022 são cruzados com os corredores de caminhada da SDD-037. `public/data/population-coverage.json` publica contagens e percentuais modelados, alternativas de alocação, limites espaciais e sensibilidade à velocidade. O bloco `population_coverage` no manifesto registra checksum, fontes e ressalvas. Método em `docs/COVERAGE.md`.
 
 ## Basemap OSM (SDD-027)

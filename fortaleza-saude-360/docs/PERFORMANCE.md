@@ -50,3 +50,16 @@ Sem evidência de extrapolação desses orçamentos locais, não se alteraram as
 Na última execução completa: mapa visível em 1.320/848 ms, Simular pronto em 4.200/5.783 ms e cálculo em 652/739 ms (desktop/viewport móvel). O alvo de 5 s para abertura foi ultrapassado no ensaio móvel; a meta não foi relaxada e o teste não transforma uma observação local em garantia de produção. É necessário medir mais amostras no preview e em aparelho real. Os demais alvos de tempo e os limites de tamanho permaneceram atendidos.
 
 Após normalização LF dos dados: JS total emitido de 1.985.774 bytes (575.084 gzip 6) e modelo de 7.688.001 bytes (2.385.768 gzip 6). A mudança de serialização/checksums preservou todos os valores da base; o arquivo do modelo continuou fora da carga inicial.
+
+## URL hospedada — 2026-10-31 (SDD-045)
+
+[fortaleza-saude-360.vercel.app](https://fortaleza-saude-360.vercel.app), origem `d9e7174`, deployment READY. E2E remoto completo **24/24**, Chromium headless, sem throttling, desktop 1440×900 e viewport móvel 390×844. Movimento reduzido, um worker, sem retries. Contextos de teste novos; CDN pode estar aquecida.
+
+| Medida | Desktop | Viewport móvel |
+|---|---:|---:|
+| Mapa visível | 745 ms | 1.053 ms |
+| Simulador pronto | 1.620 ms | 3.012 ms |
+| Cálculo | 210 ms | 311 ms |
+| Modelo na carga inicial | Não | Não |
+
+Relatórios `test-results/performance-{desktop,mobile}.json`, ignorados. Metas locais de interação atendidas nesta observação HTTPS; não é amostra de usuários, LCP/INP, p95, rede móvel limitada ou aparelho físico. Essas validações continuam pendentes e não devem ser declaradas resolvidas pelo deploy.

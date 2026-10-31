@@ -44,7 +44,7 @@
 - 042: [x] auditoria técnica de privacidade, consentimento e rastreio
 - 043: [x] metas e medições de bundle/interação registradas; carga do simulador sob demanda
 - 044: [x] CI preparada, prebuild com guard de dados e checksums; validação local concluída
-- 045: [ ] publicação autorizada em 2026-10-31; verificações HTTPS e deploy em andamento
+- 045: [x] publicação experimental autorizada, Vercel READY e 24 E2E HTTPS aprovados
 - 046: [x] Comparar dois bairros: indicadores existentes, contornos A/B, inversão e CSV da dupla
 - 047: [x] conciliação documental e inventário de demandas reais em docs/READINESS.md
 - 048: [x] camada de distância em linha reta do centro do bairro até a UAPS mais próxima
@@ -62,6 +62,8 @@
 - UX-004: [x] linguagem simples guiada por Storytelling com Dados, com detalhe técnico em "Como sabemos disso" (tarefa extra aprovada)
 
 Log: preencha `ID | data | arquivos | teste executado | resultado | limitações` após cada tarefa.
+
+045-publicação | 2026-10-31 | runner HTTPS e docs/{DEPLOY_TESTS,HOSTING,E2E,READINESS,PRIVACY_ETHICS,PERFORMANCE}.md, README, tarefa/status; projeto Vercel existente | lint/tipos/build locais; CI 41214979987 na origem d9e7174: guard 14 arquivos, Ruff, 109 Python, 117 JS, build e 24 E2E locais; build remoto READY; 24/24 E2E adicionais em HTTPS; manifesto idêntico e 14 SHA-256 iguais, PMTiles Range 206/127 bytes iguais, 6 caminhos privados 404, screenshots desktop/mobile inspecionadas; logs 10 min sem erro runtime/5xx | publicado https://fortaleza-saude-360.vercel.app, dpl_hdZp1TEL4Zu6BKsueNBWgqJrmgTz, target production; usuário autorizou explicitamente; primeiro pedido preview classificado production pela plataforma, comunicado; domínio público 200 e URL individual protegida 302; Hobby/Next.js/Node22, analytics false, drains vazios, Git automático desconectado; configuração desativa telemetria de builds futuros | sem medição presencial/celular físico nem confirmação específica de licença IBGE; parâmetros do método preservados; npm audit produção zero, cadeia dev lint com 16 entradas moderadas de um advisory, sem downgrade forçado; logs são observação pontual; desempenho HTTPS mapa 745/1053 ms, simulador 1620/3012 ms, cálculo 210/311 ms desktop/móvel, não Web Vitals/p95; evidência documental posterior não muda app/dados publicados
 
 045-retomada | 2026-10-31 | playwright.config.ts, tests/e2e.spec.ts, docs/{E2E,HOSTING}.md, tarefa/status | autorização explícita de publicação; CI 41214330741 aprovada na revisão 5d5484a; inspeção do projeto/conta, dry-run sem arquivos privados, 14 dados públicos; lint, tipos, build; runner lista 24 testes e recusa HTTP antes do navegador | preparação aprovada para preview; Next.js/Node22, Hobby, analytics false, proteção existente, sem drains ou Git automático; token remoto restrito à origem, traces remotos off | deploy/testes HTTPS ainda em andamento; termos específicos IBGE não confirmados, sem medição de campo/celular físico; sem upgrade/domínio próprio
 

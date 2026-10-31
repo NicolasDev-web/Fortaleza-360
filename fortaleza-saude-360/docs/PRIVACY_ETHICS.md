@@ -33,7 +33,7 @@ O fluxo não precisa de localização do dispositivo. A SDD-051 adiciona uma op�
 
 ## Pendências de publicação
 
-O provedor de hospedagem poderá registrar IP, user-agent e URLs nos logs de acesso, mesmo sem analytics no app. Retenção, acesso a logs, região, suboperadores e eventuais métricas automáticas do provedor precisam ser conferidos na configuração de publicação (SDD-045); não se promete anonimato absoluto apenas pela ausência de rastreadores no frontend.
+Provedor revisado na SDD-045: Vercel/Hobby, analytics desativado, drains vazios e logs de runtime consultáveis por uma hora segundo a documentação. Região padrão das Functions `iad1`, distribuição de estáticos por CDN. O provedor pode registrar IP, user-agent e URLs mesmo sem analytics no app; a retenção do produto de logs não garante exclusão de todo registro operacional/segurança do provedor. Domínio padrão publicado é público; URLs individuais permanecem protegidas. Evidência e fontes em `HOSTING.md`; não se promete anonimato absoluto ou residência exclusiva no Brasil.
 
 Antes de ativar analytics, monitoramento de erro com payload, replay, geolocalização persistente, formulário de contato ou backend de simulação, revisar esta auditoria e o fluxo de dados. Não ativar por padrão captura de candidato, termos de busca ou dados de saúde.
 
@@ -41,4 +41,4 @@ Os modelos mostram acesso geográfico estimado e incerteza, sem recomendar triag
 
 ## Resultado
 
-Critério da SDD-042 na entrega original: nenhuma coordenada era persistida ou enviada. A SDD-049 revisa a persistência de propostas de equipamento, com autorização explícita do usuário em 2026-10-29: salvar nome/ponto/resultados somente neste navegador, sem envio remoto. Localização pessoal obtida por geolocalização continua ausente e não deve ser persistida. As propostas salvas são legíveis por quem usa o mesmo perfil do navegador e por código da mesma origem; usar nomes sem dados pessoais e Excluir todos em computadores compartilhados. Limpar cenário remove o ativo, não as cópias salvas. A verificação de hospedagem continua pendente.
+Critério da SDD-042 na entrega original: nenhuma coordenada era persistida ou enviada. A SDD-049 revisa a persistência de propostas de equipamento, com autorização explícita do usuário em 2026-10-29: salvar nome/ponto/resultados somente neste navegador, sem envio remoto. Localização pessoal da opção GPS fica somente em memória e não deve ser persistida. As propostas salvas são legíveis por quem usa o mesmo perfil do navegador e por código da mesma origem; usar nomes sem dados pessoais e Excluir todos em computadores compartilhados. Limpar cenário remove o ativo, não as cópias salvas. A verificação técnica da hospedagem foi executada na SDD-045: 24 E2E HTTPS, caminhos privados indisponíveis, checksums e logs pontuais conferidos. Isso não constitui certificação jurídica nem revisão dos sistemas internos do provedor.
