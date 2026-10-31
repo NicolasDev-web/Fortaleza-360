@@ -57,7 +57,9 @@ it("rejeita arquivo de dados não registrado", () => {
 });
 it("rejeita referência que saia da pasta pública", () => {
   const f = fixture();
-  f.registry.layers[0].file = "/../DEMO-fora.json";
+  // Sem marcador DEMO: este caso deve exercitar a proteção de caminho,
+  // independentemente dos separadores de diretório do sistema operacional.
+  f.registry.layers[0].file = "/../arquivo-externo.json";
   f.save();
   expect(() => checkPublicData(f.root)).toThrow(/fora|local/i);
 });
