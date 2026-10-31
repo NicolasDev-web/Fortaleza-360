@@ -5,7 +5,7 @@ Projeto `fortaleza-saude-360` (`prj_pmF9dxkwVhZYEMeh1bEf8T6XALMw`), equipe `nico
 ## Configuração conferida
 
 - API da equipe confirma plano Hobby. Não foram ativados serviços pagos, upgrade, analytics, replay ou integrações externas.
-- Next.js, Node 22.x, instalação `npm ci`, build `npm run build`, raiz remota `.` para envio pela CLI executada na pasta da aplicação.
+- Next.js, Node 22.x, instalação `npm ci`, build `npm run build`, raiz remota `.` para envio pela CLI. Na SDD-058, envio a partir de snapshot limpo do diretório da aplicação, exportado da revisão validada via Git; inventário conferido antes do upload.
 - Projeto sem integração Git; `git.deploymentEnabled=false` preserva revisão manual de futuras publicações. Push de CI não publica automaticamente.
 - Proteção existente `all_except_custom_domains`: previews e URLs individuais protegidos; domínio de produção padrão fica público segundo a [documentação de Standard Protection](https://vercel.com/docs/deployment-protection). Verificar os códigos HTTP efetivos após publicar, sem desligar a proteção para testes.
 - Web Analytics false; API de drains filtrada por projeto retornou `drains: []`.
@@ -23,7 +23,9 @@ O checklist HTTPS, revisão publicada, domínio e resultados estão em `DEPLOY_T
 
 ## Resultado e manutenção
 
-Deployment `dpl_hdZp1TEL4Zu6BKsueNBWgqJrmgTz`, revisão `d9e7174`, READY, target production. O comando solicitou preview, mas o primeiro envio foi classificado production pela plataforma. Domínio [fortaleza-saude-360.vercel.app](https://fortaleza-saude-360.vercel.app) público (200); URL individual redireciona para autenticação (302). Essa diferença foi observada, não contornada por alteração de proteção. 24 E2E HTTPS e checksums aprovados, logs pontuais sem erro/5xx.
+Versão atual: deployment `dpl_BVyqwEZEsrRcqobKeNY6uC3v2zsR`, revisão `56ea9f5`, READY, target production solicitado explicitamente. Domínio [fortaleza-saude-360.vercel.app](https://fortaleza-saude-360.vercel.app) público (200); URL individual protegida (302). API confirmou `meta.sourceRevision`, Git desconectado e `all_except_custom_domains` preservado. 26 E2E HTTPS e 14 checksums aprovados; consulta pontual de dez minutos filtrada por deployment sem erro de runtime/5xx, sem paginação pendente. Nenhuma nova instrumentação de visitantes foi adicionada ao código.
+
+Primeira publicação: deployment `dpl_hdZp1TEL4Zu6BKsueNBWgqJrmgTz`, revisão `d9e7174`. O comando solicitou preview, mas o primeiro envio foi classificado production pela plataforma. A diferença foi observada, não contornada por alteração de proteção. Aquele registro teve 24 E2E HTTPS aprovados e permanece histórico em `DEPLOY_TESTS.md`.
 
 O build inicial exibiu a telemetria anônima de build do Next.js. Configurado `NEXT_TELEMETRY_DISABLED=1` como Config nos três ambientes para builds futuros, sem expor credenciais. Isso não altera a ausência de analytics de visitantes na aplicação nem apaga eventos já enviados por aquele build.
 
