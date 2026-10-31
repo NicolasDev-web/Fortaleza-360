@@ -44,17 +44,17 @@ export function AnimatedHeading({
       initial="hidden"
       animate="visible"
       key={text}
-      transition={{ staggerChildren: reduce ? 0 : 0.055, delayChildren: delay }}
+      transition={{ staggerChildren: reduce ? 0 : 0.055, delayChildren: reduce ? 0 : delay }}
     >
       {words.map((word, index) => [
         index > 0 ? " " : null,
         <motion.span
           className="animated-word"
           key={`${word}-${index}`}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: reduce ? 0 : 0.55, ease: [0.16, 1, 0.3, 1] }}
           variants={
             reduce
-              ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
+              ? { hidden: { opacity: 1, y: 0, filter: "none" }, visible: { opacity: 1, y: 0, filter: "none" } }
               : {
                   hidden: { opacity: 0, y: "0.45em", filter: "blur(8px)" },
                   visible: { opacity: 1, y: 0, filter: "blur(0px)" },
