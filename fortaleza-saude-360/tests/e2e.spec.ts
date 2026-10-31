@@ -336,6 +336,27 @@ test("história participativa conduz do bairro à comparação no computador", a
   await page.getByLabel("Escolha um bairro na história").selectOption({ label: "Meireles" });
   await expect(page.locator(".story-participation")).toContainText("Meireles");
   await page.screenshot({ path: "test-results/journey-participation-desktop.png", fullPage: true });
+  const stability = await page.getByRole("button", { name: "Conhecer este bairro" }).evaluate(async button => {
+    const frames = [];
+    for (let i = 0; i < 30; i++) {
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+      const rect = button.getBoundingClientRect();
+      frames.push([rect.x, rect.y, rect.width, rect.height]);
+    }
+    return {
+      positions: [...new Set(frames.map(frame => JSON.stringify(frame)))],
+      ancestors: [button, button.parentElement, button.closest(".tour-content"), button.closest(".story-card")].map(element => {
+        if (!element) return null;
+        const style = getComputedStyle(element);
+        return { className: element.className, transform: style.transform, height: style.height, overflow: style.overflow };
+      }),
+      animations: document.getAnimations().filter(animation => animation.playState === "running").map(animation => ({
+        target: (animation.effect as KeyframeEffect | null)?.target?.getAttribute("class"),
+        timing: animation.effect?.getComputedTiming(),
+      })),
+    };
+  });
+  await testInfo.attach("story-button-stability", { body: JSON.stringify(stability), contentType: "application/json" });
   await page.getByRole("button", { name: "Conhecer este bairro" }).click();
   await expect(page.getByRole("heading", { name: "Meireles", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Ver detalhes", exact: true }).click();
