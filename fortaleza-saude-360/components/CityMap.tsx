@@ -16,8 +16,11 @@ import { Crosshair, Minus, Plus } from "lucide-react";
 import { Basemap, BasemapCredit, type BasemapStatus } from "@/components/Basemap";
 import { cameraFromView } from "@/lib/basemap";
 import { unitTypeLabel } from "@/lib/sources";
-import { unproject, type Box } from "@/lib/geo";
+import { formatStraightLineDistance, nearestByStraightLine } from "@/lib/accessibility";
+import { project, unproject, type Box, type Position } from "@/lib/geo";
 import { SeaWaves } from "@/components/fortaleza/SeaWaves";
+import { CorridorPreview } from "@/components/CorridorPreview";
+import type { CorridorMinutes } from "@/lib/corridor-preview";
 import {
   neighborhoodSummary,
   type FacilityPoint,
@@ -32,6 +35,8 @@ export type LayerVisibility = {
   facilities: boolean;
   upas: boolean;
   hospitals: boolean;
+  distance: boolean;
+  corridors: boolean;
 };
 
 /** Camada que controla a visibilidade de cada tipo do contrato `facility`. */
@@ -60,6 +65,12 @@ type CityMapProps = {
   onSelectNeighborhood: (code: string) => void;
   onSelectFacility: (id: string) => void;
   onClearSelection: () => void;
+  candidate?: Position | null;
+  onProposeCandidate?: (point: Position) => void;
+  comparison?: [string, string];
+  distanceEnabled?: boolean;
+  devicePosition?: { point: Position; accuracy: number } | null;
+  corridorMinutes?: CorridorMinutes;
 };
 
 type View = { x: number; y: number; w: number; h: number };
@@ -333,6 +344,12 @@ export function CityMap({
   onSelectNeighborhood,
   onSelectFacility,
   onClearSelection,
+  candidate = null,
+  onProposeCandidate,
+  comparison,
+  distanceEnabled = true,
+  devicePosition = null,
+  corridorMinutes = 10,
 }: CityMapProps) {
   const { projection } = model;
   const { width, height } = projection;
@@ -471,6 +488,11 @@ export function CityMap({
     }
 
     const target = event.target as Element;
+    if (onProposeCandidate && target.closest?.("svg")) {
+      const point = toUnits(event.clientX, event.clientY);
+      if (point) onProposeCandidate(unproject(projection, point[0], point[1]));
+      return;
+    }
     const facilityId = target.closest?.("[data-facility]")?.getAttribute("data-facility");
     const neighborhoodCode = target.closest?.("[data-nb]")?.getAttribute("data-nb");
 
@@ -491,6 +513,11 @@ export function CityMap({
   }, [hover]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" && onProposeCandidate) {
+      event.preventDefault();
+      onProposeCandidate(unproject(projection, view.x + view.w / 2, view.y + view.h / 2));
+      return;
+    }
     const step = view.w * 0.12;
     const moves: Record<string, [number, number]> = {
       ArrowLeft: [-step, 0],
@@ -549,6 +576,11 @@ export function CityMap({
 
   const showLabels = zoom > 2.4;
   const selectedShape = selectedNeighborhood ? neighborhoodByCode.get(selectedNeighborhood) : undefined;
+  const showDistance = layers.distance && distanceEnabled && story === null;
+  const nearest = showDistance && selectedShape
+    ? nearestByStraightLine(unproject(projection, ...selectedShape.centroid), model.facilities)
+    : null;
+  const distanceDestination = nearest ? facilityById.get(nearest.facilityId) : undefined;
   const hoverLabel = (() => {
     if (!hover) return null;
     if (hover.kind === "facility") {
@@ -631,6 +663,7 @@ export function CityMap({
           ) : null}
 
           {layers.neighborhoods ? <NeighborhoodLayer neighborhoods={model.neighborhoods} /> : null}
+          {layers.corridors && distanceEnabled && story === null ? <CorridorPreview key={corridorMinutes} minutes={corridorMinutes} projection={projection} labelX={view.x + 15 * unit} labelY={view.y + 28 * unit} unit={unit} /> : null}
 
           {story?.phase === "contours" && layers.neighborhoods ? (
             <g className="story-highlight" aria-hidden="true">
@@ -644,6 +677,18 @@ export function CityMap({
 
           {selectedShape && layers.neighborhoods ? (
             <path className="neighborhood-selected" d={selectedShape.path} />
+          ) : null}
+
+          {comparison && layers.neighborhoods ? (
+            <g className="comparison-contours" aria-hidden="true">
+              {comparison.map((code, index) => {
+                const shape = neighborhoodByCode.get(code);
+                return shape ? <g key={index} data-comparison={index === 0 ? "A" : "B"}>
+                  <path d={shape.path} className={index === 0 ? "comparison-a" : "comparison-b"} />
+                  <text x={shape.centroid[0]} y={shape.centroid[1]} fontSize={16 * unit}>{index === 0 ? "A" : "B"}</text>
+                </g> : null;
+              })}
+            </g>
           ) : null}
 
           {showLabels && layers.neighborhoods ? (
@@ -683,6 +728,21 @@ export function CityMap({
           {story === null && visibleUnits.length > 0 ? (
             <UnitLayer selectedFacility={selectedFacility} unit={unit} units={visibleUnits} />
           ) : null}
+          {candidate ? <g transform={`translate(${project(projection, candidate).join(" ")})`} className="scenario-candidate" aria-label="Posto proposto — cenário hipotético">
+            <circle r={10 * unit} fill="var(--surface)" stroke="var(--accent)" strokeWidth={3 * unit} />
+            <path d={`M${-5 * unit} 0H${5 * unit}M0 ${-5 * unit}V${5 * unit}`} stroke="var(--accent)" strokeWidth={2 * unit} />
+          </g> : null}
+          {showDistance && selectedShape && distanceDestination ? (
+            <g className="distance-proxy" data-distance-proxy="true" aria-hidden="true">
+              <line x1={selectedShape.centroid[0]} y1={selectedShape.centroid[1]} x2={distanceDestination.x} y2={distanceDestination.y} />
+              <circle cx={selectedShape.centroid[0]} cy={selectedShape.centroid[1]} r={4 * unit} />
+              <circle cx={distanceDestination.x} cy={distanceDestination.y} r={6 * unit} />
+            </g>
+          ) : null}
+          {devicePosition ? <g className="device-position" aria-label="Posição aproximada do dispositivo">
+            <circle cx={project(projection, devicePosition.point)[0]} cy={project(projection, devicePosition.point)[1]} r={devicePosition.accuracy / (model.kmPerUnit * 1000)} className="device-accuracy" />
+            <circle cx={project(projection, devicePosition.point)[0]} cy={project(projection, devicePosition.point)[1]} r={5 * unit} />
+          </g> : null}
         </svg>
 
         {hoverLabel && hover && !isDragging ? (
@@ -699,8 +759,15 @@ export function CityMap({
 
       <BasemapCredit status={basemapStatus} />
 
+      {showDistance ? <p className="map-distance-caption" role="status">
+        {selectedShape && nearest && distanceDestination
+          ? <><strong>{selectedShape.name}: {formatStraightLineDistance(nearest.distanceM)}</strong><span>Centro geométrico → {distanceDestination.name}. Aproximação; não é percurso nem tempo pelas ruas.</span></>
+          : selectedShape ? "Nenhuma UAPS disponível para calcular a distância." : "Selecione um bairro para ver a distância do centro até a UAPS mais próxima, em linha reta (aproximação)."}
+      </p> : null}
+
       <p className="visually-hidden" id="map-keyboard-hint">
         Use as setas para mover o mapa, + e − para aproximar ou afastar e 0 para ver a cidade inteira.
+        {onProposeCandidate ? " Pressione Enter para propor um posto no centro do mapa." : ""}
       </p>
 
       <div className="map-controls" role="group" aria-label="Controles do mapa">

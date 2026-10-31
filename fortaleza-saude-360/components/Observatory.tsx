@@ -10,13 +10,15 @@ import {
 } from "@/components/CityMap";
 import { CommandBar, type Mode } from "@/components/CommandBar";
 import { CommandPalette } from "@/components/CommandPalette";
-import { ConceptMode } from "@/components/ConceptMode";
+import { NeighborhoodComparison } from "@/components/NeighborhoodComparison";
 import { ModeWave } from "@/components/fortaleza/ModeWave";
 import { LayerRail } from "@/components/LayerRail";
+import { LocationControl } from "@/components/LocationControl";
 import { MapPanel } from "@/components/MapPanel";
 import { ReadingPanel } from "@/components/ReadingPanel";
 import { StoryMode } from "@/components/StoryMode";
-import type { Box } from "@/lib/geo";
+import { ScenarioSimulator } from "@/components/ScenarioSimulator";
+import { project, type Box, type Position } from "@/lib/geo";
 import type { MapModel } from "@/lib/map-model";
 import {
   parseFilters,
@@ -25,6 +27,7 @@ import {
   type FilterState,
 } from "@/lib/filters";
 import { buildStoryChapters, buildStoryFacts } from "@/lib/story";
+import type { CorridorMinutes } from "@/lib/corridor-preview";
 
 type ObservatoryProps = {
   model: MapModel | null;
@@ -36,6 +39,8 @@ const DEFAULT_LAYERS: LayerVisibility = {
   facilities: true,
   upas: true,
   hospitals: true,
+  distance: false,
+  corridors: false,
 };
 
 export const STORY_SEEN_KEY = "f360:story-seen";
@@ -73,6 +78,10 @@ export function Observatory({ model }: ObservatoryProps) {
   const [frame, setFrame] = useState<FrameRequest | null>(null);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [urlReady, setUrlReady] = useState(false);
+  const [candidate, setCandidate] = useState<Position | null>(null);
+  const [comparison, setComparison] = useState<[string, string]>(["", ""]);
+  const [devicePosition, setDevicePosition] = useState<{ point: Position; accuracy: number } | null>(null);
+  const [corridorMinutes, setCorridorMinutes] = useState<CorridorMinutes>(10);
 
   const neighborhoodByCode = useMemo(
     () => new Map(model?.neighborhoods.map((item) => [item.code, item]) ?? []),
@@ -119,6 +128,7 @@ export function Observatory({ model }: ObservatoryProps) {
   const clearSelection = useCallback(() => setFilters(resetFilters()), []);
 
   const switchMode = useCallback((next: Mode) => {
+    if (next !== "simulate") setCandidate(null);
     setMode(next);
     setWave((count) => count + 1);
   }, []);
@@ -193,7 +203,6 @@ export function Observatory({ model }: ObservatoryProps) {
     setLayers((current) => ({ ...current, [layer]: !current[layer] }));
 
   const isStory = mode === "story" && chapters.length > 0;
-  const isConcept = mode === "compare" || mode === "simulate";
 
   const storyFocus: StoryMapFocus | null =
     isStory && facts
@@ -227,6 +236,20 @@ export function Observatory({ model }: ObservatoryProps) {
           }
           layers={layers}
           onToggle={toggleLayer}
+          corridorOptions={<div className="corridor-options">
+            <label htmlFor="corridor-minutes">Tempo dos corredores</label>
+            <select id="corridor-minutes" value={corridorMinutes} onChange={event => setCorridorMinutes(Number(event.target.value) as CorridorMinutes)}>
+              {[10, 20, 30].map(minutes => <option key={minutes} value={minutes}>Até {minutes} minutos</option>)}
+            </select>
+            <p>Base de todas as UAPS a 4,8 km/h. Lilás mostra corredores modelados, não território de atendimento. Aproximação visual; a proposta do Simular não altera esta camada.</p>
+          </div>}
+          locationControl={model ? <LocationControl onClear={() => setDevicePosition(null)} onLocate={(point, accuracy) => {
+            const [x, y] = project(model.projection, point);
+            if (x < 0 || x > model.projection.width || y < 0 || y > model.projection.height) return false;
+            setDevicePosition({ point, accuracy });
+            requestFrame([x - 2, y - 2, x + 2, y + 2]);
+            return true;
+          }} /> : undefined}
         />
 
         <MapPanel
@@ -236,9 +259,6 @@ export function Observatory({ model }: ObservatoryProps) {
             <>
               {wave > 0 ? <ModeWave key={wave} /> : null}
               <AnimatePresence>
-                {isConcept ? (
-                  <ConceptMode key={mode} mode={mode} onBack={() => switchMode("explore")} />
-                ) : null}
                 {isStory ? (
                   <StoryMode
                     chapters={chapters}
@@ -254,7 +274,7 @@ export function Observatory({ model }: ObservatoryProps) {
           state={model ? "ready" : "error"}
         >
           {model ? (
-            <div className="map-host" inert={isConcept}>
+            <div className="map-host">
               <CityMap
                 frame={frame}
                 layers={layers}
@@ -265,12 +285,18 @@ export function Observatory({ model }: ObservatoryProps) {
                 selectedFacility={filters.selectedFacilityId}
                 selectedNeighborhood={filters.neighborhoodId}
                 story={storyFocus}
+                candidate={mode === "simulate" ? candidate : null}
+                comparison={mode === "compare" ? comparison : undefined}
+                distanceEnabled={mode === "explore"}
+                devicePosition={devicePosition}
+                corridorMinutes={corridorMinutes}
+                onProposeCandidate={mode === "simulate" ? setCandidate : undefined}
               />
             </div>
           ) : undefined}
         </MapPanel>
 
-        <ReadingPanel
+        {mode === "compare" ? <NeighborhoodComparison model={model} codes={comparison} onChange={setComparison} onFrame={requestFrame} /> : mode === "simulate" ? <ScenarioSimulator candidate={candidate} onCandidate={setCandidate} /> : <ReadingPanel
           facts={facts}
           model={model}
           onClear={clearSelection}
@@ -280,7 +306,7 @@ export function Observatory({ model }: ObservatoryProps) {
           onSelectNeighborhood={selectNeighborhood}
           selectedFacility={filters.selectedFacilityId}
           selectedNeighborhood={filters.neighborhoodId}
-        />
+        />}
       </main>
 
       {model && paletteOpen ? (

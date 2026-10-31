@@ -31,7 +31,1250 @@
     },
     "tiles": 265
   },
-  "generated_at": "2026-10-28T02:36:54Z",
+  "corridor_preview": {
+    "bytes": 22607,
+    "dictionary": {
+      "images": "Arquivos PNG transparentes, tamanho, SHA-256, caixa WGS84 e contagem de pixels centrais incluídos",
+      "max_pixel_size_m": "Limite aproximado do lado do pixel na latitude média do município; não precisão do modelo"
+    },
+    "file": "/data/corridor-preview.json",
+    "images": [
+      {
+        "bbox": [
+          -38.63790294,
+          -3.89460306,
+          -38.40132769,
+          -3.69172159
+        ],
+        "bytes": 92692,
+        "file": "/data/corridor-central-10.png",
+        "height": 1880,
+        "included_pixels": 638883,
+        "minutes": 10,
+        "sha256": "33c20004d1866c22ac49fc3ed00cfd9ba8e73c68220a58eaed598ff26b266173",
+        "width": 2188
+      },
+      {
+        "bbox": [
+          -38.63790294,
+          -3.89460306,
+          -38.40132769,
+          -3.69172159
+        ],
+        "bytes": 140220,
+        "file": "/data/corridor-central-20.png",
+        "height": 1880,
+        "included_pixels": 1164617,
+        "minutes": 20,
+        "sha256": "4f274fc7698019a24e20c6482272fae2366f596da7d52544df23f3b17ff85d87",
+        "width": 2188
+      },
+      {
+        "bbox": [
+          -38.63790294,
+          -3.89460306,
+          -38.40132769,
+          -3.69172159
+        ],
+        "bytes": 150961,
+        "file": "/data/corridor-central-30.png",
+        "height": 1880,
+        "included_pixels": 1285869,
+        "minutes": 30,
+        "sha256": "ef142dfb514675f4afbd6c5c614cf71340c20ee474e3eec91702adb2f6c0a2c1",
+        "width": 2188
+      }
+    ],
+    "limitations": [
+      "Aproximação visual em pixels de até 12 m; fronteiras podem variar cerca de meia diagonal do pixel",
+      "Base de todas as UAPS a 4,8 km/h, não cenário candidato nem território de atendimento",
+      "Rotas locais não verificadas em campo; conectores excluídos do tempo"
+    ],
+    "max_pixel_size_m": 12,
+    "method": "Centros de pixels em grade comum WGS84, norte no topo; apenas visualização dos corredores centrais originais. Sem recalcular contagens.",
+    "scenario": "central",
+    "schema": 1,
+    "sha256": "4a4e260cc9d78988bb486781463ede8b19e869a22c11efa316e11dfcc99dc990",
+    "source_sha256": "123bd2bae1f4cfed1764ff6210f0e4e97e4dc8d29c52ae8d127405a45fe60fe0",
+    "sources": {
+      "source_layers": [
+        {
+          "bbox": [
+            -38.62717984,
+            -3.88871088,
+            -38.44053707,
+            -3.69476567
+          ],
+          "bytes": 42397,
+          "crs": "EPSG:4326",
+          "dictionary": {
+            "cnes": "Código CNES como publicado; não é chave de deduplicação",
+            "id": "Identificador estável do projeto: uaps-{source_id}",
+            "management": "Código de gestão como publicado (campo `gestão`)",
+            "name": "Nome da unidade (campo de origem `nome`)",
+            "nature": "Natureza como publicada (campo `natureza`)",
+            "neighborhood": "Bairro declarado na fonte; não é o vínculo espacial",
+            "reference_date": "Ano de referência declarado (campo `ano`)",
+            "source_id": "Identificador da feição na API Fortaleza em Mapas",
+            "sus": "Atende SUS conforme `atende_sus`; null se ausente",
+            "type": "Tipo de equipamento; nesta fonte, sempre UAPS"
+          },
+          "extent": "Fortaleza, Ceará",
+          "feature_count": 134,
+          "file": "/data/facilities.geojson",
+          "geometry_types": [
+            "Point"
+          ],
+          "id": "facilities",
+          "limitations": [
+            "Cadastro não representa horário, capacidade ou disponibilidade",
+            "CNES repetido não implica que duas feições sejam a mesma unidade"
+          ],
+          "methodology": [
+            "Mapeamento de campos oficiais para o contrato facility",
+            "Validação de CRS, coordenadas e bounding box municipal",
+            "Deduplicação conservadora por source_id"
+          ],
+          "properties": [
+            "cnes",
+            "id",
+            "management",
+            "name",
+            "nature",
+            "neighborhood",
+            "reference_date",
+            "source_id",
+            "sus",
+            "type"
+          ],
+          "sha256": "13c8744130534454bc243f6ede7f0500a2c72103b226adf76de21f7d5ea97740",
+          "source": {
+            "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+            "catalog_updated_at": "2026-06-08",
+            "collected_at": "2026-10-27T18:39:23Z",
+            "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=824&download=true",
+            "id": 824,
+            "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+            "organization": "SMS",
+            "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/824/unidades-de-atencao-primaria-a-saude-uaps",
+            "raw_sha256": "8642d140c7d527c2285c67ca3ef7438af880a4246d5c90fda1287c55ae5b90f0",
+            "reference_year": 2026,
+            "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+          },
+          "title": "Unidades de Atenção Primária à Saúde"
+        },
+        {
+          "bbox": [
+            -38.63790294,
+            -3.89460306,
+            -38.40132769,
+            -3.69172159
+          ],
+          "bytes": 67170,
+          "crs": "EPSG:4326",
+          "dictionary": {
+            "ano_criacao": "Ano de criação do município declarado na fonte",
+            "ano_ref": "Ano de referência do limite",
+            "area_ha": "Área declarada pela fonte, em hectares",
+            "area_km2": "Área declarada pela fonte, em km²",
+            "cod_ibge": "Código IBGE do município",
+            "epsg_codif": "CRS e codificação do arquivo original, como publicados",
+            "fonte": "Órgão produtor declarado na fonte",
+            "id": "Identificador da feição na fonte",
+            "nome": "Nome do município",
+            "regiao": "Região de planejamento declarada na fonte"
+          },
+          "extent": "Fortaleza, Ceará",
+          "feature_count": 1,
+          "file": "/data/municipal-boundary.geojson",
+          "geometry_types": [
+            "MultiPolygon"
+          ],
+          "id": "municipal-boundary",
+          "limitations": [
+            "Limite de referência 2019; diferenças não são corrigidas automaticamente"
+          ],
+          "methodology": [
+            "Exportação compacta sem simplificação da geometria oficial"
+          ],
+          "properties": [
+            "ano_criacao",
+            "ano_ref",
+            "area_ha",
+            "area_km2",
+            "cod_ibge",
+            "epsg_codif",
+            "fonte",
+            "id",
+            "nome",
+            "regiao"
+          ],
+          "sha256": "f389f60d2305a8e89aaf1629a0afc2dab45626ae2b8fd548d27c977bdc702e16",
+          "source": {
+            "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+            "catalog_updated_at": "2023-07-25",
+            "collected_at": "2026-10-27T18:39:22Z",
+            "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=12&download=true",
+            "id": 12,
+            "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+            "organization": "IPECE",
+            "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/12/limite-administrativo-da-cidade-de-fortaleza",
+            "raw_sha256": "916707d1e004680d035ba0e9ed18affc885551fed2337365720ddeaae0dce4f5",
+            "reference_year": 2019,
+            "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+          },
+          "title": "Limite administrativo de Fortaleza"
+        }
+      ],
+      "source_network": {
+        "bbox": [
+          -38.6679,
+          -3.9246,
+          -38.3713,
+          -3.6617
+        ],
+        "connectivity": {
+          "components": 675,
+          "cost": "length_m",
+          "edges": 166555,
+          "largest_component_length_km": 9721.217,
+          "largest_component_nodes": 111972,
+          "largest_component_share_of_length": 0.960876,
+          "largest_component_share_of_nodes": 0.950373,
+          "nodes": 117819,
+          "parallel_edges_collapsed": 874,
+          "self_loops_dropped": 199,
+          "total_length_km": 10117.035,
+          "ways_kept": 66595
+        },
+        "cost": {
+          "attribute": "length_m",
+          "speed": null,
+          "unit": "metro"
+        },
+        "facility_access": {
+          "facilities": [
+            {
+              "id": "uaps-134",
+              "in_largest_component": true,
+              "nearest_node": 8889854713,
+              "snap_m": 28.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-1",
+              "in_largest_component": true,
+              "nearest_node": 2852783846,
+              "snap_m": 36.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-2",
+              "in_largest_component": true,
+              "nearest_node": 10820523896,
+              "snap_m": 45.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-3",
+              "in_largest_component": true,
+              "nearest_node": 265075355,
+              "snap_m": 42.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-4",
+              "in_largest_component": true,
+              "nearest_node": 9354906365,
+              "snap_m": 20.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-5",
+              "in_largest_component": true,
+              "nearest_node": 7847301211,
+              "snap_m": 21.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-6",
+              "in_largest_component": true,
+              "nearest_node": 1704818841,
+              "snap_m": 25.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-7",
+              "in_largest_component": true,
+              "nearest_node": 2426396637,
+              "snap_m": 36.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-8",
+              "in_largest_component": true,
+              "nearest_node": 1780046820,
+              "snap_m": 35.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-9",
+              "in_largest_component": true,
+              "nearest_node": 2874500162,
+              "snap_m": 33.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-10",
+              "in_largest_component": true,
+              "nearest_node": 3526781589,
+              "snap_m": 33.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-11",
+              "in_largest_component": true,
+              "nearest_node": 1704557988,
+              "snap_m": 18.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-12",
+              "in_largest_component": true,
+              "nearest_node": 3912821339,
+              "snap_m": 35.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-13",
+              "in_largest_component": true,
+              "nearest_node": 9021019866,
+              "snap_m": 37.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-14",
+              "in_largest_component": true,
+              "nearest_node": 2813272352,
+              "snap_m": 16.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-15",
+              "in_largest_component": true,
+              "nearest_node": 622393108,
+              "snap_m": 47.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-16",
+              "in_largest_component": true,
+              "nearest_node": 8893405588,
+              "snap_m": 25.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-17",
+              "in_largest_component": true,
+              "nearest_node": 4003112493,
+              "snap_m": 44.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-18",
+              "in_largest_component": true,
+              "nearest_node": 10876486016,
+              "snap_m": 87.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-19",
+              "in_largest_component": true,
+              "nearest_node": 10104474464,
+              "snap_m": 14.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-20",
+              "in_largest_component": true,
+              "nearest_node": 8857262579,
+              "snap_m": 24.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-21",
+              "in_largest_component": true,
+              "nearest_node": 1703093697,
+              "snap_m": 36.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-22",
+              "in_largest_component": true,
+              "nearest_node": 1759304255,
+              "snap_m": 26.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-23",
+              "in_largest_component": true,
+              "nearest_node": 3990984230,
+              "snap_m": 78.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-24",
+              "in_largest_component": true,
+              "nearest_node": 7865969090,
+              "snap_m": 31.2,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-25",
+              "in_largest_component": true,
+              "nearest_node": 10155418993,
+              "snap_m": 17.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-26",
+              "in_largest_component": true,
+              "nearest_node": 7048202224,
+              "snap_m": 29.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-27",
+              "in_largest_component": true,
+              "nearest_node": 1704862828,
+              "snap_m": 33.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-28",
+              "in_largest_component": true,
+              "nearest_node": 7862407666,
+              "snap_m": 22.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-29",
+              "in_largest_component": true,
+              "nearest_node": 5618731948,
+              "snap_m": 57.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-30",
+              "in_largest_component": true,
+              "nearest_node": 1704432310,
+              "snap_m": 10.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-31",
+              "in_largest_component": true,
+              "nearest_node": 10278361549,
+              "snap_m": 26.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-32",
+              "in_largest_component": true,
+              "nearest_node": 10417485640,
+              "snap_m": 20.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-33",
+              "in_largest_component": true,
+              "nearest_node": 13572064956,
+              "snap_m": 30.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-34",
+              "in_largest_component": true,
+              "nearest_node": 8868957321,
+              "snap_m": 42.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-35",
+              "in_largest_component": true,
+              "nearest_node": 1704473329,
+              "snap_m": 37.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-36",
+              "in_largest_component": true,
+              "nearest_node": 1703199712,
+              "snap_m": 22.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-37",
+              "in_largest_component": true,
+              "nearest_node": 5303483341,
+              "snap_m": 31.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-38",
+              "in_largest_component": true,
+              "nearest_node": 7199347366,
+              "snap_m": 0.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-39",
+              "in_largest_component": true,
+              "nearest_node": 1704730617,
+              "snap_m": 34.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-40",
+              "in_largest_component": true,
+              "nearest_node": 1893645358,
+              "snap_m": 41.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-41",
+              "in_largest_component": true,
+              "nearest_node": 7185723385,
+              "snap_m": 36.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-42",
+              "in_largest_component": true,
+              "nearest_node": 2846765176,
+              "snap_m": 20.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-43",
+              "in_largest_component": true,
+              "nearest_node": 11261541890,
+              "snap_m": 11.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-44",
+              "in_largest_component": true,
+              "nearest_node": 4503278297,
+              "snap_m": 29.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-45",
+              "in_largest_component": true,
+              "nearest_node": 10790990412,
+              "snap_m": 37.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-46",
+              "in_largest_component": true,
+              "nearest_node": 13858548345,
+              "snap_m": 32.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-47",
+              "in_largest_component": true,
+              "nearest_node": 5752273244,
+              "snap_m": 64.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-48",
+              "in_largest_component": true,
+              "nearest_node": 8615881767,
+              "snap_m": 76.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-49",
+              "in_largest_component": true,
+              "nearest_node": 2874536461,
+              "snap_m": 33.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-50",
+              "in_largest_component": true,
+              "nearest_node": 2874686625,
+              "snap_m": 25.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-51",
+              "in_largest_component": true,
+              "nearest_node": 3240093694,
+              "snap_m": 52.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-52",
+              "in_largest_component": true,
+              "nearest_node": 616541941,
+              "snap_m": 62.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-53",
+              "in_largest_component": true,
+              "nearest_node": 8875681224,
+              "snap_m": 3.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-54",
+              "in_largest_component": true,
+              "nearest_node": 616918363,
+              "snap_m": 42.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-55",
+              "in_largest_component": true,
+              "nearest_node": 1704558379,
+              "snap_m": 22.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-56",
+              "in_largest_component": true,
+              "nearest_node": 10656494418,
+              "snap_m": 23.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-57",
+              "in_largest_component": true,
+              "nearest_node": 2722597815,
+              "snap_m": 30.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-58",
+              "in_largest_component": true,
+              "nearest_node": 1302847968,
+              "snap_m": 25.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-59",
+              "in_largest_component": true,
+              "nearest_node": 2387570276,
+              "snap_m": 28.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-60",
+              "in_largest_component": true,
+              "nearest_node": 9930347946,
+              "snap_m": 39.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-61",
+              "in_largest_component": true,
+              "nearest_node": 616662845,
+              "snap_m": 29.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-62",
+              "in_largest_component": true,
+              "nearest_node": 1704507154,
+              "snap_m": 30.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-63",
+              "in_largest_component": true,
+              "nearest_node": 11004406301,
+              "snap_m": 37.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-64",
+              "in_largest_component": true,
+              "nearest_node": 3228716749,
+              "snap_m": 38.2,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-65",
+              "in_largest_component": true,
+              "nearest_node": 5302237928,
+              "snap_m": 39.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-66",
+              "in_largest_component": true,
+              "nearest_node": 13580163760,
+              "snap_m": 25.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-67",
+              "in_largest_component": true,
+              "nearest_node": 9445074937,
+              "snap_m": 33.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-68",
+              "in_largest_component": true,
+              "nearest_node": 4888684100,
+              "snap_m": 17.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-69",
+              "in_largest_component": true,
+              "nearest_node": 7700231676,
+              "snap_m": 36.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-70",
+              "in_largest_component": true,
+              "nearest_node": 10795971848,
+              "snap_m": 24.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-71",
+              "in_largest_component": true,
+              "nearest_node": 2822737505,
+              "snap_m": 38.2,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-72",
+              "in_largest_component": true,
+              "nearest_node": 14308417246,
+              "snap_m": 30.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-73",
+              "in_largest_component": true,
+              "nearest_node": 2822737505,
+              "snap_m": 40.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-74",
+              "in_largest_component": true,
+              "nearest_node": 3881011612,
+              "snap_m": 34.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-75",
+              "in_largest_component": true,
+              "nearest_node": 2862158954,
+              "snap_m": 28.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-76",
+              "in_largest_component": true,
+              "nearest_node": 1703402985,
+              "snap_m": 51.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-77",
+              "in_largest_component": true,
+              "nearest_node": 1702963253,
+              "snap_m": 41.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-78",
+              "in_largest_component": true,
+              "nearest_node": 8889826393,
+              "snap_m": 31.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-79",
+              "in_largest_component": true,
+              "nearest_node": 10315823024,
+              "snap_m": 76.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-80",
+              "in_largest_component": true,
+              "nearest_node": 6829395155,
+              "snap_m": 74.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-81",
+              "in_largest_component": true,
+              "nearest_node": 8910066384,
+              "snap_m": 20.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-82",
+              "in_largest_component": true,
+              "nearest_node": 2365016737,
+              "snap_m": 38.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-83",
+              "in_largest_component": true,
+              "nearest_node": 6621427362,
+              "snap_m": 11.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-84",
+              "in_largest_component": true,
+              "nearest_node": 10597391814,
+              "snap_m": 25.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-85",
+              "in_largest_component": true,
+              "nearest_node": 1704450658,
+              "snap_m": 54.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-86",
+              "in_largest_component": true,
+              "nearest_node": 2956772336,
+              "snap_m": 39.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-87",
+              "in_largest_component": true,
+              "nearest_node": 10059785208,
+              "snap_m": 24.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-88",
+              "in_largest_component": true,
+              "nearest_node": 10175888801,
+              "snap_m": 18.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-89",
+              "in_largest_component": true,
+              "nearest_node": 8486633527,
+              "snap_m": 40.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-90",
+              "in_largest_component": true,
+              "nearest_node": 9993705315,
+              "snap_m": 25.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-91",
+              "in_largest_component": true,
+              "nearest_node": 2297775184,
+              "snap_m": 40.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-92",
+              "in_largest_component": true,
+              "nearest_node": 1714708444,
+              "snap_m": 22.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-93",
+              "in_largest_component": true,
+              "nearest_node": 1714708424,
+              "snap_m": 54.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-94",
+              "in_largest_component": true,
+              "nearest_node": 1703056274,
+              "snap_m": 23.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-95",
+              "in_largest_component": true,
+              "nearest_node": 2426622277,
+              "snap_m": 28.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-96",
+              "in_largest_component": true,
+              "nearest_node": 8483494608,
+              "snap_m": 27.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-97",
+              "in_largest_component": true,
+              "nearest_node": 12614311380,
+              "snap_m": 29.2,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-98",
+              "in_largest_component": true,
+              "nearest_node": 1714769637,
+              "snap_m": 45.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-99",
+              "in_largest_component": true,
+              "nearest_node": 2839712754,
+              "snap_m": 59.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-100",
+              "in_largest_component": true,
+              "nearest_node": 3240080534,
+              "snap_m": 32.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-101",
+              "in_largest_component": true,
+              "nearest_node": 12361371026,
+              "snap_m": 32.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-102",
+              "in_largest_component": true,
+              "nearest_node": 6635063529,
+              "snap_m": 15.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-103",
+              "in_largest_component": true,
+              "nearest_node": 4342948129,
+              "snap_m": 25.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-104",
+              "in_largest_component": true,
+              "nearest_node": 1295782802,
+              "snap_m": 33.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-105",
+              "in_largest_component": true,
+              "nearest_node": 1714707624,
+              "snap_m": 29.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-106",
+              "in_largest_component": true,
+              "nearest_node": 7048746322,
+              "snap_m": 37.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-107",
+              "in_largest_component": true,
+              "nearest_node": 2422525208,
+              "snap_m": 24.8,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-108",
+              "in_largest_component": true,
+              "nearest_node": 12500556123,
+              "snap_m": 34.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-109",
+              "in_largest_component": true,
+              "nearest_node": 2511784885,
+              "snap_m": 22.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-110",
+              "in_largest_component": true,
+              "nearest_node": 8891164646,
+              "snap_m": 31.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-111",
+              "in_largest_component": true,
+              "nearest_node": 1704732357,
+              "snap_m": 27.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-112",
+              "in_largest_component": true,
+              "nearest_node": 6906951160,
+              "snap_m": 20.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-113",
+              "in_largest_component": true,
+              "nearest_node": 2426647799,
+              "snap_m": 31.2,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-114",
+              "in_largest_component": true,
+              "nearest_node": 1703075015,
+              "snap_m": 46.9,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-115",
+              "in_largest_component": true,
+              "nearest_node": 5441276855,
+              "snap_m": 41.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-116",
+              "in_largest_component": true,
+              "nearest_node": 13617318355,
+              "snap_m": 16.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-117",
+              "in_largest_component": true,
+              "nearest_node": 10033694812,
+              "snap_m": 27.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-118",
+              "in_largest_component": true,
+              "nearest_node": 2868419066,
+              "snap_m": 35.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-119",
+              "in_largest_component": true,
+              "nearest_node": 3240196719,
+              "snap_m": 26.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-120",
+              "in_largest_component": true,
+              "nearest_node": 14308989695,
+              "snap_m": 43.3,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-121",
+              "in_largest_component": true,
+              "nearest_node": 6607537150,
+              "snap_m": 16.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-122",
+              "in_largest_component": true,
+              "nearest_node": 10559357492,
+              "snap_m": 26.2,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-123",
+              "in_largest_component": true,
+              "nearest_node": 8895696529,
+              "snap_m": 32.7,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-124",
+              "in_largest_component": true,
+              "nearest_node": 1703463715,
+              "snap_m": 38.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-125",
+              "in_largest_component": true,
+              "nearest_node": 13859522696,
+              "snap_m": 65.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-126",
+              "in_largest_component": true,
+              "nearest_node": 1703198429,
+              "snap_m": 36.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-127",
+              "in_largest_component": true,
+              "nearest_node": 1703198925,
+              "snap_m": 39.6,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-128",
+              "in_largest_component": true,
+              "nearest_node": 1714601595,
+              "snap_m": 23.0,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-129",
+              "in_largest_component": true,
+              "nearest_node": 10148043792,
+              "snap_m": 27.1,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-130",
+              "in_largest_component": true,
+              "nearest_node": 2863009413,
+              "snap_m": 56.4,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-131",
+              "in_largest_component": true,
+              "nearest_node": 11842837964,
+              "snap_m": 27.2,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-132",
+              "in_largest_component": true,
+              "nearest_node": 2989770135,
+              "snap_m": 28.5,
+              "within_snap_limit": true
+            },
+            {
+              "id": "uaps-133",
+              "in_largest_component": true,
+              "nearest_node": 2868810942,
+              "snap_m": 35.1,
+              "within_snap_limit": true
+            }
+          ],
+          "in_largest_component": 134,
+          "in_largest_component_within_limit": 134,
+          "max_snap_m_limit": 300,
+          "snap_m_max": 87.1,
+          "snap_m_median": 31.8,
+          "total": 134,
+          "within_snap_limit": 134
+        },
+        "generated_at": "2026-10-29T01:40:18Z",
+        "license": "ODbL 1.0 — © OpenStreetMap contributors",
+        "osm": {
+          "data_timestamp": "2026-10-27T21:23:59Z",
+          "file": "osm-nordeste-261027.osm.pbf",
+          "sha256": "e99014cf0d798654aa77060172ed2aea75213a547d1f5a718e4decaa51952bc3"
+        },
+        "outputs": {
+          "edges": "data\\processed\\walk_network\\edges.csv",
+          "nodes": "data\\processed\\walk_network\\nodes.csv"
+        },
+        "rules": {
+          "access_blocked": [
+            "agricultural",
+            "customers",
+            "delivery",
+            "forestry",
+            "military",
+            "no",
+            "private"
+          ],
+          "area_yes_excluded": true,
+          "foot_allowed": [
+            "designated",
+            "permissive",
+            "yes"
+          ],
+          "foot_blocked": [
+            "no",
+            "private"
+          ],
+          "foot_required_highways": [
+            "cycleway"
+          ],
+          "oneway_ignored": true,
+          "walkable_highways": [
+            "cycleway",
+            "footway",
+            "living_street",
+            "path",
+            "pedestrian",
+            "primary",
+            "primary_link",
+            "residential",
+            "road",
+            "secondary",
+            "secondary_link",
+            "service",
+            "steps",
+            "tertiary",
+            "tertiary_link",
+            "track",
+            "unclassified"
+          ]
+        }
+      },
+      "source_osm": {
+        "attribution": "© OpenStreetMap contributors. Extrato: Geofabrik GmbH.",
+        "bytes": 444361558,
+        "collected_at": "2026-10-28T11:18:58Z",
+        "content_type": "application/octet-stream",
+        "download_url": "https://download.geofabrik.de/south-america/brazil/nordeste-261027.osm.pbf",
+        "license": "Open Database License (ODbL) 1.0; atribuição obrigatória a OpenStreetMap contributors",
+        "organization": "OpenStreetMap / Geofabrik",
+        "page_url": "https://download.geofabrik.de/south-america/brazil/nordeste.html",
+        "reference_year": 2026,
+        "sha256": "e99014cf0d798654aa77060172ed2aea75213a547d1f5a718e4decaa51952bc3",
+        "source_id": "OSM-GEOFABRIK-NORDESTE-261027",
+        "source_key": "osm-nordeste"
+      }
+    },
+    "speed_kmh": 4.8
+  },
+  "generated_at": "2026-10-29T19:23:42Z",
   "layers": [
     {
       "bbox": [
@@ -344,7 +1587,7 @@
     }
   ],
   "mode": "official",
-  "notice": "Camadas oficiais de localização e limites administrativos. Não há indicadores de capacidade, oferta ou cobertura populacional.",
+  "notice": "Camadas oficiais de localização e limites administrativos, com estimativas de acessibilidade modelada. Não indicam capacidade, oferta ou população efetivamente atendida.",
   "population": {
     "bytes": 12623,
     "dictionary": {
@@ -386,5 +1629,384 @@
     ],
     "total_population": 2428708
   },
-  "schema_version": "1.2"
+  "population_coverage": {
+    "bytes": 13217,
+    "central_method": "representative",
+    "denominator": {
+      "missing_population_sectors": 0,
+      "population": 2428708,
+      "sectors": 4408
+    },
+    "dictionary": {
+      "any_overlap_percent": "100 × any_overlap_population / total_population; null se zero",
+      "any_overlap_population": "Limite espacial superior: setores com interseção de área positiva",
+      "area_weighted_percent": "100 × area_weighted_population / total_population; null se zero",
+      "area_weighted_population": "Soma de população × fração da área do setor no corredor",
+      "full_sector_percent": "100 × full_sector_population / total_population; null se zero",
+      "full_sector_population": "Limite espacial inferior: setores inteiramente contidos",
+      "minutes": "Limiar acumulado de caminhada modelada",
+      "representative_percent": "100 × representative_population / total_population; null se zero",
+      "representative_population": "Soma dos setores cujo ponto representativo está no corredor",
+      "scenario": "Cenário slow, central ou fast",
+      "sectors": "Número de setores censitários no denominador",
+      "total_population": "Denominador: soma de todos os setores com população",
+      "zero_population_sectors": "Setores com população zero, preservados"
+    },
+    "file": "/data/population-coverage.json",
+    "limitations": [
+      "Acessibilidade modelada até alguma UAPS; não representa atendimento, vaga, capacidade assistencial ou população adscrita.",
+      "População do Censo 2022 comparada a UAPS e OSM de 2026, sem projeção demográfica.",
+      "Um ponto representa cada setor inteiro; ponderação por área supõe densidade uniforme. Os limites espaciais não são intervalos de confiança.",
+      "Corredores com raio registrado em buffer_m dependem das vias OSM; podem atravessar barreiras. Conectores até a UAPS não entram no tempo. Rotas sem validação local.",
+      "Licença padronizada do IBGE não confirmada na coleta; atribuição obrigatória."
+    ],
+    "methods": {
+      "any_overlap": "Limite espacial superior: setores com interseção de área positiva",
+      "area_weighted": "Soma de população × fração da área do setor no corredor",
+      "full_sector": "Limite espacial inferior: setores inteiramente contidos",
+      "representative": "Soma dos setores cujo ponto representativo está no corredor"
+    },
+    "reference_year": 2022,
+    "rows": 9,
+    "sha256": "c9774dcb85c2a7b7fb63a56e10087fbc7bd2d4b4348538bd08a9525f38eee006",
+    "sources": [
+      {
+        "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+        "bytes": 15418417,
+        "collected_at": "2026-10-28T00:37:45Z",
+        "content_type": "application/zip",
+        "download_url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/Agregados_por_setores_basico_BR_20260520.zip",
+        "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+        "organization": "IBGE",
+        "page_url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/",
+        "reference_year": 2022,
+        "sha256": "ec04624286233d699ebe69c7b9625744a1cfdfc8352126f30245bdef5e9bdc63",
+        "source_id": "IBGE-AGREGADOS-SETORES-BASICO-CD2022-20260520",
+        "source_key": "ibge-agregados-basico"
+      },
+      {
+        "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+        "bytes": 35737600,
+        "collected_at": "2026-10-28T00:37:43Z",
+        "content_type": null,
+        "download_url": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/gpkg/UF/CE/CE_setores_CD2022.gpkg",
+        "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+        "organization": "IBGE",
+        "page_url": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/gpkg/UF/CE/",
+        "reference_year": 2022,
+        "sha256": "879ed9b7640906793c16ab1c02a24f5f24843f00b6330af9a7f882872d169aba",
+        "source_id": "IBGE-MALHA-SETORES-CD2022-CE",
+        "source_key": "ibge-setores-ce"
+      },
+      {
+        "attribution": "© OpenStreetMap contributors. Extrato: Geofabrik GmbH.",
+        "bytes": 444361558,
+        "collected_at": "2026-10-28T11:18:58Z",
+        "content_type": "application/octet-stream",
+        "download_url": "https://download.geofabrik.de/south-america/brazil/nordeste-261027.osm.pbf",
+        "license": "Open Database License (ODbL) 1.0; atribuição obrigatória a OpenStreetMap contributors",
+        "organization": "OpenStreetMap / Geofabrik",
+        "page_url": "https://download.geofabrik.de/south-america/brazil/nordeste.html",
+        "reference_year": 2026,
+        "sha256": "e99014cf0d798654aa77060172ed2aea75213a547d1f5a718e4decaa51952bc3",
+        "source_id": "OSM-GEOFABRIK-NORDESTE-261027",
+        "source_key": "osm-nordeste"
+      },
+      {
+        "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+        "catalog_updated_at": "2026-06-08",
+        "collected_at": "2026-10-27T18:39:23Z",
+        "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=824&download=true",
+        "id": 824,
+        "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+        "organization": "SMS",
+        "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/824/unidades-de-atencao-primaria-a-saude-uaps",
+        "raw_sha256": "8642d140c7d527c2285c67ca3ef7438af880a4246d5c90fda1287c55ae5b90f0",
+        "reference_year": 2026,
+        "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+      },
+      {
+        "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+        "catalog_updated_at": "2023-07-25",
+        "collected_at": "2026-10-27T18:39:22Z",
+        "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=12&download=true",
+        "id": 12,
+        "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+        "organization": "IPECE",
+        "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/12/limite-administrativo-da-cidade-de-fortaleza",
+        "raw_sha256": "916707d1e004680d035ba0e9ed18affc885551fed2337365720ddeaae0dce4f5",
+        "reference_year": 2019,
+        "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+      }
+    ]
+  },
+  "scenario": {
+    "bytes": 7688001,
+    "dictionary": {
+      "baseline": "Contagens-base publicadas e verificadas",
+      "boundary": "Limite municipal para validar o candidato",
+      "bufferM": "Raio dos corredores em metros",
+      "edges": "Índices dos nós e minutos de caminhada central por aresta",
+      "maxSnapM": "Distância máxima do candidato ao nó, em metros",
+      "nodes": "Nós públicos da malha, longitude/latitude WGS84",
+      "order": "Ordem dos nove cenários na máscara",
+      "provenance": "Fontes, checksums da base e verificação de paridade",
+      "schema": "Versão do contrato",
+      "sectorIds": "Identificadores dos setores na mesma ordem",
+      "sectors": "População, máscara da base e custos de entrada no corredor",
+      "seeds": "Nós associados às UAPS da base",
+      "snapScale": "Cosseno da latitude média para seleção do nó mais próximo",
+      "speeds": "Velocidades slow, central e fast em km/h",
+      "total": "Denominador do Censo 2022"
+    },
+    "file": "/data/scenario-model.json",
+    "limitations": [
+      "Acessibilidade modelada até alguma UAPS; não representa atendimento, vaga, capacidade assistencial ou população adscrita.",
+      "População do Censo 2022 comparada a UAPS e OSM de 2026, sem projeção demográfica.",
+      "Um ponto representa cada setor inteiro; ponderação por área supõe densidade uniforme. Os limites espaciais não são intervalos de confiança.",
+      "Corredores com raio registrado em buffer_m dependem das vias OSM; podem atravessar barreiras. Conectores até a UAPS não entram no tempo. Rotas sem validação local.",
+      "Licença padronizada do IBGE não confirmada na coleta; atribuição obrigatória."
+    ],
+    "method": "network_corridor; pontos representativos; buffer de 25 m",
+    "parity": {
+      "checked": 39672,
+      "mismatches": 0
+    },
+    "sha256": "b44b35939c8816a63443a38f53dafd6b9c55d372fb845f5e15eb2b2a3291ead2",
+    "sources": [
+      {
+        "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+        "bytes": 15418417,
+        "collected_at": "2026-10-28T00:37:45Z",
+        "content_type": "application/zip",
+        "download_url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/Agregados_por_setores_basico_BR_20260520.zip",
+        "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+        "organization": "IBGE",
+        "page_url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/",
+        "reference_year": 2022,
+        "sha256": "ec04624286233d699ebe69c7b9625744a1cfdfc8352126f30245bdef5e9bdc63",
+        "source_id": "IBGE-AGREGADOS-SETORES-BASICO-CD2022-20260520",
+        "source_key": "ibge-agregados-basico"
+      },
+      {
+        "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+        "bytes": 35737600,
+        "collected_at": "2026-10-28T00:37:43Z",
+        "content_type": null,
+        "download_url": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/gpkg/UF/CE/CE_setores_CD2022.gpkg",
+        "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+        "organization": "IBGE",
+        "page_url": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/gpkg/UF/CE/",
+        "reference_year": 2022,
+        "sha256": "879ed9b7640906793c16ab1c02a24f5f24843f00b6330af9a7f882872d169aba",
+        "source_id": "IBGE-MALHA-SETORES-CD2022-CE",
+        "source_key": "ibge-setores-ce"
+      },
+      {
+        "attribution": "© OpenStreetMap contributors. Extrato: Geofabrik GmbH.",
+        "bytes": 444361558,
+        "collected_at": "2026-10-28T11:18:58Z",
+        "content_type": "application/octet-stream",
+        "download_url": "https://download.geofabrik.de/south-america/brazil/nordeste-261027.osm.pbf",
+        "license": "Open Database License (ODbL) 1.0; atribuição obrigatória a OpenStreetMap contributors",
+        "organization": "OpenStreetMap / Geofabrik",
+        "page_url": "https://download.geofabrik.de/south-america/brazil/nordeste.html",
+        "reference_year": 2026,
+        "sha256": "e99014cf0d798654aa77060172ed2aea75213a547d1f5a718e4decaa51952bc3",
+        "source_id": "OSM-GEOFABRIK-NORDESTE-261027",
+        "source_key": "osm-nordeste"
+      },
+      {
+        "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+        "catalog_updated_at": "2026-06-08",
+        "collected_at": "2026-10-27T18:39:23Z",
+        "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=824&download=true",
+        "id": 824,
+        "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+        "organization": "SMS",
+        "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/824/unidades-de-atencao-primaria-a-saude-uaps",
+        "raw_sha256": "8642d140c7d527c2285c67ca3ef7438af880a4246d5c90fda1287c55ae5b90f0",
+        "reference_year": 2026,
+        "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+      },
+      {
+        "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+        "catalog_updated_at": "2023-07-25",
+        "collected_at": "2026-10-27T18:39:22Z",
+        "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=12&download=true",
+        "id": 12,
+        "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+        "organization": "IPECE",
+        "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/12/limite-administrativo-da-cidade-de-fortaleza",
+        "raw_sha256": "916707d1e004680d035ba0e9ed18affc885551fed2337365720ddeaae0dce4f5",
+        "reference_year": 2019,
+        "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+      }
+    ]
+  },
+  "schema_version": "1.2",
+  "sector_ranking": {
+    "bytes": 510130,
+    "dictionary": {
+      "distance_m": "Distância do ponto representativo à UAPS em metros, linha reta",
+      "facility_id": "Identificador da UAPS mais próxima",
+      "geo_id": "Código do setor censitário IBGE",
+      "neighborhood_code": "Bairro principal por maior fração de área",
+      "population": "Moradores do setor, Censo 2022"
+    },
+    "file": "/data/sector-ranking.json",
+    "inputs": {
+      "data\\processed\\demand_units.geojson": "ac017419cefc8ca64743ae8f18a040886ab3e5dc387066534c681d245fd3467a",
+      "data\\processed\\sector_neighborhood_crosswalk.csv": "26c8b966c911248e15bbe21710f90f11fba49b242fe4cd83e8794d2bbaadc430",
+      "public\\data\\facilities.geojson": "13c8744130534454bc243f6ede7f0500a2c72103b226adf76de21f7d5ea97740"
+    },
+    "limitations": [
+      "Não é percurso nem tempo pelas ruas; não representa a distância de todos os moradores",
+      "Não classifica vulnerabilidade, atendimento, capacidade ou prioridade de implantação",
+      "Inclui setores de população zero; Censo 2022 e UAPS 2026, sem projeção demográfica",
+      "Licença padronizada IBGE não confirmada na coleta"
+    ],
+    "method": "Ponto representativo interno de cada setor em EPSG:31984; distância haversine em WGS84 até a UAPS mais próxima de toda a cidade. Ordem decrescente por distância arredondada a 0,1 m, desempate por código. Bairro principal por maior fração de área.",
+    "reference_year": 2022,
+    "rows": 4408,
+    "sha256": "3188d85402c50eed5b4c1aaab9fbcab5f0f000907b435fd2bd91c53beace3336",
+    "sources": [
+      {
+        "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+        "collected_at": "2026-10-28T00:37:45Z",
+        "download_url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/Agregados_por_setores_basico_BR_20260520.zip",
+        "id": "IBGE-AGREGADOS-SETORES-BASICO-CD2022-20260520",
+        "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+        "organization": "IBGE",
+        "sha256": "ec04624286233d699ebe69c7b9625744a1cfdfc8352126f30245bdef5e9bdc63"
+      },
+      {
+        "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+        "collected_at": "2026-10-28T00:37:43Z",
+        "download_url": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/gpkg/UF/CE/CE_setores_CD2022.gpkg",
+        "id": "IBGE-MALHA-SETORES-CD2022-CE",
+        "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+        "organization": "IBGE",
+        "sha256": "879ed9b7640906793c16ab1c02a24f5f24843f00b6330af9a7f882872d169aba"
+      },
+      {
+        "bbox": [
+          -38.62717984,
+          -3.88871088,
+          -38.44053707,
+          -3.69476567
+        ],
+        "bytes": 42397,
+        "crs": "EPSG:4326",
+        "dictionary": {
+          "cnes": "Código CNES como publicado; não é chave de deduplicação",
+          "id": "Identificador estável do projeto: uaps-{source_id}",
+          "management": "Código de gestão como publicado (campo `gestão`)",
+          "name": "Nome da unidade (campo de origem `nome`)",
+          "nature": "Natureza como publicada (campo `natureza`)",
+          "neighborhood": "Bairro declarado na fonte; não é o vínculo espacial",
+          "reference_date": "Ano de referência declarado (campo `ano`)",
+          "source_id": "Identificador da feição na API Fortaleza em Mapas",
+          "sus": "Atende SUS conforme `atende_sus`; null se ausente",
+          "type": "Tipo de equipamento; nesta fonte, sempre UAPS"
+        },
+        "extent": "Fortaleza, Ceará",
+        "feature_count": 134,
+        "file": "/data/facilities.geojson",
+        "geometry_types": [
+          "Point"
+        ],
+        "id": "facilities",
+        "limitations": [
+          "Cadastro não representa horário, capacidade ou disponibilidade",
+          "CNES repetido não implica que duas feições sejam a mesma unidade"
+        ],
+        "methodology": [
+          "Mapeamento de campos oficiais para o contrato facility",
+          "Validação de CRS, coordenadas e bounding box municipal",
+          "Deduplicação conservadora por source_id"
+        ],
+        "properties": [
+          "cnes",
+          "id",
+          "management",
+          "name",
+          "nature",
+          "neighborhood",
+          "reference_date",
+          "source_id",
+          "sus",
+          "type"
+        ],
+        "sha256": "13c8744130534454bc243f6ede7f0500a2c72103b226adf76de21f7d5ea97740",
+        "source": {
+          "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+          "catalog_updated_at": "2026-06-08",
+          "collected_at": "2026-10-27T18:39:23Z",
+          "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=824&download=true",
+          "id": 824,
+          "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+          "organization": "SMS",
+          "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/824/unidades-de-atencao-primaria-a-saude-uaps",
+          "raw_sha256": "8642d140c7d527c2285c67ca3ef7438af880a4246d5c90fda1287c55ae5b90f0",
+          "reference_year": 2026,
+          "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+        },
+        "title": "Unidades de Atenção Primária à Saúde"
+      },
+      {
+        "bbox": [
+          -38.63790294,
+          -3.89460306,
+          -38.40132769,
+          -3.69172159
+        ],
+        "bytes": 782161,
+        "crs": "EPSG:4326",
+        "dictionary": {
+          "code": "Código municipal do bairro (campo `Código do  Bairro`)",
+          "name": "Nome do bairro (campo `Nome`)",
+          "reference_date": "Ano de referência administrativa (`ano_ref`)",
+          "source_id": "Código municipal usado como referência da fonte"
+        },
+        "extent": "Fortaleza, Ceará",
+        "feature_count": 121,
+        "file": "/data/neighborhoods.geojson",
+        "geometry_types": [
+          "MultiPolygon"
+        ],
+        "id": "neighborhoods",
+        "limitations": [
+          "Referência administrativa de 2019 em catálogo atualizado em 2023",
+          "Código rotulado como IBGE não foi adotado como chave oficial"
+        ],
+        "methodology": [
+          "Normalização de nomes de campos sem alterar geometrias",
+          "Validação de topologia e unicidade do código municipal"
+        ],
+        "properties": [
+          "code",
+          "name",
+          "reference_date",
+          "source_id"
+        ],
+        "sha256": "2a552fc2043bd852837a55b0d4807d632613359bf2bf2460fc826d56e2ab6b2f",
+        "source": {
+          "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+          "catalog_updated_at": "2023-09-22",
+          "collected_at": "2026-10-27T18:39:22Z",
+          "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=21&download=true",
+          "id": 21,
+          "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+          "organization": "IPLANFOR",
+          "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/21/bairros-de-fortaleza",
+          "raw_sha256": "7bd94f1edba8350802512dcb051c8144feea9046b6f3d4280c34ec9d5c080326",
+          "reference_year": 2019,
+          "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+        },
+        "title": "Bairros de Fortaleza"
+      }
+    ],
+    "total_population": 2428708
+  }
 }

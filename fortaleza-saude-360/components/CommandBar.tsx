@@ -1,24 +1,17 @@
 "use client";
 
-import { BookOpen, Compass, Lock, Search } from "lucide-react";
+import { BookOpen, Compass, Search } from "lucide-react";
 import { JangadaMark } from "@/components/fortaleza/JangadaMark";
 import { DemoNotice } from "@/components/ProvenanceBadge";
 import { ContinuousTabs, type ContinuousTab } from "@/components/vendor/continuous-tabs";
 
 export type Mode = "story" | "explore" | "compare" | "simulate";
 
-const lockSuffix = (
-  <>
-    <Lock size={11} aria-hidden="true" className="opacity-70" />
-    <span className="visually-hidden"> (em breve)</span>
-  </>
-);
-
 export const MODES: ContinuousTab<Mode>[] = [
   { id: "story", label: "História", icon: <BookOpen size={14} aria-hidden="true" /> },
   { id: "explore", label: "Explorar", icon: <Compass size={14} aria-hidden="true" /> },
-  { id: "compare", label: "Comparar", suffix: lockSuffix },
-  { id: "simulate", label: "Simular", suffix: lockSuffix },
+  { id: "compare", label: "Comparar" },
+  { id: "simulate", label: "Simular" },
 ];
 
 type CommandBarProps = {

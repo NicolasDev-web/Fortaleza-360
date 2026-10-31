@@ -13,7 +13,7 @@ describe("Insights", () => {
 
     expect(screen.getByText("Antes de tirar conclusões")).toBeInTheDocument();
     expect(
-      screen.getByText(/ainda são demonstrações/i),
+      screen.getByText(/Simular estima o ganho de acesso geográfico/i),
     ).toBeInTheDocument();
     expect(container).not.toHaveTextContent(/bairro vulnerável/i);
     expect(container).not.toHaveTextContent(/cobertura (adequada|insuficiente)/i);

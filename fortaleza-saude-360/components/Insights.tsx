@@ -23,13 +23,13 @@ export function InsightsFooter() {
           <Navigation size={17} />
         </span>
         <div>
-          <small>Vem aí</small>
-          <strong>Quantas pessoas moram perto de cada posto</strong>
+          <small>Experimente</small>
+          <strong>Simule um posto novo no mapa</strong>
         </div>
       </div>
       <p>
-        Comparar e Simular ainda são demonstrações: ficam prontos quando os
-        dados forem conferidos.
+        Simular estima o ganho de acesso geográfico de um ponto proposto.
+        Comparar mostra moradores, postos e distância em linha reta de dois bairros lado a lado.
       </p>
     </div>
   );

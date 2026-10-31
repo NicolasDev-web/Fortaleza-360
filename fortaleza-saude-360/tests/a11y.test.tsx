@@ -45,7 +45,7 @@ describe("acessibilidade da estação", () => {
     expect(screen.getByRole("button", { name: /buscar bairro ou posto/i })).toHaveFocus();
   });
 
-  it("navega entre modos com as setas e mantém avisos de modo conceitual", async () => {
+  it("navega entre modos com as setas e abre a comparação acessível", async () => {
     const user = userEvent.setup();
     render(<AppShell model={demoModel()} />);
 
@@ -55,8 +55,8 @@ describe("acessibilidade da estação", () => {
     const compare = screen.getByRole("tab", { name: /comparar/i });
     expect(compare).toHaveFocus();
     expect(compare).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByText("Ilustração, não é mapa real")).toBeInTheDocument();
-    expect(screen.getByText(/nenhum bairro será chamado de vulnerável/i)).toBeInTheDocument();
+    expect(screen.getByLabelText("Bairro A")).toBeInTheDocument();
+    expect(screen.getByText(/não mede atendimento ou capacidade/i)).toBeInTheDocument();
   });
 
   it("mantém aviso de protótipo e de emergência sempre visíveis", () => {

@@ -3015,3 +3015,89 @@ kbd {
     transform: translateX(16px);
   }
 }
+
+.csv-download {
+  min-height: 48px;
+  border-style: solid;
+}
+
+.scenario-panel { display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+.scenario-panel h2 { font-family: var(--font-display); font-size: 25px; line-height: 1.15; }
+.scenario-panel p { font-size: 13px; line-height: 1.65; color: var(--text-muted); }
+.scenario-form { display: grid; gap: 12px; }
+.scenario-form label { display: grid; gap: 6px; font-size: 13px; color: var(--text); }
+.scenario-form input { width: 100%; min-height: 44px; padding: 8px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); }
+.scenario-table-wrap { overflow-x: auto; flex: 0 0 auto; }
+.scenario-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.scenario-table caption { text-align: left; padding-bottom: 12px; color: var(--text-muted); }
+.scenario-table th, .scenario-table td { padding: 10px 5px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.scenario-table small { display: block; margin-top: 5px; color: var(--text-muted); font-size: 11px; }
+.scenario-candidate { pointer-events: none; }
+.scenario-panel .scenario-caveat { border-left: 2px solid var(--accent); padding-left: 12px; }
+
+/* Comparar: indicadores alinhados por linha; A sólido e B tracejado no mapa. */
+.comparison-panel { gap: 18px; }
+.comparison-panel h2 { font-family: var(--font-display); font-size: 26px; line-height: 1.15; }
+.comparison-panel p { color: var(--text-muted); font-size: 13px; line-height: 1.65; }
+.comparison-panel header p { margin-top: 10px; }
+.comparison-selectors { display: grid; gap: 12px; }
+.comparison-selectors > div { display: grid; gap: 6px; font-size: 13px; }
+.comparison-selectors select { width: 100%; min-width: 0; min-height: 48px; padding: 8px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); color: var(--text); background: var(--surface); font: inherit; }
+.comparison-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.comparison-actions button { min-height: 44px; }
+.comparison-table-wrap { overflow-x: auto; flex: 0 0 auto; }
+.comparison-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12px; }
+.comparison-table caption { text-align: left; color: var(--text-muted); padding-bottom: 12px; }
+.comparison-table th, .comparison-table td { padding: 12px 5px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; overflow-wrap: anywhere; }
+.comparison-table thead th { color: var(--accent); }
+.comparison-table tbody th { font-weight: 500; color: var(--text-muted); }
+.comparison-table small { display: block; margin-top: 6px; color: var(--text-muted); line-height: 1.5; }
+.comparison-method { font-size: 13px; }
+.comparison-method summary { cursor: pointer; min-height: 44px; padding: 12px 0; }
+.comparison-method p { margin-top: 12px; }
+.comparison-status:empty { display: none; }
+.comparison-contours { pointer-events: none; }
+.comparison-contours path { fill: none; stroke: var(--accent); stroke-width: 3px; vector-effect: non-scaling-stroke; }
+.comparison-contours .comparison-b { stroke: var(--signal); stroke-dasharray: 7 4; }
+.comparison-contours text { text-anchor: middle; font-weight: 800; fill: var(--text); stroke: var(--canvas-deep); stroke-width: 4px; paint-order: stroke; }
+
+.layer-toggle-distance .layer-swatch { border: 1px dashed var(--signal); background: transparent; }
+.distance-proxy { pointer-events: none; }
+.distance-proxy line { stroke: var(--signal); stroke-width: 3px; stroke-dasharray: 8 5; vector-effect: non-scaling-stroke; }
+.distance-proxy circle { fill: var(--canvas-deep); stroke: var(--signal); stroke-width: 2px; vector-effect: non-scaling-stroke; }
+.map-distance-caption { position: absolute; z-index: 4; top: 12px; left: 12px; right: 12px; width: fit-content; max-width: min(440px, calc(100% - 24px)); padding: 10px 12px; border: 1px solid var(--signal); border-radius: var(--radius-sm); background: var(--canvas-deep); color: var(--text); font-size: 12px; line-height: 1.5; pointer-events: none; }
+.map-distance-caption strong, .map-distance-caption span { display: block; }
+.map-distance-caption span { color: var(--text-muted); }
+
+.saved-scenarios { border-top: 1px solid var(--line); padding-top: 18px; display: grid; gap: 12px; }
+.saved-scenarios h3 { font-family: var(--font-display); font-size: 18px; }
+.saved-scenario-list { list-style: none; padding: 0; display: grid; gap: 14px; }
+.saved-scenario-list li { display: grid; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 14px; overflow-wrap: anywhere; }
+.saved-scenario-list small, .saved-scenario-list span { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+.sector-ranking { display: grid; gap: 14px; padding-top: 20px; font-size: 13px; }
+.sector-ranking h3 { font-family: var(--font-display); font-size: 22px; }
+.sector-ranking p { color: var(--text-muted); line-height: 1.6; }
+.sector-ranking select { width: 100%; min-height: 44px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); padding: 8px; background: var(--surface); color: var(--text); }
+.sector-checkbox { display: flex; gap: 10px; align-items: center; min-height: 44px; }
+.sector-checkbox input { width: 20px; height: 20px; }
+.sector-list { display: grid; gap: 14px; padding-left: 24px; }
+.sector-list li { border-bottom: 1px solid var(--line); padding: 0 0 12px 4px; overflow-wrap: anywhere; }
+.sector-list strong, .sector-list span { display: block; margin-bottom: 6px; }
+.sector-list span { color: var(--text-muted); line-height: 1.6; }
+
+.location-control { margin: 14px 0; border-radius: var(--radius-sm); border: 1px solid var(--line-strong); background: var(--canvas-deep); padding: 8px 10px; font-size: 12px; }
+.location-control summary { display: flex; gap: 6px; align-items: center; min-height: 32px; cursor: pointer; }
+.location-control p { margin: 8px 0; line-height: 1.5; color: var(--text-muted); }
+.location-control button { margin-bottom: 8px; }
+.location-control p:empty { display: none; }
+.device-position { pointer-events: none; }
+.device-position circle { fill: var(--signal); stroke: var(--canvas-deep); stroke-width: 2px; vector-effect: non-scaling-stroke; }
+.device-position .device-accuracy { fill: var(--signal); fill-opacity: .1; stroke: var(--signal); stroke-dasharray: 3 3; }
+
+.corridor-image, .corridor-message { pointer-events: none; }
+.corridor-message text { fill: var(--text); stroke: var(--canvas-deep); stroke-width: 4px; paint-order: stroke; }
+.corridor-options { display: grid; gap: 8px; margin: 14px 0; font-size: 12px; }
+.corridor-options select { width: 100%; min-height: 44px; padding: 8px; color: var(--text); background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius-sm); }
+.corridor-options p { color: var(--text-muted); line-height: 1.6; }
+.layer-toggle-corridors .layer-swatch { background: var(--accent); opacity: .65; }

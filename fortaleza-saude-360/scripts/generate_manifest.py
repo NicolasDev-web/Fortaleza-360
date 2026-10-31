@@ -186,10 +186,7 @@ def _inspect_geojson(path: Path) -> dict[str, Any]:
         "sha256": hashlib.sha256(content).hexdigest(),
         "feature_count": len(features),
         "geometry_types": sorted(
-            {
-                (feature.get("geometry") or {}).get("type")
-                for feature in features
-            }
+            {(feature.get("geometry") or {}).get("type") for feature in features}
         ),
         "properties": sorted(
             {
@@ -244,6 +241,60 @@ def _population_entry(public_dir: Path) -> dict[str, Any] | None:
     }
 
 
+def _coverage_entry(public_dir: Path) -> dict[str, Any] | None:
+    """Resumo auditável da SDD-038, quando gerado por scripts.coverage."""
+    path = public_dir / "population-coverage.json"
+    if not path.exists():
+        return None
+    content = path.read_bytes()
+    data = json.loads(content)
+    measures = ("representative", "area_weighted", "full_sector", "any_overlap")
+    keys = [(row["scenario"], row["minutes"]) for row in data["rows"]]
+    if len(keys) != 9 or set(keys) != {
+        (s, t) for s in ("slow", "central", "fast") for t in (10, 20, 30)
+    }:
+        raise ValueError("Cobertura: combinações ausentes ou duplicadas.")
+    fields = {key for row in data["rows"] for key in row}
+    if fields != set(data["dictionary"]):
+        raise ValueError("Cobertura: dicionário incompleto.")
+    total = data["denominator"]["population"]
+    for row in data["rows"]:
+        if row["total_population"] != total:
+            raise ValueError("Cobertura: denominador divergente.")
+        for measure in measures:
+            count = row[f"{measure}_population"]
+            percent = row[f"{measure}_percent"]
+            if not 0 <= count <= total:
+                raise ValueError("Cobertura: população fora do denominador.")
+            if (total == 0 and percent is not None) or (
+                total > 0
+                and (
+                    percent is None
+                    or not math.isfinite(percent)
+                    or abs(percent - count / total * 100) > 1e-8
+                )
+            ):
+                raise ValueError("Cobertura: percentual inconsistente.")
+    return {
+        "file": "/data/population-coverage.json",
+        "bytes": len(content),
+        "sha256": hashlib.sha256(content).hexdigest(),
+        "rows": len(data["rows"]),
+        **{
+            key: data[key]
+            for key in (
+                "reference_year",
+                "denominator",
+                "sources",
+                "methods",
+                "dictionary",
+                "limitations",
+                "central_method",
+            )
+        },
+    }
+
+
 def _basemap_entry(public_dir: Path) -> dict[str, Any] | None:
     """Proveniência do recorte OSM gerado por scripts/build_basemap.py, se existir."""
     tiles = public_dir.parent / "basemap" / "fortaleza.pmtiles"
@@ -276,11 +327,52 @@ def _basemap_entry(public_dir: Path) -> dict[str, Any] | None:
             "license_file": "/basemap/fonts/OFL.txt",
         },
         "limitations": [
-            "Referência visual de ruas; não entra em cálculos nem em tempos "
-            "de trajeto",
+            "Referência visual de ruas; não entra em cálculos nem em tempos de trajeto",
             "Recorte de Fortaleza com margem de ~3 km; fora dele o mapa fica vazio",
             "Dados colaborativos do OSM podem estar incompletos ou desatualizados",
         ],
+    }
+
+
+def _scenario_entry(public_dir: Path) -> dict[str, Any] | None:
+    path = public_dir / "scenario-model.json"
+    if not path.exists():
+        return None
+    content = path.read_bytes()
+    data = json.loads(content)
+    coverage = (public_dir / "population-coverage.json").read_bytes()
+    expected = hashlib.sha256(coverage).hexdigest()
+    if (
+        data["schema"] != 1
+        or data["provenance"]["parity"]["mismatches"] != 0
+        or data["provenance"]["coverageSha256"] != expected
+    ):
+        raise ValueError("Simulador sem paridade com a base de população.")
+    return {
+        "file": "/data/scenario-model.json",
+        "bytes": len(content),
+        "sha256": hashlib.sha256(content).hexdigest(),
+        "sources": data["provenance"]["sources"],
+        "limitations": data["provenance"]["limitations"],
+        "parity": data["provenance"]["parity"],
+        "method": "network_corridor; pontos representativos; buffer de 25 m",
+        "dictionary": {
+            "nodes": "Nós públicos da malha, longitude/latitude WGS84",
+            "edges": "Índices dos nós e minutos de caminhada central por aresta",
+            "sectors": "População, máscara da base e custos de entrada no corredor",
+            "sectorIds": "Identificadores dos setores na mesma ordem",
+            "seeds": "Nós associados às UAPS da base",
+            "snapScale": "Cosseno da latitude média para seleção do nó mais próximo",
+            "maxSnapM": "Distância máxima do candidato ao nó, em metros",
+            "bufferM": "Raio dos corredores em metros",
+            "baseline": "Contagens-base publicadas e verificadas",
+            "total": "Denominador do Censo 2022",
+            "order": "Ordem dos nove cenários na máscara",
+            "speeds": "Velocidades slow, central e fast em km/h",
+            "boundary": "Limite municipal para validar o candidato",
+            "schema": "Versão do contrato",
+            "provenance": "Fontes, checksums da base e verificação de paridade",
+        },
     }
 
 
@@ -350,16 +442,57 @@ def generate_manifest(
     population = _population_entry(public_dir)
     if population:
         manifest["population"] = population
+    coverage = _coverage_entry(public_dir)
+    if coverage:
+        manifest["population_coverage"] = coverage
+        manifest["notice"] = (
+            "Camadas oficiais de localização e limites administrativos, com "
+            "estimativas de acessibilidade modelada. Não indicam capacidade, "
+            "oferta ou população efetivamente atendida."
+        )
     basemap = _basemap_entry(public_dir)
     if basemap:
         manifest["basemap"] = basemap
+    scenario = _scenario_entry(public_dir)
+    if scenario:
+        manifest["scenario"] = scenario
+    ranking_path = public_dir / "sector-ranking.json"
+    if ranking_path.exists():
+        content = ranking_path.read_bytes()
+        ranking = json.loads(content.decode("utf-8"))
+        manifest["sector_ranking"] = {
+            "file": "/data/sector-ranking.json",
+            "sha256": hashlib.sha256(content).hexdigest(),
+            "bytes": len(content),
+            "rows": len(ranking["rows"]),
+            **{
+                key: ranking[key]
+                for key in (
+                    "method",
+                    "sources",
+                    "inputs",
+                    "limitations",
+                    "dictionary",
+                    "reference_year",
+                    "total_population",
+                )
+            },
+        }
+    preview_path = public_dir / "corridor-preview.json"
+    if preview_path.exists():
+        content = preview_path.read_bytes()
+        preview = json.loads(content.decode("utf-8"))
+        manifest["corridor_preview"] = {
+            "file": "/data/corridor-preview.json",
+            "sha256": hashlib.sha256(content).hexdigest(),
+            "bytes": len(content),
+            **preview,
+        }
     return manifest
 
 
 def write_manifest(manifest: dict[str, Any], path: Path) -> None:
-    content = (
-        json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
-    )
+    content = json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary_name = tempfile.mkstemp(
         dir=path.parent,

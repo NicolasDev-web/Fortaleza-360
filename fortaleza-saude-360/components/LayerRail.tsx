@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, ExternalLink, Lock, SlidersHorizontal } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { ChevronDown, ExternalLink, SlidersHorizontal } from "lucide-react";
 import type { LayerVisibility } from "@/components/CityMap";
 import { POPULATION_SOURCE } from "@/lib/population";
 import {
@@ -17,11 +17,13 @@ type LayerRailProps = {
   counts: { neighborhoods: number; facilities: number; upas: number; hospitals: number } | null;
   layers: LayerVisibility;
   onToggle: (layer: keyof LayerVisibility) => void;
+  locationControl?: ReactNode;
+  corridorOptions?: ReactNode;
 };
 
 const numberFormat = new Intl.NumberFormat("pt-BR");
 
-export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
+export function LayerRail({ counts, layers, onToggle, locationControl, corridorOptions }: LayerRailProps) {
   const [open, setOpen] = useState(false);
   const available = counts !== null;
 
@@ -60,6 +62,18 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
       label: "Hospitais municipais",
       meta: `${LAYER_SOURCES.hospitals.agency} · dados de ${LAYER_SOURCES.hospitals.reference}`,
       count: counts?.hospitals ?? null,
+    },
+    {
+      key: "distance",
+      label: "Distância até o posto",
+      meta: "Centro do bairro → UAPS · linha reta, aproximação",
+      count: null,
+    },
+    {
+      key: "corridors",
+      label: "Corredores a pé",
+      meta: "Base UAPS · caminhada modelada · no Explorar",
+      count: null,
     },
   ];
 
@@ -113,20 +127,11 @@ export function LayerRail({ counts, layers, onToggle }: LayerRailProps) {
                 </button>
               </li>
             ))}
-            <li>
-              <div className="layer-toggle is-locked" aria-disabled="true">
-                <span className="layer-swatch" aria-hidden="true">
-                  <Lock size={11} />
-                </span>
-                <span className="layer-text">
-                  <strong>Distância até o posto</strong>
-                  <small>Já aparece no bairro · no mapa, em breve</small>
-                </span>
-              </div>
-            </li>
           </ul>
         </section>
 
+        {layers.corridors ? corridorOptions : null}
+        {locationControl}
         <section className="rail-section" aria-labelledby="legend-title">
           <h2 className="section-label" id="legend-title">
             Legenda

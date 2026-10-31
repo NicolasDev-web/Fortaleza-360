@@ -6,6 +6,7 @@ import {
   BookOpen,
   Building2,
   Crosshair,
+  Download,
   Hospital,
   LayoutGrid,
   List,
@@ -16,6 +17,7 @@ import {
   Users,
 } from "lucide-react";
 import { Insights, InsightsFooter } from "@/components/Insights";
+import { SectorRanking } from "@/components/SectorRanking";
 import { KpiCard } from "@/components/KpiCard";
 import { AnimatedHeading } from "@/components/motion/AnimatedHeading";
 import { RollingNumber } from "@/components/motion/RollingNumber";
@@ -28,6 +30,7 @@ import {
   STRAIGHT_LINE_CAVEAT,
   type StraightLineResult,
 } from "@/lib/accessibility";
+import { buildNeighborhoodCsv, csvFileName, downloadCsv } from "@/lib/export";
 import { formatCoordinate, normalizeName, unproject, type Box } from "@/lib/geo";
 import {
   peoplePerFacility,
@@ -63,7 +66,7 @@ type ReadingPanelProps = {
   onOpenStory: () => void;
 };
 
-type OverviewTab = "panorama" | "index";
+type OverviewTab = "panorama" | "index" | "sectors";
 
 const NOT_INFORMED = "A Prefeitura não informa";
 
@@ -238,6 +241,15 @@ function Overview({
     const items = model?.neighborhoods ?? [];
     return term ? items.filter(({ name }) => normalizeName(name).includes(term)) : items;
   }, [model, query]);
+  const [downloaded, setDownloaded] = useState("");
+
+  const downloadList = () => {
+    if (!model) return;
+    downloadCsv(buildNeighborhoodCsv(model, filtered), csvFileName());
+    setDownloaded(
+      `Arquivo ${csvFileName()} baixado com ${filtered.length} ${filtered.length === 1 ? "bairro" : "bairros"}.`,
+    );
+  };
 
   return (
     <div className="reading-view">
@@ -258,6 +270,7 @@ function Overview({
           tabs={[
             { id: "panorama", title: "Resumo", icon: <LayoutGrid size={15} /> },
             { id: "index", title: "Lista de bairros", icon: <List size={15} /> },
+            { id: "sectors", title: "Distância por setor", icon: <Ruler size={15} /> },
           ]}
           value={tab}
         />
@@ -268,7 +281,7 @@ function Overview({
         id="reading-tabpanel"
         role={model ? "tabpanel" : undefined}
       >
-        {tab === "panorama" || !model ? (
+        {tab === "sectors" && model ? <SectorRanking model={model} /> : tab === "panorama" || !model ? (
           <div className="panorama">
             <div className="readout-list">
               <KpiCard
@@ -305,7 +318,7 @@ function Overview({
               <KpiCard
                 icon={Navigation}
                 label="Pessoas perto de um posto"
-                note="Ainda não calculado: falta medir pelas ruas"
+                note="Veja as estimativas e os limites no modo Simular"
                 value={null}
               />
             </div>
@@ -364,6 +377,21 @@ function Overview({
             <p className="index-note">
               Em ordem alfabética. Ter mais postos não quer dizer melhor acesso, nem que o
               bairro precisa menos.
+            </p>
+            {filtered.length > 0 ? (
+              <button className="story-reopen csv-download" onClick={downloadList} type="button">
+                <Download size={16} aria-hidden="true" />
+                <span>
+                  <strong>Baixar esta lista (CSV)</strong>
+                  <small>
+                    {filtered.length} {filtered.length === 1 ? "bairro" : "bairros"}, com fonte e
+                    método em cada linha
+                  </small>
+                </span>
+              </button>
+            ) : null}
+            <p aria-live="polite" className="visually-hidden">
+              {downloaded}
             </p>
           </section>
         )}

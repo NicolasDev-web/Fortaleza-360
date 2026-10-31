@@ -1,0 +1,304 @@
+{
+  "audit": {
+    "file": "data\\processed\\coverage\\sector_coverage.csv",
+    "rows": 39672,
+    "sha256": "cde22dadc6010c6c94e40902b8f916b866644dd9a023c7ae82639fd63061f3fc"
+  },
+  "buffer_m": 25.0,
+  "central_method": "representative",
+  "denominator": {
+    "missing_population_sectors": 0,
+    "population": 2428708,
+    "sectors": 4408
+  },
+  "dictionary": {
+    "any_overlap_percent": "100 × any_overlap_population / total_population; null se zero",
+    "any_overlap_population": "Limite espacial superior: setores com interseção de área positiva",
+    "area_weighted_percent": "100 × area_weighted_population / total_population; null se zero",
+    "area_weighted_population": "Soma de população × fração da área do setor no corredor",
+    "full_sector_percent": "100 × full_sector_population / total_population; null se zero",
+    "full_sector_population": "Limite espacial inferior: setores inteiramente contidos",
+    "minutes": "Limiar acumulado de caminhada modelada",
+    "representative_percent": "100 × representative_population / total_population; null se zero",
+    "representative_population": "Soma dos setores cujo ponto representativo está no corredor",
+    "scenario": "Cenário slow, central ou fast",
+    "sectors": "Número de setores censitários no denominador",
+    "total_population": "Denominador: soma de todos os setores com população",
+    "zero_population_sectors": "Setores com população zero, preservados"
+  },
+  "inputs": {
+    "data\\processed\\demand_units.geojson": "ac017419cefc8ca64743ae8f18a040886ab3e5dc387066534c681d245fd3467a",
+    "data\\processed\\isochrones\\isochrones.geojson": "123bd2bae1f4cfed1764ff6210f0e4e97e4dc8d29c52ae8d127405a45fe60fe0",
+    "data\\processed\\isochrones\\manifest.json": "320f7af2b4ddc2a33568d875e6c246b20abf33d9b02458cab53ef42a8a85becf",
+    "data\\processed\\population_audit.json": "71a4193828eca32e144b6ebb50397a5d785300762a03554341c9a561295f08b2"
+  },
+  "limitations": [
+    "Acessibilidade modelada até alguma UAPS; não representa atendimento, vaga, capacidade assistencial ou população adscrita.",
+    "População do Censo 2022 comparada a UAPS e OSM de 2026, sem projeção demográfica.",
+    "Um ponto representa cada setor inteiro; ponderação por área supõe densidade uniforme. Os limites espaciais não são intervalos de confiança.",
+    "Corredores com raio registrado em buffer_m dependem das vias OSM; podem atravessar barreiras. Conectores até a UAPS não entram no tempo. Rotas sem validação local.",
+    "Licença padronizada do IBGE não confirmada na coleta; atribuição obrigatória."
+  ],
+  "max_snap_m": 300,
+  "methods": {
+    "any_overlap": "Limite espacial superior: setores com interseção de área positiva",
+    "area_weighted": "Soma de população × fração da área do setor no corredor",
+    "full_sector": "Limite espacial inferior: setores inteiramente contidos",
+    "representative": "Soma dos setores cujo ponto representativo está no corredor"
+  },
+  "model": {
+    "edges": 166555,
+    "formula": "minutos = comprimento_m ÷ (km/h × 1000 ÷ 60) × fator_da_via",
+    "impedance": {
+      "path": 1.25,
+      "steps": 2.0,
+      "track": 1.25
+    },
+    "impedance_basis": "hipótese não calibrada com medição local",
+    "nodes": 117819,
+    "not_modeled": [
+      "gradient",
+      "crossing_wait",
+      "surface",
+      "lighting",
+      "safety",
+      "sidewalk_presence",
+      "weather_and_heat",
+      "connector_to_network"
+    ],
+    "speed_kmh": {
+      "central": 4.8,
+      "fast": 5.5,
+      "slow": 4.0
+    },
+    "total_length_km": 10117.035
+  },
+  "reference_year": 2022,
+  "rows": [
+    {
+      "any_overlap_percent": 67.49901593769198,
+      "any_overlap_population": 1639354,
+      "area_weighted_percent": 37.78476102854682,
+      "area_weighted_population": 917681.5138811988,
+      "full_sector_percent": 3.0553281827210186,
+      "full_sector_population": 74205,
+      "minutes": 10,
+      "representative_percent": 35.52555515113385,
+      "representative_population": 862812,
+      "scenario": "slow",
+      "sectors": 4408,
+      "total_population": 2428708,
+      "zero_population_sectors": 102
+    },
+    {
+      "any_overlap_percent": 93.8266353962683,
+      "any_overlap_population": 2278775,
+      "area_weighted_percent": 71.00372022797333,
+      "area_weighted_population": 1724473.0334744065,
+      "full_sector_percent": 6.45446056092375,
+      "full_sector_population": 156760,
+      "minutes": 20,
+      "representative_percent": 67.53109060455188,
+      "representative_population": 1640133,
+      "scenario": "slow",
+      "sectors": 4408,
+      "total_population": 2428708,
+      "zero_population_sectors": 102
+    },
+    {
+      "any_overlap_percent": 98.67489216488767,
+      "any_overlap_population": 2396525,
+      "area_weighted_percent": 78.61973963015133,
+      "area_weighted_population": 1909443.9059766557,
+      "full_sector_percent": 7.138239755458457,
+      "full_sector_population": 173367,
+      "minutes": 30,
+      "representative_percent": 74.68649998270685,
+      "representative_population": 1813917,
+      "scenario": "slow",
+      "sectors": 4408,
+      "total_population": 2428708,
+      "zero_population_sectors": 102
+    },
+    {
+      "any_overlap_percent": 77.0657073637506,
+      "any_overlap_population": 1871701,
+      "area_weighted_percent": 47.9051097864802,
+      "area_weighted_population": 1163475.2337930277,
+      "full_sector_percent": 4.17386528145829,
+      "full_sector_population": 101371,
+      "minutes": 10,
+      "representative_percent": 45.87484374408122,
+      "representative_population": 1114166,
+      "scenario": "central",
+      "sectors": 4408,
+      "total_population": 2428708,
+      "zero_population_sectors": 102
+    },
+    {
+      "any_overlap_percent": 96.97950515253378,
+      "any_overlap_population": 2355349,
+      "area_weighted_percent": 75.54839085554016,
+      "area_weighted_population": 1834849.8125797722,
+      "full_sector_percent": 6.890041948229264,
+      "full_sector_population": 167339,
+      "minutes": 20,
+      "representative_percent": 71.86261172606999,
+      "representative_population": 1745333,
+      "scenario": "central",
+      "sectors": 4408,
+      "total_population": 2428708,
+      "zero_population_sectors": 102
+    },
+    {
+      "any_overlap_percent": 99.38720504893959,
+      "any_overlap_population": 2413825,
+      "area_weighted_percent": 79.7362688143783,
+      "area_weighted_population": 1936561.1395963111,
+      "full_sector_percent": 7.156850473585133,
+      "full_sector_population": 173819,
+      "minutes": 30,
+      "representative_percent": 75.71103648524236,
+      "representative_population": 1838800,
+      "scenario": "central",
+      "sectors": 4408,
+      "total_population": 2428708,
+      "zero_population_sectors": 102
+    },
+    {
+      "any_overlap_percent": 82.77298053121248,
+      "any_overlap_population": 2010314,
+      "area_weighted_percent": 55.233199963293146,
+      "area_weighted_population": 1341453.1461644976,
+      "full_sector_percent": 5.142157888062295,
+      "full_sector_population": 124888,
+      "minutes": 10,
+      "representative_percent": 52.7216528294056,
+      "representative_population": 1280455,
+      "scenario": "fast",
+      "sectors": 4408,
+      "total_population": 2428708,
+      "zero_population_sectors": 102
+    },
+    {
+      "any_overlap_percent": 98.12348787915221,
+      "any_overlap_population": 2383133,
+      "area_weighted_percent": 77.74344147843416,
+      "area_weighted_population": 1888161.1826620488,
+      "full_sector_percent": 7.076396174426897,
+      "full_sector_population": 171865,
+      "minutes": 20,
+      "representative_percent": 73.95252949304734,
+      "representative_population": 1796091,
+      "scenario": "fast",
+      "sectors": 4408,
+      "total_population": 2428708,
+      "zero_population_sectors": 102
+    },
+    {
+      "any_overlap_percent": 99.65936621446465,
+      "any_overlap_population": 2420435,
+      "area_weighted_percent": 80.17741389454764,
+      "area_weighted_population": 1947275.2654499903,
+      "full_sector_percent": 7.156850473585133,
+      "full_sector_population": 173819,
+      "minutes": 30,
+      "representative_percent": 76.05006447872697,
+      "representative_population": 1847034,
+      "scenario": "fast",
+      "sectors": 4408,
+      "total_population": 2428708,
+      "zero_population_sectors": 102
+    }
+  ],
+  "sensitivity": [
+    {
+      "basis": "3 velocidades × 2 métodos de alocação",
+      "minutes": 10,
+      "population_max": 1341453.1461644976,
+      "population_min": 862812
+    },
+    {
+      "basis": "3 velocidades × 2 métodos de alocação",
+      "minutes": 20,
+      "population_max": 1888161.1826620488,
+      "population_min": 1640133
+    },
+    {
+      "basis": "3 velocidades × 2 métodos de alocação",
+      "minutes": 30,
+      "population_max": 1947275.2654499903,
+      "population_min": 1813917
+    }
+  ],
+  "sources": [
+    {
+      "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+      "bytes": 15418417,
+      "collected_at": "2026-10-28T00:37:45Z",
+      "content_type": "application/zip",
+      "download_url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/Agregados_por_setores_basico_BR_20260520.zip",
+      "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+      "organization": "IBGE",
+      "page_url": "https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/Agregados_por_Setor_csv/",
+      "reference_year": 2022,
+      "sha256": "ec04624286233d699ebe69c7b9625744a1cfdfc8352126f30245bdef5e9bdc63",
+      "source_id": "IBGE-AGREGADOS-SETORES-BASICO-CD2022-20260520",
+      "source_key": "ibge-agregados-basico"
+    },
+    {
+      "attribution": "Fonte: IBGE, Censo Demográfico 2022.",
+      "bytes": 35737600,
+      "collected_at": "2026-10-28T00:37:43Z",
+      "content_type": null,
+      "download_url": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/gpkg/UF/CE/CE_setores_CD2022.gpkg",
+      "license": "Dados públicos do IBGE; licença padronizada não verificada (página de termos indisponível na coleta), citação da fonte obrigatória",
+      "organization": "IBGE",
+      "page_url": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2022/setores/gpkg/UF/CE/",
+      "reference_year": 2022,
+      "sha256": "879ed9b7640906793c16ab1c02a24f5f24843f00b6330af9a7f882872d169aba",
+      "source_id": "IBGE-MALHA-SETORES-CD2022-CE",
+      "source_key": "ibge-setores-ce"
+    },
+    {
+      "attribution": "© OpenStreetMap contributors. Extrato: Geofabrik GmbH.",
+      "bytes": 444361558,
+      "collected_at": "2026-10-28T11:18:58Z",
+      "content_type": "application/octet-stream",
+      "download_url": "https://download.geofabrik.de/south-america/brazil/nordeste-261027.osm.pbf",
+      "license": "Open Database License (ODbL) 1.0; atribuição obrigatória a OpenStreetMap contributors",
+      "organization": "OpenStreetMap / Geofabrik",
+      "page_url": "https://download.geofabrik.de/south-america/brazil/nordeste.html",
+      "reference_year": 2026,
+      "sha256": "e99014cf0d798654aa77060172ed2aea75213a547d1f5a718e4decaa51952bc3",
+      "source_id": "OSM-GEOFABRIK-NORDESTE-261027",
+      "source_key": "osm-nordeste"
+    },
+    {
+      "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+      "catalog_updated_at": "2026-06-08",
+      "collected_at": "2026-10-27T18:39:23Z",
+      "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=824&download=true",
+      "id": 824,
+      "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+      "organization": "SMS",
+      "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/824/unidades-de-atencao-primaria-a-saude-uaps",
+      "raw_sha256": "8642d140c7d527c2285c67ca3ef7438af880a4246d5c90fda1287c55ae5b90f0",
+      "reference_year": 2026,
+      "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+    },
+    {
+      "attribution": "Fonte: Prefeitura Municipal de Fortaleza - Fortaleza em Mapas (Ipplan Fortaleza). Acesso via API de Dados Abertos.",
+      "catalog_updated_at": "2023-07-25",
+      "collected_at": "2026-10-27T18:39:22Z",
+      "download_url": "https://mapas.fortaleza.ce.gov.br/api/v1/geojson?id=12&download=true",
+      "id": 12,
+      "license": "Termos de Uso da API Fortaleza em Mapas — reutilização livre com atribuição obrigatória",
+      "organization": "IPECE",
+      "page_url": "https://mapas.fortaleza.ce.gov.br/mapa/12/limite-administrativo-da-cidade-de-fortaleza",
+      "raw_sha256": "916707d1e004680d035ba0e9ed18affc885551fed2337365720ddeaae0dce4f5",
+      "reference_year": 2019,
+      "terms_url": "https://mapas.fortaleza.ce.gov.br/dados-abertos/api"
+    }
+  ]
+}
