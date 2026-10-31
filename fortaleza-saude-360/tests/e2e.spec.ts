@@ -336,28 +336,20 @@ test("história participativa conduz do bairro à comparação no computador", a
   await page.getByLabel("Escolha um bairro na história").selectOption({ label: "Meireles" });
   await expect(page.locator(".story-participation")).toContainText("Meireles");
   await page.screenshot({ path: "test-results/journey-participation-desktop.png", fullPage: true });
-  const stability = await page.getByRole("button", { name: "Conhecer este bairro" }).evaluate(async button => {
-    const frames = [];
-    for (let i = 0; i < 30; i++) {
+  const continueButton = page.getByRole("button", { name: "Conhecer este bairro" });
+  const buttonBox = await continueButton.boundingBox();
+  expect(buttonBox).not.toBeNull();
+  await page.mouse.move(buttonBox!.x + buttonBox!.width / 2, buttonBox!.y + buttonBox!.height - 0.25);
+  const positions = await continueButton.evaluate(async button => {
+    const positions = [];
+    for (let i = 0; i < 10; i++) {
       await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
-      const rect = button.getBoundingClientRect();
-      frames.push([rect.x, rect.y, rect.width, rect.height]);
+      positions.push(button.getBoundingClientRect().y);
     }
-    return {
-      positions: [...new Set(frames.map(frame => JSON.stringify(frame)))],
-      ancestors: [button, button.parentElement, button.closest(".tour-content"), button.closest(".story-card")].map(element => {
-        if (!element) return null;
-        const style = getComputedStyle(element);
-        return { className: element.className, transform: style.transform, height: style.height, overflow: style.overflow };
-      }),
-      animations: document.getAnimations().filter(animation => animation.playState === "running").map(animation => ({
-        target: (animation.effect as KeyframeEffect | null)?.target?.getAttribute("class"),
-        timing: animation.effect?.getComputedTiming(),
-      })),
-    };
+    return [...new Set(positions)];
   });
-  await testInfo.attach("story-button-stability", { body: JSON.stringify(stability), contentType: "application/json" });
-  await page.getByRole("button", { name: "Conhecer este bairro" }).click();
+  expect(positions).toHaveLength(1);
+  await continueButton.click();
   await expect(page.getByRole("heading", { name: "Meireles", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Ver detalhes", exact: true }).click();
   await expect(page.getByRole("region", { name: "Leitura do mapa", exact: true })).toBeFocused();

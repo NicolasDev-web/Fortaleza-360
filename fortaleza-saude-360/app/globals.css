@@ -1713,11 +1713,10 @@ kbd {
   background: var(--accent);
   font-size: 13px;
   font-weight: 800;
-  transition: transform 160ms var(--ease-out), box-shadow 160ms;
+  transition: box-shadow 160ms;
 }
 
 .action-button:hover {
-  transform: translateY(-1px);
   box-shadow: 0 8px 24px rgba(243, 238, 233, 0.15);
 }
 
